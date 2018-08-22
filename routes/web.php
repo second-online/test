@@ -14,3 +14,20 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+
+Route::get('/test', function () {
+
+		$role = App\Role::find(1);
+		$user = App\User::find(1);
+		$user->delete();
+
+		//$role->users()->attach($user);
+		// $user->roles()->attach($role);
+
+		// foreach ($user->roles as $role) {
+		// 	echo $role->name;
+		// }
+
+		return;
+});
