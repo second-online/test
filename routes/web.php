@@ -11,18 +11,66 @@
 |
 */
 
+use Carbon\Carbon;
+use App\Broadcast;
+
 Route::get('/', function () {
-    return view('welcome');
+	return view('welcome');
 });
 
 
 Route::get('/test', function () {
 
-		$sermon = App\Sermon::find(1);
+	$broadcasts = Broadcast::all();
+	$schedule = collect();
 
-		echo $sermon->title;
-		echo $sermon->speaker->name;
-		echo $sermon->series->name;
-		
-		return;
+	foreach ($broadcasts as $broadcast) {
+
+		$format = 'l H:i:s';
+		$time = $broadcast->day . ' ' . $broadcast->time;
+		$timezone = 'America/Chicago';
+		$date = Carbon::createFromFormat($format, $time, $timezone);
+
+		if ($date->isPast()) {
+			$date->addWeek();
+		}
+
+		$schedule->push(['name' => $broadcast->name, 'time' => (string)$date]);
+	}
+
+	// var_dump($schedule);
+	// $sorted = $schedule->sortBy('time');
+	// var_dump($sorted);
+
+
+	$format = 'l H:i:s'; // l, g:ia
+
+	$time = 'Sunday 11:11:00';
+	$timezone = 'America/Chicago';
+	$inputDate = Carbon::createFromFormat($format, $time, $timezone);
+ 
+ 	var_dump($inputDate);
+
+ 	var_dump($inputDate->setTimezone('UTC'));
+
+	return;
+
+
+	$format = 'Y-m-d H:i:s';
+
+	$time = '2018-2-24 20:00:00';
+	$timezone = 'America/Chicago';
+	$inputDate = Carbon::createFromFormat($format, $time, $timezone);
+	var_dump($inputDate);
+ 
+	$time = (string)$inputDate->timezone('UTC');
+	$timezone = 'UTC';
+	$dbDate = Carbon::createFromFormat($format, $time, $timezone);
+
+	var_dump($dbDate);
+
+	var_dump($dbDate->timezone('America/Chicago'));
+
+
+	return;
 });
