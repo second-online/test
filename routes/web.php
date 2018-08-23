@@ -18,16 +18,11 @@ Route::get('/', function () {
 
 Route::get('/test', function () {
 
-		$role = App\Role::find(1);
-		$user = App\User::find(1);
-		$user->delete();
+		$sermon = App\Sermon::find(1);
 
-		//$role->users()->attach($user);
-		// $user->roles()->attach($role);
-
-		// foreach ($user->roles as $role) {
-		// 	echo $role->name;
-		// }
-
+		echo $sermon->title;
+		echo $sermon->speaker->name;
+		echo $sermon->series->name;
+		
 		return;
 });
