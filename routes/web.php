@@ -24,25 +24,29 @@ Route::get('/', 'HomeController@index')->name('home');
 
 Route::get('/schedule', function () {
 
-	$broadcasts = Broadcast::all();
-	$schedule = collect();
+event(new App\Events\BroadcastCommentCreated('Hello bro!'));
 
-	foreach ($broadcasts as $broadcast) {
 
-		$format = 'l H:i:s';
-		$time = $broadcast->day . ' ' . $broadcast->time;
-		$timezone = 'America/Chicago';
-		$date = Carbon::createFromFormat($format, $time, $timezone);
 
-		if ($date->isPast()) {
-			$date->addWeek();
-		}
+	// $broadcasts = Broadcast::all();
+	// $schedule = collect();
 
-		$schedule->push(['name' => $broadcast->name, 'time' => (string)$date]);
-	}
+	// foreach ($broadcasts as $broadcast) {
 
-	// var_dump($schedule);
-	$sorted = $schedule->sortBy('time');
-	var_dump($sorted);
+	// 	$format = 'l H:i:s';
+	// 	$time = $broadcast->day . ' ' . $broadcast->time;
+	// 	$timezone = 'America/Chicago';
+	// 	$date = Carbon::createFromFormat($format, $time, $timezone);
+
+	// 	if ($date->isPast()) {
+	// 		$date->addWeek();
+	// 	}
+
+	// 	$schedule->push(['name' => $broadcast->name, 'time' => (string)$date]);
+	// }
+
+	// // var_dump($schedule);
+	// $sorted = $schedule->sortBy('time');
+	// var_dump($sorted);
 	
 });
