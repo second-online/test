@@ -53,8 +53,4 @@ window.Echo = new Echo({
     key: process.env.MIX_PUSHER_APP_KEY,
     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
     encrypted: true
-}); 
-
-window.Echo.channel('wed-8am-broadcast').listen('BroadcastCommentCreated', event => {
-	console.log(event);
 });

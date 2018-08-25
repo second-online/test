@@ -13878,8 +13878,7 @@ module.exports = Cancel;
 /* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(12);
-module.exports = __webpack_require__(45);
+module.exports = __webpack_require__(12);
 
 
 /***/ }),
@@ -13972,10 +13971,6 @@ window.Echo = new __WEBPACK_IMPORTED_MODULE_0_laravel_echo___default.a({
   key: "032cce1f53d25a8af793",
   cluster: "us2",
   encrypted: true
-});
-
-window.Echo.channel('wed-8am-broadcast').listen('BroadcastCommentCreated', function (event) {
-  console.log(event);
 });
 
 /***/ }),
@@ -57197,12 +57192,6 @@ if (false) {
     require("vue-hot-reload-api")      .rerender("data-v-7168fb6a", module.exports)
   }
 }
-
-/***/ }),
-/* 45 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
 
 /***/ })
 /******/ ]);

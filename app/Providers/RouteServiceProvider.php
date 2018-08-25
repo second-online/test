@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use App\Sermon;
+use App\Broadcast;
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -27,6 +28,7 @@ class RouteServiceProvider extends ServiceProvider
         parent::boot();
     
         Route::model('sermon', Sermon::class);
+        Route::model('broadcast', Broadcast::class);
     }
 
     /**

@@ -17,10 +17,14 @@ use App\Broadcast;
 Route::get('/', 'HomeController@index')->name('home');
 
 Route::resource('sermons', 'SermonController');
+Route::resource('broadcasts', 'BroadcastController');
+
+Route::post('broadcasts/{broadcast}/comments', 'BroadcastCommentController@store')
+	->name('broadcasts.comments.create');
 
 Auth::routes();
 
-
+Route::get('broadcasts/{broadcast}/comments', 'BroadcastCommentController@index');
 
 
 
