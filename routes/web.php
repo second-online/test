@@ -14,9 +14,12 @@
 use Carbon\Carbon;
 use App\Broadcast;
 
+Route::get('/', 'HomeController@index')->name('home');
+
+Route::resource('sermons', 'SermonController');
+
 Auth::routes();
 
-Route::get('/', 'HomeController@index')->name('home');
 
 
 
