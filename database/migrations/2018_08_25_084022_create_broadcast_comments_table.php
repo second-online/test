@@ -15,7 +15,7 @@ class CreateBroadcastCommentsTable extends Migration
     {
         Schema::create('broadcast_comments', function (Blueprint $table) {
             $table->increments('id');
-            $table->text('comment');
+            $table->text('text');
             $table->integer('user_id')->unsigned();
             $table->integer('broadcast_id')->unsigned();
             $table->timestamps();

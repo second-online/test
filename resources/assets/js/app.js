@@ -15,7 +15,12 @@ window.Vue = require('vue');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('example-component', require('./components/ExampleComponent.vue'));
+// Vue.component('broadcast-comment', require('./components/BroadcastComment.vue'));
+
+Vue.component('broadcast-comment', {
+	props: ['comment'],
+	template: '<div><p>{{ comment.user.name }}</p><p>{{ comment.text }}</p></div>'
+});
 
 const app = new Vue({
     el: '#app'

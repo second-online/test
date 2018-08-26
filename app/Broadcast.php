@@ -12,4 +12,12 @@ class Broadcast extends Model
      * @var array
      */
     protected $fillable = ['name', 'day', 'time', 'live', 'enabled'];
+
+    /**
+     * Get the comments for the broadcast.
+     */
+    public function comments()
+    {
+        return $this->hasMany('App\BroadcastComment');
+    }
 }

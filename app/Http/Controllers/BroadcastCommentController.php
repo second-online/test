@@ -29,10 +29,11 @@ class BroadcastCommentController extends Controller
     public function store(Request $request, Broadcast $broadcast)
     {
         $broadcastComment = new BroadcastComment;
-        $broadcastComment->comment = $request->input('comment');
+        $broadcastComment->text = $request->input('text');
         $broadcastComment->user()->associate($request->user());
         $broadcastComment->broadcast()->associate($broadcast);
         
+        // change to try catch /// return something
         if ($broadcastComment->save()) {
             event(new BroadcastCommentCreated($broadcastComment));
         } 

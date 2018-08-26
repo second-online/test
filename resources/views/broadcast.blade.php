@@ -9,11 +9,13 @@
 	</div>
 	<div class="comments-section">
 		<div class="broadcast-comments">
-		
+			<broadcast-comment
+				v-bind:comment="{{ $broadcast->comments->first() }}"
+			></broadcast-comment>
 		</div>
-		<form id="broadcast-comment-form" method="POST" action="{{ route('broadcasts.comments.create', ['broadcasts' => $broadcast->id]) }}">
+		<form id="broadcast-comment-form" v-on:submit.prevent="submitBroadcastComment">
 			@csrf
-			<input type="text" name="comment" placeholder="Write a comment..">
+			<input type="text" placeholder="Write a comment..">
 		</form>
 	</div>
 </div>
@@ -21,8 +23,8 @@
 @endsection
 
 @section('footer')
-	<script type="text/javascript" defer>
+	<script type="text/javascript">
 		var channelName = 'wed-8am-broadcast';
 	</script>
-	<script src="{{ asset('js/broadcast.js') }}" defer></script>
+	<script src="{{ asset('js/broadcast.js') }}"></script>
 @endsection

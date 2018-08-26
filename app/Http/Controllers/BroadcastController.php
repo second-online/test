@@ -46,7 +46,10 @@ class BroadcastController extends Controller
      */
     public function show(Broadcast $broadcast)
     {
-        return view('broadcast')->with('broadcast', $broadcast);
+        $broadcast->load('comments.user');
+ 
+        return view('broadcast')
+            ->with('broadcast', $broadcast);
     }
 
     /**

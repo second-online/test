@@ -10,8 +10,7 @@
 
     <title>@yield('title')</title>
 
-    <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}"></script>
+
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="https://fonts.gstatic.com">
@@ -26,7 +25,10 @@
         @yield('content')
     </div>
 
-   @yield('footer')
 
+    <!-- Scripts -->
+    <script src="{{ asset('js/app.js') }}"></script>
+
+   @yield('footer')
 </body>
 </html>
