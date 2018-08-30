@@ -28,7 +28,7 @@ class RouteServiceProvider extends ServiceProvider
         parent::boot();
     
         Route::model('sermon', Sermon::class);
-        Route::model('broadcast', Broadcast::class);
+        //Route::model('broadcast', Broadcast::class);
     }
 
     /**

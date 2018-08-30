@@ -17,18 +17,29 @@ class BroadcastCommentCreated implements ShouldBroadcast
     /**
      * The comment that was created.
      *
-     * @var string
+     * @var array
      */
     public $comment;
 
     /**
      * Create a new event instance.
-     *
+     * @param  string  $comment
+     * @param  \App\User  $user
      * @return void
      */
     public function __construct($comment)
     {
         $this->comment = $comment;
+    }
+
+    /**
+     * Get the data to broadcast.
+     *
+     * @return array
+     */
+    public function broadcastWith()
+    {
+        return $this->comment;
     }
 
     /**
@@ -38,6 +49,8 @@ class BroadcastCommentCreated implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new Channel('wed-8am-broadcast');
+        $channel = 'broadcast-' . array_get($this->comment, 'broadcast_id');
+
+        return new Channel($channel);
     }
 }

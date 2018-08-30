@@ -37,6 +37,11 @@ html, body {
 	box-sizing: border-box;
 }
 
+.comments-username {
+	display: block;
+	font-weight: bold;
+}
+
 #broadcast-comment-form {
 	position: fixed;
 	right: 0;
@@ -59,4 +64,8 @@ input {
 	-moz-font-feature-settings: "ss01", "ss02";
 	-webkit-font-feature-settings: "ss01", "ss02";
 	font-feature-settings: "ss01", "ss02";
+}
+
+.back {
+	color: #fff;
 }

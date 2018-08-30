@@ -16,26 +16,40 @@ class BroadcastCommentController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware(['auth', 'ajax']);
     }
 
     /**
      * Store a newly created broadcast comment.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Broadcast  $broadcast
+     * @param  int  $broadcast_id
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, Broadcast $broadcast)
-    {
+    public function store(Request $request, $broadcast_id)
+    {   
+        $text = $request->input('text');
+        $user = $request->user();
+
         $broadcastComment = new BroadcastComment;
-        $broadcastComment->text = $request->input('text');
-        $broadcastComment->user()->associate($request->user());
-        $broadcastComment->broadcast()->associate($broadcast);
+        $broadcastComment->text = $text;
+        $broadcastComment->user()->associate($user);
+        $broadcastComment->broadcast_id = $broadcast_id;
         
         // change to try catch /// return something
         if ($broadcastComment->save()) {
-            event(new BroadcastCommentCreated($broadcastComment));
-        } 
+            $data = $broadcastComment->toArray();
+
+            broadcast(new BroadcastCommentCreated($data))->toOthers();
+
+            $response = [
+                'comment_created' => true,
+                'comment' => $data,
+            ];
+
+            return response()->json($response);
+        } else {
+            return response()->json(['comment_created' => false]);
+        }
     }
 }

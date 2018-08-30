@@ -13,27 +13,64 @@
 
 use Carbon\Carbon;
 use App\Broadcast;
+use App\User;
 
-Route::get('/', 'HomeController@index')->name('home');
-
-Route::resource('sermons', 'SermonController');
-Route::resource('broadcasts', 'BroadcastController');
-
-Route::post('broadcasts/{broadcast}/comments', 'BroadcastCommentController@store')
-	->name('broadcasts.comments.create');
+// Route::get('{any}', function() {
+// 	echo 'Bro, anyyyyyy.....';
+// })->where('any', '.*');
 
 Auth::routes();
 
-Route::get('broadcasts/{broadcast}/comments', 'BroadcastCommentController@index');
+Route::get('login', function() {
+
+	Auth::loginUsingId(10000, true);
+
+	$user = Auth::user();
+
+	echo $user->id;
+
+});
+
+Route::fallback('SPAController@index');
+
+
+Route::group(['prefix' => 'w/api'], function() { 
+
+	Route::resource('sermons', 'SermonController')->only([
+	    'index', 'show'
+	]);
+
+	Route::get('broadcasts/{broadcast}', 'BroadcastController@show');
+
+	Route::get('broadcasts/{broadcast}/comments', 'BroadcastCommentController@index');
+
+	Route::post('broadcasts/{broadcast}/comments', 'BroadcastCommentController@store')
+		->name('broadcasts.comments.create');
+});
+
+
+Route::group(['prefix' => 'w/api/host'], function() { 
+ 
+
+});
+
+
+// Route::get('/', function() {
+// 	return view('layouts.app');
+// });
+
+// Route::resource('sermons', 'SermonController');
+// Route::resource('broadcasts', 'BroadcastController');
 
 
 
 
-Route::get('/schedule', function () {
-
-event(new App\Events\BroadcastCommentCreated('Hello bro!'));
 
 
+
+// Route::get('/schedule', function () {
+
+	// event(new App\Events\BroadcastCommentCreated('Hello bro!'));
 
 	// $broadcasts = Broadcast::all();
 	// $schedule = collect();
@@ -56,4 +93,4 @@ event(new App\Events\BroadcastCommentCreated('Hello bro!'));
 	// $sorted = $schedule->sortBy('time');
 	// var_dump($sorted);
 	
-});
+// });
