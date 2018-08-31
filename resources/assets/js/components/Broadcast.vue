@@ -2,13 +2,14 @@
 	<div id="broadcast-page">
 		<div class="broadcast-video">
 			<span class="back" v-on:click="goBack">back</span>
-			<Youtube id="44"></Youtube>
+			<Youtube videoId="u4URamXstM0"></Youtube>
 		</div>
 		<div class="comments-section">
 			<div v-for="comment in broadcast.comments">
 				<span class="comments-username">{{ comment.user.name }}</span>
 				<span>{{ comment.text }}</span>
 			</div>
+			<!-- avoid double enter with a sending flag -->
 			<form id="broadcast-comment-form" v-on:submit.prevent="submitBroadcastComment">
 				<input type="text" placeholder="Write a comment.." v-model="newComment">
 			</form>
@@ -33,8 +34,7 @@
 				broadcast: []
 			}
 		},
-		mounted() {
-			// whats created vs mounted? 
+		mounted: function() {
 			console.log('broadcast page mounted');
 
 			axios

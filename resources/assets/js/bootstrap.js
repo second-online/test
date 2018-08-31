@@ -54,3 +54,9 @@ window.Echo = new Echo({
     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
     encrypted: true
 });
+
+/**
+ * Load Youtube Iframe API
+ */
+
+

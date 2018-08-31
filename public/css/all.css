@@ -69,3 +69,5 @@ input {
 .back {
 	color: #fff;
 }
+
+#ytplayer {pointer-events: none;}

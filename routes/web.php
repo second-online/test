@@ -21,15 +21,16 @@ use App\User;
 
 Auth::routes();
 
-Route::get('login', function() {
+// Route::get('login', function() {
 
-	Auth::loginUsingId(10000, true);
+// 	Auth::loginUsingId(10000, true);
 
-	$user = Auth::user();
+// 	$user = Auth::user();
 
-	echo $user->id;
+// 	echo $user->id;
 
-});
+// });
+
 
 Route::fallback('SPAController@index');
 
