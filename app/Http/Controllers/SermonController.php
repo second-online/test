@@ -14,7 +14,11 @@ class SermonController extends Controller
      */
     public function index()
     {
-        // return x sermons
+        $sermons = Sermon::all();
+
+        return response()->json([
+            'sermons' => $sermons
+        ]);
     }
 
     /**

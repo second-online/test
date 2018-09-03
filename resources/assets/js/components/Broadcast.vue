@@ -2,7 +2,11 @@
 	<div id="broadcast-page">
 		<div class="broadcast-video">
 			<span class="back" v-on:click="goBack">back</span>
-			<Youtube videoId="u4URamXstM0"></Youtube>
+			<youtube-player 
+				v-if="showVideo"
+				v-on:video-ended="videoEnded"
+				video-id="P3lXKxOkxbg"
+			/>
 		</div>
 		<div class="comments-section">
 			<div v-for="comment in broadcast.comments">
@@ -18,11 +22,11 @@
 </template>
 
 <script>
-	import Youtube from '../components/Youtube'
+	import YoutubePlayer from '../components/YoutubePlayer'
 
 	export default {
 		components: {
-			Youtube
+			YoutubePlayer
 		},
 		data: function() {
 			return {
@@ -31,23 +35,9 @@
 					name: 'Alex Lacayo'
 				},
 				newComment: '',
-				broadcast: []
+				broadcast: [],
+				showVideo: true
 			}
-		},
-		mounted: function() {
-			console.log('broadcast page mounted');
-
-			axios
-				.get('http://second.test/w/api/broadcasts/' + this.$route.params.id)
-				.then(response => {
-					this.broadcast = response.data.broadcast;
-					console.log(response.data.broadcast);
-
-					Echo.channel('broadcast-' + this.broadcast.id)
-						.listen('BroadcastCommentCreated', data => {
-							this.broadcast.comments.push(data)
-					});
-				});
 		},
 		methods: {
 			submitBroadcastComment: function(e) {
@@ -59,7 +49,7 @@
 				this.broadcast.comments.push(comment);
 
 				axios
-					.post('http://second.test/w/api/broadcasts/' + this.$route.params.id + '/comments', {
+					.post('http://second.test/w/api/broadcasts/' + this.$route.params.broadcast_id + '/comments', {
 						text: this.newComment,
 					})
 					.then(response => {
@@ -68,6 +58,9 @@
 
 				this.newComment = '';
 			},
+	        videoEnded: function() {
+	            this.showVideo = false;
+	        }, 
 		    goBack () {
 		    	this.leaveChannels();
 
@@ -76,8 +69,24 @@
 					: this.$router.push('/');
 		    },
 		    leaveChannels() {
+		    	// probably in a lifecycle hook
 		    	Echo.leave('broadcast-' + this.broadcast.id);
 		    }
+		},
+		mounted: function() {
+			console.log('broadcast page mounted');
+
+			axios
+				.get('http://second.test/w/api/broadcasts/' + this.$route.params.broadcast_id)
+				.then(response => {
+					this.broadcast = response.data.broadcast;
+					//console.log(response.data.broadcast);
+
+					Echo.channel('broadcast-' + this.broadcast.id)
+						.listen('BroadcastCommentCreated', data => {
+							this.broadcast.comments.push(data)
+					});
+				});
 		}
 	}
 </script>

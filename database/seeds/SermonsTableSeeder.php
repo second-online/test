@@ -14,16 +14,19 @@ class SermonsTableSeeder extends Seeder
      */
     public function run()
     {
-		$speaker = Speaker::find(1);
-		$series = Series::find(1);
 
-        $sermon = new Sermon;
-        $sermon->title = "You of Little Faith";
-        $sermon->description = "Short description of this video";
-        $sermon->notes = "Notes for this video";
-        $sermon->youtube_id = "Lesh9EkwgV8";
-        $sermon->speaker()->associate($speaker);
-        $sermon->series()->associate($series);
-        $sermon->save();
+        $sermons = factory(App\Sermon::class, 100)->create();
+
+		// $speaker = Speaker::find(1);
+		// $series = Series::find(1);
+
+  //       $sermon = new Sermon;
+  //       $sermon->title = "You of Little Faith";
+  //       $sermon->description = "Short description of this video";
+  //       $sermon->notes = "Notes for this video";
+  //       $sermon->youtube_id = "Lesh9EkwgV8";
+  //       $sermon->speaker()->associate($speaker);
+  //       $sermon->series()->associate($series);
+  //       $sermon->save();
     }
 }
