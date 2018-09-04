@@ -11,8 +11,8 @@ export const store = new Vuex.Store({
 		youtubeApiReady: false
 	},
 	getters: {
-		youtubeApiReadyStatus(state) {
-			return state.youtubeApiReady;
+		getSermonWithId: (state) => (id) => {
+			return state.sermons.find(sermon => sermon.id == id);	
 		}
 	}
 });

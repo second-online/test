@@ -15,6 +15,8 @@ class Role extends Model
 
     /**
      * The users that belong to the role.
+     *
+     * @return \App\User
      */
     public function users()
     {

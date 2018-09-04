@@ -3,9 +3,18 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Events\BroadcastSaving;
 
 class Broadcast extends Model
 {
+    /**
+     * The event map for the model.
+     *
+     * @var array
+     */
+    protected $dispatchesEvents = [
+        'saving' => BroadcastSaving::class
+    ];
     /**
      * The attributes that are mass assignable.
      *
@@ -20,4 +29,6 @@ class Broadcast extends Model
     {
         return $this->hasMany('App\BroadcastComment');
     }
+
+
 }

@@ -1,6 +1,5 @@
 <template>
 	<div>
-		<slot></slot>
 		<div id="youtube-player"></div>
 	</div>
 </template>
@@ -24,7 +23,8 @@
 						disablekb: '1',
 						controls: '0',
 						start: '0',
-						modestbranding: '1'
+						modestbranding: '1',
+						origin: 'http://second.test'
 					},
 					events: {
 						'onReady': this.playerReady,

@@ -32,7 +32,7 @@ Auth::routes();
 // });
 
 
-Route::fallback('SPAController@index');
+
 
 
 Route::group(['prefix' => 'w/api'], function() { 
@@ -64,34 +64,63 @@ Route::group(['prefix' => 'w/api/host'], function() {
 // Route::resource('broadcasts', 'BroadcastController');
 
 
+Route::get('/schedule', function () {
 
+	$broadcasts = Broadcast::all();
 
+	foreach ($broadcasts as $broadcast) {
+		$broadcast->save();
+	}
+	die;
 
+	$broadcasts = Broadcast::all();
+	$schedule = collect();
 
+	foreach ($broadcasts as $broadcast) {
 
-// Route::get('/schedule', function () {
+		$format = 'l H:i:s';
+		$time = $broadcast->day . ' ' . $broadcast->time;
+		$timezone = 'America/Chicago';
+		$date = Carbon::createFromFormat($format, $time, $timezone);
 
-	// event(new App\Events\BroadcastCommentCreated('Hello bro!'));
+		if ($date->isPast()) {
+			$date->addWeek();
+		}
+		
+		$newDate = clone $date;
+		echo $newDate->addHour()->toDateTimeString();
+		echo "<br>";
+		echo $date->toDateTimeString();
+die;
+		// $date->timezone('utc');
 
-	// $broadcasts = Broadcast::all();
-	// $schedule = collect();
+		$schedule->push([
+			'name' => $broadcast->name,
+			'time' => $date->toDateTimeString(),
+			'time utc' => $date->timezone('UTC')->toDateTimeString()
+		]);
+	}
 
-	// foreach ($broadcasts as $broadcast) {
-
-	// 	$format = 'l H:i:s';
-	// 	$time = $broadcast->day . ' ' . $broadcast->time;
-	// 	$timezone = 'America/Chicago';
-	// 	$date = Carbon::createFromFormat($format, $time, $timezone);
-
-	// 	if ($date->isPast()) {
-	// 		$date->addWeek();
-	// 	}
-
-	// 	$schedule->push(['name' => $broadcast->name, 'time' => (string)$date]);
-	// }
-
-	// // var_dump($schedule);
-	// $sorted = $schedule->sortBy('time');
-	// var_dump($sorted);
+	// var_dump($schedule);
+	$sorted = $schedule->sortBy('time');
+	var_dump($sorted);
 	
-// });
+
+return;
+
+	$broadcasts = Broadcast::all();
+
+	foreach ($broadcasts as $broadcast) {
+
+		echo $broadcast->next_gathering;
+		return;
+
+	}
+
+	return response()->json($broadcasts);
+});
+
+
+
+ 
+Route::fallback('SPAController@index');

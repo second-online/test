@@ -6,7 +6,7 @@
 			v-on:click="showSermon(sermon)"
 		>
 			<!-- <router-link v-bind:to="{ name: 'sermon', params: {sermonId: sermon.id} }">Sermons</router-link> -->
-			{{ sermon.title }}
+			{{ sermon.description }}
 		</div>
 	</div>
 </template>
@@ -15,16 +15,23 @@
 	export default {
 
 		methods: {
+			fetchSermons() {
+				axios
+					.get('http://second.test/w/api/sermons/')
+					.then(response => {
+						this.$store.state.sermons = response.data.sermons;
+						console.log(response.data.sermons);
+					});
+			},
 			showSermon(sermon) {
-				this.$router.push({ name: 'sermon', params: { sermon_id: sermon.id }, props: { sermon: sermon} });
+				this.$router.push({ 
+					name: 'sermon',
+					params: { sermon_id: sermon.id }
+				});
 			}
 		},
-		mounted: function() {
-			axios
-				.get('http://second.test/w/api/sermons/')
-				.then(response => {
-					this.$store.state.sermons = response.data.sermons;
-				});
+		created: function() {
+			this.fetchSermons();
 		}
 	}
 </script>

@@ -24,11 +24,13 @@ class SermonController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Sermon  $sermon
+     * @param  int  $sermon
      * @return \Illuminate\Http\Response
      */
     public function show(Sermon $sermon)
     {
-        // return 1 sermon
+        return response()->json([
+            'sermon' => $sermon
+        ]);
     }
 }
