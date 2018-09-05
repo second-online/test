@@ -9,11 +9,7 @@ class BroadcastSaving
 {
     use SerializesModels;
 
-    /**
-     * The broadcast that is saving.
-     *
-     * @var \App\Broadcast  $broadcast
-     */
+
     public $broadcast;
 
     /**

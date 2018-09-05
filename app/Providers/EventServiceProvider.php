@@ -14,7 +14,7 @@ class EventServiceProvider extends ServiceProvider
      */
     protected $listen = [
         'App\Events\BroadcastSaving' => [
-            'App\Listeners\SetNextBroadcastTime',
+            'App\Listeners\SetBroadcastTimestamp',
         ],
     ];
 

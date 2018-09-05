@@ -14,6 +14,8 @@ import Home from './components/Home'
 import Broadcast from './components/Broadcast'
 import Sermons from './components/Sermons'
 import Sermon from './components/Sermon'
+import HostDashboard from './components/HostDashboard'
+import Login from './components/Login'
 import NotFound from './components/404'
 
 import { store } from './store';
@@ -23,15 +25,40 @@ Vue.use(VueRouter)
 const router = new VueRouter({
 	mode: 'history',
 	routes: [
-		{ path: '/', name: 'home', component: Home },
-		{ path: '/broadcasts/:broadcast_id', name: 'broadcast', component: Broadcast },
-		{ path: '/sermons', name: 'sermons', component: Sermons },
+		{
+			path: '/',
+			name: 'home',
+			component: Home
+		},
+		{
+			path: '/broadcasts/:broadcast_id',
+			name: 'broadcast',
+			component: Broadcast
+		},
+		{
+			path: '/sermons',
+			name: 'sermons',
+			component: Sermons
+		},
 		{ 
 			path: '/sermons/:sermon_id',
 			name: 'sermon',
 			component: Sermon
 		},
-		{ path: '*', component: NotFound }
+		{
+			path:'/host',
+			name: 'host',
+			component: HostDashboard,
+		},
+		{
+			path:'/login',
+			name: 'login',
+			component: Login,
+		},
+		{
+			path: '*',
+			component: NotFound
+		}
 	] 
 })
 

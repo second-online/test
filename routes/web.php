@@ -14,25 +14,34 @@
 use Carbon\Carbon;
 use App\Broadcast;
 use App\User;
+use App\Role;
 
 // Route::get('{any}', function() {
-// 	echo 'Bro, anyyyyyy.....';
+// 	echo 'test.....';
 // })->where('any', '.*');
 
 Auth::routes();
 
-// Route::get('login', function() {
+Route::get('login', function() {
 
-// 	Auth::loginUsingId(10000, true);
+	Auth::loginUsingId(10000, true);
+});
 
-// 	$user = Auth::user();
+Route::get('logout', function() {
 
-// 	echo $user->id;
+	Auth::logout();
+});
 
-// });
+Route::get('role', function() {
+	$user = User::find(10000);
+	$role = Role::find(2);
 
+	$user->roles()->attach($role);
+});
 
-
+// Route::get('host', function() {
+// 	echo "host panel";
+// })->middleware(['auth', 'role:host']);
 
 
 Route::group(['prefix' => 'w/api'], function() { 
@@ -47,11 +56,13 @@ Route::group(['prefix' => 'w/api'], function() {
 
 	Route::post('broadcasts/{broadcast}/comments', 'BroadcastCommentController@store')
 		->name('broadcasts.comments.create');
+
 });
 
 
-Route::group(['prefix' => 'w/api/host'], function() { 
+Route::group(['prefix' => 'w/api/host', 'namespace' => 'Host'], function() { 
  
+	Route::get('dashboard', 'HostDashboardController@index');
 
 });
 

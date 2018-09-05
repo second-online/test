@@ -5,7 +5,7 @@ namespace App\Listeners;
 use App\Events\BroadcastSaving;
 use Carbon\Carbon;
 
-class SetNextBroadcastTime
+class SetBroadcastTimestamp
 {
     /**
      * Create the event listener.
@@ -26,8 +26,8 @@ class SetNextBroadcastTime
     public function handle(BroadcastSaving $event)
     {
         $broadcast = $event->broadcast;
-        $timestamp = $this->getNextGatheringTimestamp($broadcast->day, $broadcast->time);
-        $event->broadcast->next_gathering = $timestamp;
+        $timestamp = $this->getBroadcastTimestamp($broadcast->day, $broadcast->time);
+        $event->broadcast->timestamp = $timestamp;
 
         return $event;
     }
@@ -39,7 +39,7 @@ class SetNextBroadcastTime
      * @param  string  $time
      * @return string
      */
-    private function getNextGatheringTimestamp($day, $time)
+    private function getBroadcastTimestamp($day, $time)
     {
         $format = 'l H:i:s';
         $time = $day . ' ' . $time;
@@ -54,5 +54,4 @@ class SetNextBroadcastTime
         
         return $date->timezone('utc')->toDateTimeString();
     }
-
 }

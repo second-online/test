@@ -24,6 +24,8 @@ class Broadcast extends Model
 
     /**
      * Get the comments for the broadcast.
+     * 
+     * @return array  \App\BroadcastComment
      */
     public function comments()
     {

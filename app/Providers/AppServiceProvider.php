@@ -23,9 +23,8 @@ class AppServiceProvider extends ServiceProvider
             //     $query->time
             // ]);
             Log::debug($query->sql);
+            Log::debug('-');    
         });
-        
-        Log::debug('-');
     }
 
     /**

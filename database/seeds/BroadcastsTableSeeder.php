@@ -47,19 +47,19 @@ class BroadcastsTableSeeder extends Seeder
                 ['name' => 'Tuesday 5:00pm', 'day' => 'tuesday', 'time' => '17:00:00'],
                 ['name' => 'Tuesday 9:00pm', 'day' => 'tuesday', 'time' => '21:00:00'],
             ];
-    
+
     		foreach($broadcasts as $broadcast) {
 
-                $format = 'l H:i:s';
-                $time = $broadcast['day'] . ' ' . $broadcast['time'];
-                $timezone = 'America/Chicago';
-                $date = Carbon::createFromFormat($format, $time, $timezone);
+                // $format = 'l H:i:s';
+                // $time = $broadcast['day'] . ' ' . $broadcast['time'];
+                // $timezone = 'America/Chicago';
+                // $date = Carbon::createFromFormat($format, $time, $timezone);
 
-                if ($date->isPast()) {
-                    $date->addWeek();
-                }
+                // if ($date->isPast()) {
+                //     $date->addWeek();
+                // }
 
-                $broadcast['next_gathering'] = $date->toDateTimeString();
+                //$broadcast['next_gathering'] = $date->toDateTimeString();
                 // $broadcast['next_gathering_utc'] = $date->timezone('utc')->toDateTimeString();
 
     			Broadcast::create($broadcast);

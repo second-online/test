@@ -20,7 +20,7 @@ class CreateBroadcastsTable extends Migration
             $table->time('time');
             $table->boolean('live')->default(false);
             $table->boolean('enabled')->default(true);
-            $table->timestamp('next_gathering');
+            $table->timestamp('timestamp')->nullable();
             $table->timestamps();
         });
     }
