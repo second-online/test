@@ -14,3 +14,12 @@
 // Broadcast::channel('App.User.{id}', function ($user, $id) {
 //     return (int) $user->id === (int) $id;
 // });
+
+
+Broadcast::channel('host.chat', function ($user) {
+	if ($user->isHost()) {
+		return $user;
+	} else {
+		return false;
+	}
+});

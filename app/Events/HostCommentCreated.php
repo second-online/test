@@ -2,15 +2,15 @@
 
 namespace App\Events;
 
-use Illuminate\Broadcasting\Channel;
+// use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
 // use Illuminate\Broadcasting\PrivateChannel;
-// use Illuminate\Broadcasting\PresenceChannel;
+use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class BroadcastCommentCreated implements ShouldBroadcast
+class HostCommentCreated implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -48,8 +48,6 @@ class BroadcastCommentCreated implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        $channel = 'broadcast-' . array_get($this->comment, 'broadcast_id');
-
-        return new Channel($channel);
+        return new PresenceChannel('host.chat');
     }
 }

@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Host;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-class HostDashboardController extends Controller
+class AuthorizeController extends Controller
 {
     /**
      * Instantiate a new controller instance.
@@ -14,11 +14,13 @@ class HostDashboardController extends Controller
      */
     public function __construct()
     {
-    	$this->middleware(['auth', 'role:host']);
+        $this->middleware('auth');
+        $this->middleware('role:host');
     }
 
-    public function index()
+    // add comments
+    public function check() 
     {
-    	return response()->json(['hello' => 'world']);
+        return response()->json(['message' => 'Authorized.']);
     }
 }

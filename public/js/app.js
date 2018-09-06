@@ -60668,6 +60668,8 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_HostChat__ = __webpack_require__(71);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_HostChat___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_HostChat__);
 //
 //
 //
@@ -60675,20 +60677,33 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 
+
+
 /* harmony default export */ __webpack_exports__["default"] = ({
+	components: {
+		HostChat: __WEBPACK_IMPORTED_MODULE_0__components_HostChat___default.a
+	},
 	beforeRouteEnter: function beforeRouteEnter(to, from, next) {
-		axios.get('http://second.test/w/api/host/dashboard').then(function (response) {
-			// handle success
-			//console.log(response);
+		axios.get('http://second.test/w/api/host/authorize').then(function (response) {
+			// if response successful continue on
+			console.log('test');
+			next();
 		}).catch(function (error) {
-			// handle error
-			console.log(error.response);
-			// not logged in = 401 / Unauthorized
-			// invalid role = 403 / Forbidden
+			error.response.status === 401 ? next('login') : next('/');
 		}).then(function () {
 			// always executed
-			console.log('always executed');
+
 		});
+	},
+
+	created: function created() {
+		console.log('host dashboard created');
+		axios.get('http://second.test/w/api/host/dashboard').then(function (response) {}).catch(function (error) {
+			console.log(error);
+		}).then(function () {});
+	},
+	mounted: function mounted() {
+		console.log('host dashboard mounted');
 	}
 });
 
@@ -60700,16 +60715,9 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c("div", { attrs: { id: "host-page" } }, [_c("host-chat")], 1)
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", [_c("p", [_vm._v("Host Panel")])])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
@@ -61851,6 +61859,224 @@ var index_esm = {
 
 /* harmony default export */ __webpack_exports__["a"] = (index_esm);
 
+
+/***/ }),
+/* 71 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(1)
+/* script */
+var __vue_script__ = __webpack_require__(73)
+/* template */
+var __vue_template__ = __webpack_require__(72)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/components/HostChat.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-0f0b6e8b", Component.options)
+  } else {
+    hotAPI.reload("data-v-0f0b6e8b", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 72 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c(
+      "div",
+      { staticClass: "comments-section" },
+      [
+        _c("span", [_vm._v(_vm._s(_vm.hosts.length) + " hosts in here")]),
+        _vm._v(" "),
+        _vm._l(_vm.comments, function(comment) {
+          return _c("div", [
+            _c("span", { staticClass: "comments-username" }, [
+              _vm._v(_vm._s(comment.user.name))
+            ]),
+            _vm._v(" "),
+            _c("span", [_vm._v(_vm._s(comment.text))])
+          ])
+        }),
+        _vm._v(" "),
+        _c(
+          "form",
+          {
+            attrs: { id: "broadcast-comment-form" },
+            on: {
+              submit: function($event) {
+                $event.preventDefault()
+                return _vm.submitHostComment($event)
+              }
+            }
+          },
+          [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.newComment,
+                  expression: "newComment"
+                }
+              ],
+              attrs: { type: "text", placeholder: "Write a comment.." },
+              domProps: { value: _vm.newComment },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.newComment = $event.target.value
+                }
+              }
+            })
+          ]
+        )
+      ],
+      2
+    )
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-0f0b6e8b", module.exports)
+  }
+}
+
+/***/ }),
+/* 73 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+	data: function data() {
+		return {
+			comments: [],
+			newComment: '',
+			isLoading: false,
+			hosts: []
+		};
+	},
+	computed: {
+		isUserDefined: function isUserDefined() {
+			return typeof this.$store.state.user.id != 'undefined' ? true : false;
+		}
+	},
+	methods: {
+		submitHostComment: function submitHostComment() {
+			var _this = this;
+
+			if (this.isLoading) {
+				return;
+			}
+
+			if (this.isUserDefined) {
+				var comment = {
+					text: this.newComment,
+					user: this.$store.state.user
+				};
+
+				this.comments.push(comment);
+			}
+
+			axios.post('http://second.test/w/api/host/comments', {
+				text: this.newComment
+			}).then(function (response) {
+				console.log('then');
+
+				if (!_this.isUserDefined) {
+					_this.$store.state.user = response.data.user;
+					_this.comments.push(response.data);
+				}
+			}).catch(function (error) {
+				console.log('catch');
+			}).then(function () {
+				_this.isLoading = false;
+			});
+
+			this.newComment = '';
+			this.isLoading = true;
+		}
+	},
+	created: function created() {
+		console.log('host chat created');
+	},
+	mounted: function mounted() {
+		var _this2 = this;
+
+		console.log('host chat mounted');
+
+		Echo.join('host.chat').here(function (users) {
+			_this2.hosts = users;
+		}).joining(function (user) {
+			_this2.hosts.push(user);
+			console.log(user.name + ' has joined.');
+		}).leaving(function (user) {
+			_this2.hosts = _this2.hosts.filter(function (host) {
+				return host.id != user.id;
+			});
+			console.log(user.name + ' has left.');
+		}).listen('HostCommentCreated', function (comment) {
+			_this2.comments.push(comment);
+		});
+	}
+});
 
 /***/ })
 /******/ ]);

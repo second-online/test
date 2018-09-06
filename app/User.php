@@ -26,7 +26,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'email', 'password', 'remember_token', 'updated_at', 'created_at',
+        'email', 'password', 'remember_token', 'updated_at', 'created_at', 'email_verified_at',
     ];
 
     /**
@@ -45,5 +45,15 @@ class User extends Authenticatable
     public function hasRole($role)
     {
         return $this->roles()->where('name', $role)->exists();
+    } 
+
+    /**
+     * Check if a user is a host.
+     *
+     * @return boolean
+     */
+    public function isHost()
+    {
+        return $this->hasRole('host');
     } 
 }
