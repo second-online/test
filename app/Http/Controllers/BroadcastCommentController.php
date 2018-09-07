@@ -47,9 +47,9 @@ class BroadcastCommentController extends Controller
                 'comment' => $data,
             ];
 
-            return response()->json($response);
+            return response()->json($data);
         } else {
-            return response()->json(['message' => 'Something happened. Try again.'], 500);
+            return response()->json(['message' => 'Something happed. Try again.'], 500);
         }
     }
 }

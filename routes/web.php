@@ -23,7 +23,7 @@ use App\Role;
 Auth::routes();
 
 Route::get('login', function() {
-
+echo 'keke';
 	Auth::loginUsingId(10000, true);
 });
 

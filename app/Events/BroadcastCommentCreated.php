@@ -9,6 +9,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Log;
 
 class BroadcastCommentCreated implements ShouldBroadcast
 {
@@ -48,7 +49,7 @@ class BroadcastCommentCreated implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        $channel = 'broadcast-' . array_get($this->comment, 'broadcast_id');
+        $channel = 'broadcast.chat.' . $this->comment['broadcast_id'];
 
         return new Channel($channel);
     }

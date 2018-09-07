@@ -6,7 +6,7 @@
 			v-on:click="showSermon(sermon)"
 		>
 			<!-- <router-link v-bind:to="{ name: 'sermon', params: {sermonId: sermon.id} }">Sermons</router-link> -->
-			{{ sermon.title }}
+			{{ sermon.id }} {{ sermon.title }} 
 		</div>
 	</div>
 </template>

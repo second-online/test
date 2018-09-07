@@ -1,60 +1,59 @@
 <template>
 	<div>
-		<div class="comments-section2">
-			<span>{{ hosts.length }} hosts in here</span>
+		<div class="comments-section">
 			<div v-for="comment in comments">
 				<span class="comments-username">{{ comment.user.name }}</span>
 				<span>{{ comment.text }}</span>
 			</div>
 			<!-- avoid double enter with a sending flag -->
-			<form id="host-comment-form" v-on:submit.prevent="submitComment">
+			<form v-if="isUserAuthenticated" id="broadcast-comment-form" v-on:submit.prevent="submitComment">
 				<input type="text" placeholder="Write a comment.." v-model="newComment">
 			</form>
+			<div v-else>Login to chat.</div>
 		</div>
 	</div>
 </template>
 
 <script>
 	export default {
+		props: {
+			broadcastId: Number
+		},
 		data: function() {
 			return {
 				comments: [],
 				newComment: '',
-				isLoading: false,
-				hosts: []
+				isLoading: false
 			}
 		},
 		computed: {
-			isUserDefined: function() {
+			isUserAuthenticated: function() {
 				return (typeof this.$store.state.user.id != 'undefined') ? true : false;
 			}
 		},
 		methods: {
 			submitComment: function() {
-
 				if (this.isLoading) { return; }
 
-				if (this.isUserDefined) {
+				if (this.isUserAuthenticated) {
 					const comment = {
 						text: this.newComment,
 						user: this.$store.state.user
 					};
-
 					this.comments.push(comment);
 				}
 
 				axios
-					.post('http://second.test/w/api/host/comments', {
+					.post('http://second.test/w/api/broadcasts/' + this.broadcastId + '/comments', {
 						text: this.newComment,
 					})
 					.then(response => {
 						console.log('then');
 
-						if (! this.isUserDefined) {
+						if (! this.isUserAuthenticated) {
 							this.$store.state.user = response.data.user;
 							this.comments.push(response.data);
 						} 
-						
 					})
 					.catch(error => {
 						console.log('catch');
@@ -67,27 +66,11 @@
 				this.isLoading = true;
 			}
 		},
-		created: function() {
-			console.log('host chat created');
-		},
 		mounted: function() {
-			console.log('host chat mounted');
-
-			Echo.join('host.chat')
-			    .here((users) => {
-			        this.hosts = users;
-			    })
-			    .joining((user) => {
-			    	this.hosts.push(user);
-			    	console.log(user.name + ' has joined.');
-			    })
-			    .leaving((user) => {
-			    	this.hosts = this.hosts.filter(host => host.id != user.id);
-			        console.log(user.name + ' has left.');
-			    })
-			    .listen('HostCommentCreated', (comment) => {
-			        this.comments.push(comment);
-			    });
+			Echo.channel('broadcast.chat.' + this.broadcastId)
+				.listen('BroadcastCommentCreated', comment => {
+					this.comments.push(comment)
+			});
 		}
 	}
 </script>

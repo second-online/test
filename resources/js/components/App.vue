@@ -7,8 +7,7 @@
 	    mounted: function() {
 	        // move this to seperate file?
 	        window.onYouTubeIframeAPIReady = () => {
-	            this.$store.state.youtubeApiReady = true; 
-	            console.log('api ready');         
+	            this.$store.state.youtubeApiReady = true;       
 	        }
 	    }
 	}

@@ -25024,11 +25024,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_Sermon___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__components_Sermon__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_HostDashboard__ = __webpack_require__(61);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_HostDashboard___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__components_HostDashboard__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_Login__ = __webpack_require__(64);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_Login__ = __webpack_require__(67);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_Login___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8__components_Login__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__components_404__ = __webpack_require__(67);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__components_404__ = __webpack_require__(70);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__components_404___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9__components_404__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__store__ = __webpack_require__(69);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__store__ = __webpack_require__(72);
 
 /**
 * First we will load all of this project's JavaScript dependencies which
@@ -25080,8 +25080,12 @@ var router = new __WEBPACK_IMPORTED_MODULE_1_vue_router__["a" /* default */]({
 		name: 'login',
 		component: __WEBPACK_IMPORTED_MODULE_8__components_Login___default.a
 	}, {
-		path: '*',
+		path: '/404',
+		name: '404',
 		component: __WEBPACK_IMPORTED_MODULE_9__components_404___default.a
+	}, {
+		path: '*',
+		redirect: '/404'
 	}]
 });
 
@@ -59880,7 +59884,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         // move this to seperate file?
         window.onYouTubeIframeAPIReady = function () {
             _this.$store.state.youtubeApiReady = true;
-            console.log('api ready');
         };
     }
 });
@@ -59991,7 +59994,7 @@ var render = function() {
       _vm._v("\n\tHomepage\n\t"),
       _c(
         "router-link",
-        { attrs: { to: { name: "broadcast", params: { broadcast_id: 5 } } } },
+        { attrs: { to: { name: "broadcast", params: { broadcast_id: 3 } } } },
         [_vm._v("Broadcast 5")]
       ),
       _vm._v(" "),
@@ -60069,6 +60072,8 @@ module.exports = Component.exports
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_YoutubePlayer__ = __webpack_require__(13);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_YoutubePlayer___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_YoutubePlayer__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_BroadcastChat__ = __webpack_require__(74);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_BroadcastChat___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__components_BroadcastChat__);
 //
 //
 //
@@ -60086,73 +60091,50 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
+
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
 	components: {
-		YoutubePlayer: __WEBPACK_IMPORTED_MODULE_0__components_YoutubePlayer___default.a
+		YoutubePlayer: __WEBPACK_IMPORTED_MODULE_0__components_YoutubePlayer___default.a,
+		BroadcastChat: __WEBPACK_IMPORTED_MODULE_1__components_BroadcastChat___default.a
 	},
 	data: function data() {
 		return {
-			user: {
-				id: '10000',
-				name: 'Alex Lacayo'
-			},
-			newComment: '',
-			broadcast: [],
-			showVideo: true
+			broadcast: {},
+			showVideo: false,
+			showChat: false
 		};
 	},
-	methods: {
-		submitBroadcastComment: function submitBroadcastComment(e) {
-			var comment = {
-				text: this.newComment,
-				user: this.user
-			};
-
-			this.broadcast.comments.push(comment);
-
-			axios.post('http://second.test/w/api/broadcasts/' + this.$route.params.broadcast_id + '/comments', {
-				text: this.newComment
-			}).then(function (response) {
-				console.log(response.data);
+	beforeRouteEnter: function beforeRouteEnter(to, from, next) {
+		axios.get('http://second.test/w/api/broadcasts/' + to.params.broadcast_id).then(function (response) {
+			next(function (vm) {
+				return vm.setData(response.data);
 			});
+		}).catch(function (error) {
+			error.response.status === 404 ? next('404') : next('/');
+		}).then(function () {
+			// delete this?
+		});
+	},
 
-			this.newComment = '';
+	methods: {
+		setData: function setData(data) {
+			if (data.user != null) {
+				this.$store.state.user = data.user;
+			}
+
+			this.broadcast = data.broadcast;
+			this.showVideo = true;
+			this.showChat = true;
 		},
 		videoEnded: function videoEnded() {
-			this.showVideo = false;
+			//this.showVideo = false;
 		},
 		goBack: function goBack() {
-			this.leaveChannels();
-
 			window.history.length > 1 ? this.$router.go(-1) : this.$router.push('/');
-		},
-		leaveChannels: function leaveChannels() {
-			// probably in a lifecycle hook
-			Echo.leave('broadcast-' + this.broadcast.id);
 		}
-	},
-	mounted: function mounted() {
-		var _this = this;
-
-		console.log('broadcast page mounted');
-
-		axios.get('http://second.test/w/api/broadcasts/' + this.$route.params.broadcast_id).then(function (response) {
-			_this.broadcast = response.data.broadcast;
-			//console.log(response.data.broadcast);
-
-			Echo.channel('broadcast-' + _this.broadcast.id).listen('BroadcastCommentCreated', function (data) {
-				_this.broadcast.comments.push(data);
-			});
-		});
 	}
 });
 
@@ -60261,77 +60243,34 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { attrs: { id: "broadcast-page" } }, [
-    _c(
-      "div",
-      { staticClass: "broadcast-video" },
-      [
-        _c("span", { staticClass: "back", on: { click: _vm.goBack } }, [
-          _vm._v("back")
-        ]),
-        _vm._v(" "),
-        _vm.showVideo
-          ? _c("youtube-player", {
-              attrs: { "video-id": "P3lXKxOkxbg" },
-              on: { "video-ended": _vm.videoEnded }
-            })
-          : _vm._e()
-      ],
-      1
-    ),
-    _vm._v(" "),
-    _c(
-      "div",
-      { staticClass: "comments-section" },
-      [
-        _vm._l(_vm.broadcast.comments, function(comment) {
-          return _c("div", [
-            _c("span", { staticClass: "comments-username" }, [
-              _vm._v(_vm._s(comment.user.name))
-            ]),
-            _vm._v(" "),
-            _c("span", [_vm._v(_vm._s(comment.text))])
-          ])
-        }),
-        _vm._v(" "),
-        _c(
-          "form",
-          {
-            attrs: { id: "broadcast-comment-form" },
-            on: {
-              submit: function($event) {
-                $event.preventDefault()
-                return _vm.submitBroadcastComment($event)
-              }
-            }
-          },
-          [
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.newComment,
-                  expression: "newComment"
-                }
-              ],
-              attrs: { type: "text", placeholder: "Write a comment.." },
-              domProps: { value: _vm.newComment },
-              on: {
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
-                  }
-                  _vm.newComment = $event.target.value
-                }
-              }
-            })
-          ]
-        )
-      ],
-      2
-    )
-  ])
+  return _c(
+    "div",
+    { attrs: { id: "broadcast-page" } },
+    [
+      _c(
+        "div",
+        { staticClass: "broadcast-video" },
+        [
+          _c("span", { staticClass: "back", on: { click: _vm.goBack } }, [
+            _vm._v("back")
+          ]),
+          _vm._v(" "),
+          _vm.showVideo
+            ? _c("youtube-player", {
+                attrs: { "video-id": _vm.broadcast.sermon.youtube_id },
+                on: { "video-ended": _vm.videoEnded }
+              })
+            : _vm._e()
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _vm.showChat
+        ? _c("broadcast-chat", { attrs: { broadcastId: _vm.broadcast.id } })
+        : _vm._e()
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -60454,7 +60393,11 @@ var render = function() {
             }
           }
         },
-        [_vm._v("\n\t\t" + _vm._s(sermon.title) + "\n\t")]
+        [
+          _vm._v(
+            "\n\t\t" + _vm._s(sermon.id) + " " + _vm._s(sermon.title) + " \n\t"
+          )
+        ]
       )
     })
   )
@@ -60624,7 +60567,7 @@ var normalizeComponent = __webpack_require__(1)
 /* script */
 var __vue_script__ = __webpack_require__(62)
 /* template */
-var __vue_template__ = __webpack_require__(63)
+var __vue_template__ = __webpack_require__(66)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -60668,23 +60611,30 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_HostChat__ = __webpack_require__(71);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_HostChat__ = __webpack_require__(63);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_HostChat___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_HostChat__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_BroadcastChat__ = __webpack_require__(74);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_BroadcastChat___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__components_BroadcastChat__);
 //
 //
 //
 //
 //
 //
+//
+//
+//
+
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
 	components: {
-		HostChat: __WEBPACK_IMPORTED_MODULE_0__components_HostChat___default.a
+		HostChat: __WEBPACK_IMPORTED_MODULE_0__components_HostChat___default.a,
+		BroadcastChat: __WEBPACK_IMPORTED_MODULE_1__components_BroadcastChat___default.a
 	},
 	beforeRouteEnter: function beforeRouteEnter(to, from, next) {
-		axios.get('http://second.test/w/api/host/authorize').then(function (response) {
+		axios.get('http://second.test/w/api/host/dashboard').then(function (response) {
 			// if response successful continue on
 			console.log('test');
 			next();
@@ -60694,8 +60644,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 			// always executed
 
 		});
+
+		axios.get('http://second.test/w/api/host/dashboard').then(function (response) {
+			next(function (vm) {
+				return vm.setData(response.data);
+			});
+		}).catch(function (error) {
+			error.response.status === 401 ? next('login') : next('/');
+		}).then(function () {
+			// delete this?
+		});
 	},
 
+	methods: {
+		setData: function setData(data) {}
+	},
 	created: function created() {
 		console.log('host dashboard created');
 		axios.get('http://second.test/w/api/host/dashboard').then(function (response) {}).catch(function (error) {
@@ -60711,11 +60674,234 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
+var disposed = false
+var normalizeComponent = __webpack_require__(1)
+/* script */
+var __vue_script__ = __webpack_require__(64)
+/* template */
+var __vue_template__ = __webpack_require__(65)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/components/HostChat.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-0f0b6e8b", Component.options)
+  } else {
+    hotAPI.reload("data-v-0f0b6e8b", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 64 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+	data: function data() {
+		return {
+			comments: [],
+			newComment: '',
+			isLoading: false,
+			hosts: []
+		};
+	},
+	computed: {
+		isUserDefined: function isUserDefined() {
+			return typeof this.$store.state.user.id != 'undefined' ? true : false;
+		}
+	},
+	methods: {
+		submitComment: function submitComment() {
+			var _this = this;
+
+			if (this.isLoading) {
+				return;
+			}
+
+			if (this.isUserDefined) {
+				var comment = {
+					text: this.newComment,
+					user: this.$store.state.user
+				};
+
+				this.comments.push(comment);
+			}
+
+			axios.post('http://second.test/w/api/host/comments', {
+				text: this.newComment
+			}).then(function (response) {
+				console.log('then');
+
+				if (!_this.isUserDefined) {
+					_this.$store.state.user = response.data.user;
+					_this.comments.push(response.data);
+				}
+			}).catch(function (error) {
+				console.log('catch');
+			}).then(function () {
+				_this.isLoading = false;
+			});
+
+			this.newComment = '';
+			this.isLoading = true;
+		}
+	},
+	created: function created() {
+		console.log('host chat created');
+	},
+	mounted: function mounted() {
+		var _this2 = this;
+
+		console.log('host chat mounted');
+
+		Echo.join('host.chat').here(function (users) {
+			_this2.hosts = users;
+		}).joining(function (user) {
+			_this2.hosts.push(user);
+			console.log(user.name + ' has joined.');
+		}).leaving(function (user) {
+			_this2.hosts = _this2.hosts.filter(function (host) {
+				return host.id != user.id;
+			});
+			console.log(user.name + ' has left.');
+		}).listen('HostCommentCreated', function (comment) {
+			_this2.comments.push(comment);
+		});
+	}
+});
+
+/***/ }),
+/* 65 */
+/***/ (function(module, exports, __webpack_require__) {
+
 var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { attrs: { id: "host-page" } }, [_c("host-chat")], 1)
+  return _c("div", [
+    _c(
+      "div",
+      { staticClass: "comments-section2" },
+      [
+        _c("span", [_vm._v(_vm._s(_vm.hosts.length) + " hosts in here")]),
+        _vm._v(" "),
+        _vm._l(_vm.comments, function(comment) {
+          return _c("div", [
+            _c("span", { staticClass: "comments-username" }, [
+              _vm._v(_vm._s(comment.user.name))
+            ]),
+            _vm._v(" "),
+            _c("span", [_vm._v(_vm._s(comment.text))])
+          ])
+        }),
+        _vm._v(" "),
+        _c(
+          "form",
+          {
+            attrs: { id: "host-comment-form" },
+            on: {
+              submit: function($event) {
+                $event.preventDefault()
+                return _vm.submitComment($event)
+              }
+            }
+          },
+          [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.newComment,
+                  expression: "newComment"
+                }
+              ],
+              attrs: { type: "text", placeholder: "Write a comment.." },
+              domProps: { value: _vm.newComment },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.newComment = $event.target.value
+                }
+              }
+            })
+          ]
+        )
+      ],
+      2
+    )
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-0f0b6e8b", module.exports)
+  }
+}
+
+/***/ }),
+/* 66 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { attrs: { id: "host-page" } },
+    [_c("host-chat"), _vm._v(" "), _c("broadcast-chat")],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -60728,15 +60914,15 @@ if (false) {
 }
 
 /***/ }),
-/* 64 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(1)
 /* script */
-var __vue_script__ = __webpack_require__(65)
+var __vue_script__ = __webpack_require__(68)
 /* template */
-var __vue_template__ = __webpack_require__(66)
+var __vue_template__ = __webpack_require__(69)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -60775,7 +60961,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 65 */
+/* 68 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -60790,7 +60976,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({});
 
 /***/ }),
-/* 66 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -60817,7 +61003,7 @@ if (false) {
 }
 
 /***/ }),
-/* 67 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
@@ -60825,7 +61011,7 @@ var normalizeComponent = __webpack_require__(1)
 /* script */
 var __vue_script__ = null
 /* template */
-var __vue_template__ = __webpack_require__(68)
+var __vue_template__ = __webpack_require__(71)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -60864,7 +61050,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 68 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -60884,14 +61070,14 @@ if (false) {
 }
 
 /***/ }),
-/* 69 */
+/* 72 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return store; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuex__ = __webpack_require__(70);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuex__ = __webpack_require__(73);
 
 
 
@@ -60899,7 +61085,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vuex
 
 var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
 	state: {
-		user: { name: 'Alex Lacayo' },
+		user: {},
 		schedule: [],
 		sermons: [],
 		youtubeApiReady: false
@@ -60916,7 +61102,7 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
 });
 
 /***/ }),
-/* 70 */
+/* 73 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -61861,15 +62047,15 @@ var index_esm = {
 
 
 /***/ }),
-/* 71 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(1)
 /* script */
-var __vue_script__ = __webpack_require__(73)
+var __vue_script__ = __webpack_require__(75)
 /* template */
-var __vue_template__ = __webpack_require__(72)
+var __vue_template__ = __webpack_require__(76)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -61886,7 +62072,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/js/components/HostChat.vue"
+Component.options.__file = "resources/js/components/BroadcastChat.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -61895,9 +62081,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-0f0b6e8b", Component.options)
+    hotAPI.createRecord("data-v-b6398244", Component.options)
   } else {
-    hotAPI.reload("data-v-0f0b6e8b", Component.options)
+    hotAPI.reload("data-v-b6398244", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -61908,81 +62094,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 72 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", [
-    _c(
-      "div",
-      { staticClass: "comments-section" },
-      [
-        _c("span", [_vm._v(_vm._s(_vm.hosts.length) + " hosts in here")]),
-        _vm._v(" "),
-        _vm._l(_vm.comments, function(comment) {
-          return _c("div", [
-            _c("span", { staticClass: "comments-username" }, [
-              _vm._v(_vm._s(comment.user.name))
-            ]),
-            _vm._v(" "),
-            _c("span", [_vm._v(_vm._s(comment.text))])
-          ])
-        }),
-        _vm._v(" "),
-        _c(
-          "form",
-          {
-            attrs: { id: "broadcast-comment-form" },
-            on: {
-              submit: function($event) {
-                $event.preventDefault()
-                return _vm.submitHostComment($event)
-              }
-            }
-          },
-          [
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.newComment,
-                  expression: "newComment"
-                }
-              ],
-              attrs: { type: "text", placeholder: "Write a comment.." },
-              domProps: { value: _vm.newComment },
-              on: {
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
-                  }
-                  _vm.newComment = $event.target.value
-                }
-              }
-            })
-          ]
-        )
-      ],
-      2
-    )
-  ])
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-0f0b6e8b", module.exports)
-  }
-}
-
-/***/ }),
-/* 73 */
+/* 75 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -62005,42 +62117,43 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+	props: {
+		broadcastId: Number
+	},
 	data: function data() {
 		return {
 			comments: [],
 			newComment: '',
-			isLoading: false,
-			hosts: []
+			isLoading: false
 		};
 	},
 	computed: {
-		isUserDefined: function isUserDefined() {
+		isUserAuthenticated: function isUserAuthenticated() {
 			return typeof this.$store.state.user.id != 'undefined' ? true : false;
 		}
 	},
 	methods: {
-		submitHostComment: function submitHostComment() {
+		submitComment: function submitComment() {
 			var _this = this;
 
 			if (this.isLoading) {
 				return;
 			}
 
-			if (this.isUserDefined) {
+			if (this.isUserAuthenticated) {
 				var comment = {
 					text: this.newComment,
 					user: this.$store.state.user
 				};
-
 				this.comments.push(comment);
 			}
 
-			axios.post('http://second.test/w/api/host/comments', {
+			axios.post('http://second.test/w/api/broadcasts/' + this.broadcastId + '/comments', {
 				text: this.newComment
 			}).then(function (response) {
 				console.log('then');
 
-				if (!_this.isUserDefined) {
+				if (!_this.isUserAuthenticated) {
 					_this.$store.state.user = response.data.user;
 					_this.comments.push(response.data);
 				}
@@ -62054,29 +62167,88 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 			this.isLoading = true;
 		}
 	},
-	created: function created() {
-		console.log('host chat created');
-	},
 	mounted: function mounted() {
 		var _this2 = this;
 
-		console.log('host chat mounted');
-
-		Echo.join('host.chat').here(function (users) {
-			_this2.hosts = users;
-		}).joining(function (user) {
-			_this2.hosts.push(user);
-			console.log(user.name + ' has joined.');
-		}).leaving(function (user) {
-			_this2.hosts = _this2.hosts.filter(function (host) {
-				return host.id != user.id;
-			});
-			console.log(user.name + ' has left.');
-		}).listen('HostCommentCreated', function (comment) {
+		Echo.channel('broadcast.chat.' + this.broadcastId).listen('BroadcastCommentCreated', function (comment) {
 			_this2.comments.push(comment);
 		});
 	}
 });
+
+/***/ }),
+/* 76 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c(
+      "div",
+      { staticClass: "comments-section" },
+      [
+        _vm._l(_vm.comments, function(comment) {
+          return _c("div", [
+            _c("span", { staticClass: "comments-username" }, [
+              _vm._v(_vm._s(comment.user.name))
+            ]),
+            _vm._v(" "),
+            _c("span", [_vm._v(_vm._s(comment.text))])
+          ])
+        }),
+        _vm._v(" "),
+        _vm.isUserAuthenticated
+          ? _c(
+              "form",
+              {
+                attrs: { id: "broadcast-comment-form" },
+                on: {
+                  submit: function($event) {
+                    $event.preventDefault()
+                    return _vm.submitComment($event)
+                  }
+                }
+              },
+              [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.newComment,
+                      expression: "newComment"
+                    }
+                  ],
+                  attrs: { type: "text", placeholder: "Write a comment.." },
+                  domProps: { value: _vm.newComment },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.newComment = $event.target.value
+                    }
+                  }
+                })
+              ]
+            )
+          : _c("div", [_vm._v("Login to chat.")])
+      ],
+      2
+    )
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-b6398244", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);
