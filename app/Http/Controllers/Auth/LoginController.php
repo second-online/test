@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
@@ -46,10 +47,17 @@ class LoginController extends Controller
      */
     protected function authenticated(Request $request, $user)
     {
-        // if expects JSON
-        return response()->json([
-            'authenticated' => true,
-            'user' => $user
-        ]);
+        return response()->json($user);
+    }
+
+    /**
+     * The user has logged out of the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return mixed
+     */
+    protected function loggedOut(Request $request)
+    {
+        //
     }
 }

@@ -9,7 +9,7 @@
 			<form v-if="isUserAuthenticated" id="broadcast-comment-form" v-on:submit.prevent="submitComment">
 				<input type="text" placeholder="Write a comment.." v-model="newComment">
 			</form>
-			<div v-else>Login to chat.</div>
+			<div v-else v-on:click="login">Login to chat.</div>
 		</div>
 	</div>
 </template>
@@ -23,47 +23,57 @@
 			return {
 				comments: [],
 				newComment: '',
-				isLoading: false
+				newCommentId: 1,
+				cachedComment: '',
+				isLoading: false,
 			}
 		},
 		computed: {
 			isUserAuthenticated: function() {
-				return (typeof this.$store.state.user.id != 'undefined') ? true : false;
+				return this.$store.getters.isUserAuthenticated;
 			}
 		},
 		methods: {
 			submitComment: function() {
 				if (this.isLoading) { return; }
 
-				if (this.isUserAuthenticated) {
-					const comment = {
-						text: this.newComment,
-						user: this.$store.state.user
-					};
-					this.comments.push(comment);
-				}
+				if (! this.isUserAuthenticated) { return; }
+
+				const localCommentId = this.newCommentId++;
 
 				axios
 					.post('http://second.test/w/api/broadcasts/' + this.broadcastId + '/comments', {
+						commentId: localCommentId,
 						text: this.newComment,
 					})
 					.then(response => {
-						console.log('then');
-
-						if (! this.isUserAuthenticated) {
-							this.$store.state.user = response.data.user;
-							this.comments.push(response.data);
-						} 
+						const index = this.comments.findIndex(comment => {
+							return comment.localCommentId == response.data.local_id;
+						});
+						// flip the array to start at the end would be better.
+						this.comments[index] = response.data;
 					})
 					.catch(error => {
-						console.log('catch');
+						//console.log('catch');
+						this.newComment = this.cachedComment;
 					})
 					.then(() => {
 						this.isLoading = false;
 					});
 
+				const comment = {
+					localCommentId: localCommentId,
+					text: this.newComment,
+					user: this.$store.state.user
+				};
+
+				this.comments.push(comment);
+				this.cachedComment = this.newComment;
 				this.newComment = '';
 				this.isLoading = true;
+			},
+			login: function() {
+				this.$router.push({ name: 'login' });
 			}
 		},
 		mounted: function() {

@@ -42,10 +42,7 @@ class BroadcastCommentController extends Controller
 
             broadcast(new BroadcastCommentCreated($data))->toOthers();
 
-            $response = [
-                'comment_created' => true,
-                'comment' => $data,
-            ];
+            $data = array_add($data, 'local_id', $request->input('commentId'));
 
             return response()->json($data);
         } else {

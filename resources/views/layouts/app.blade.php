@@ -12,6 +12,10 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/all.css') }}" rel="stylesheet">
+
+    <script type="text/javascript">
+        window.AppUser = @json($user); 
+    </script>
 </head>
 <body>
     <div id="app"></div>

@@ -20,12 +20,12 @@ use App\Role;
 // 	echo 'test.....';
 // })->where('any', '.*');
 
-Auth::routes();
+//Auth::routes();
 
-Route::get('login', function() {
-echo 'keke';
-	Auth::loginUsingId(10000, true);
-});
+// Route::get('login', function() {
+// echo 'keke';
+// 	Auth::loginUsingId(10000, true);
+// });
 
 Route::get('jeff', function() {
 
@@ -62,6 +62,12 @@ Route::group(['prefix' => 'w/api'], function() {
 
 	Route::post('broadcasts/{broadcast}/comments', 'BroadcastCommentController@store')
 		->name('broadcasts.comments.create');
+
+	Route::post('login', 'Auth\LoginController@login');
+
+	Route::post('register', 'Auth\RegisterController@register');
+
+	Route::post('logout', 'Auth\LoginController@logout');
 
 });
 

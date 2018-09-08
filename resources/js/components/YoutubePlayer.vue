@@ -20,6 +20,7 @@
 					width: '640',
 					videoId: this.videoId,
 					playerVars: {
+						autoplay: '0',
 						disablekb: '1',
 						controls: '0',
 						start: '0',

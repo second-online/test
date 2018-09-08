@@ -25,16 +25,15 @@
 			}
 		},
 		computed: {
-			isUserDefined: function() {
-				return (typeof this.$store.state.user.id != 'undefined') ? true : false;
+			isUserAuthenticated: function() {
+				return this.$store.getters.isUserAuthenticated;
 			}
 		},
 		methods: {
 			submitComment: function() {
-
 				if (this.isLoading) { return; }
 
-				if (this.isUserDefined) {
+				if (this.isUserAuthenticated) {
 					const comment = {
 						text: this.newComment,
 						user: this.$store.state.user

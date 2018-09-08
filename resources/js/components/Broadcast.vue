@@ -46,12 +46,8 @@
 		},
 		methods: {
 			setData: function(data) {
-				if (data.user != null) {
-					this.$store.state.user = data.user;
-				}
-
-				this.broadcast = data.broadcast;
-				this.showVideo = true;
+				this.broadcast = data;
+				// this.showVideo = true;
 				this.showChat = true;
 			},
 	        videoEnded: function() {

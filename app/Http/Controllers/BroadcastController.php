@@ -37,20 +37,6 @@ class BroadcastController extends Controller
         $broadcast = $broadcast->toArray();
         $broadcast = array_add($broadcast, 'sermon', $sermon);
 
-
-        $user = null;
-
-        if (Auth::check()) {
-            $user = Auth::user();
-        }
-
-        $response = [
-            'broadcast' => $broadcast,
-            'user' => $user
-        ];
-
-
-
-        return response()->json($response);
+        return response()->json($broadcast);
     }
 }
