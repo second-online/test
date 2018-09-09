@@ -20,12 +20,20 @@ use App\Role;
 // 	echo 'test.....';
 // })->where('any', '.*');
 
-//Auth::routes();
+Auth::routes();
 
 // Route::get('login', function() {
 // echo 'keke';
 // 	Auth::loginUsingId(10000, true);
 // });
+
+Route::get('test', function() {
+	$user = User::find(1000);
+
+
+	var_dump(isset($x));
+
+});
 
 Route::get('jeff', function() {
 

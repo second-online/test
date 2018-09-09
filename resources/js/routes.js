@@ -8,6 +8,7 @@ import Sermon from './components/Sermon'
 import HostDashboard from './components/HostDashboard'
 import Login from './components/Login'
 import Register from './components/Register'
+import PasswordReset from './components/PasswordReset'
 import NotFound from './components/404'
 
 Vue.use(VueRouter)
@@ -50,6 +51,12 @@ export const router = new VueRouter({
 			path:'/register',
 			name: 'register',
 			component: Register,
+			meta: { guest: true }
+		},
+		{
+			path:'/password/reset',
+			name: 'password.reset',
+			component: PasswordReset,
 			meta: { guest: true }
 		},
 		{

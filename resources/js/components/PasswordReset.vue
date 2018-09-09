@@ -1,25 +1,22 @@
 <template>
 	<div>
-		<h1>Login</h1>
-		<p>{{ generalError }}</p>
+	 	<h1>Request Password Reset Link</h1>
+	 	<p>{{ generalError }}</p>
+<!-- 		<ul>
+			<li v-for="error in errors">{{ error }}</li>
+		</ul> -->
 
-		<form v-on:submit.prevent="login">
+		<form v-on:submit.prevent="register">
 			<input
 				v-bind:class="{ error: errors.email }"
 				v-model="email"
 				type="text"
 				placeholder="email"
 			> {{ errors.email }}
-			<input
-				v-bind:class="{ error: errors.password }"
-				v-model="password"
-				type="password"
-				placeholder="password"
-			> {{ errors.password }}
-			<button type="submit">Login</button>
+			<button type="submit">Reset Password</button>
 		</form>
-		<router-link to="register" :to="{ name: 'register', query: { redirect: redirectPath } }">
-			Don't have an account? Register now
+		<router-link to="register" :to="{ name: 'login', query: { redirect: redirectPath } }">
+			NVM. I remember my password.
 		</router-link>
 	</div>
 </template>
@@ -30,7 +27,6 @@
 			return {
 				errors: {},
 				email: '',
-				password: '',
 				isLoading: false,
 				generalError: ''
 			}
@@ -41,20 +37,18 @@
 			}
 		},
 		methods: {
-			login: function() {
+			register: function() {
 				if (this.isLoading) { return; }
 
 				if (! this.isFormValid()) { return; }
 
 				axios
-					.post('http://second.test/w/api/login', {
+					.post('http://second.test/password/email', {
 						email: this.email,
-						password: this.password,
 					})
 					.then(response => {
-						//console.log(response);
-						this.$store.state.user = response.data
-						this.$router.push(this.redirectPath);
+						console.log(response);
+						// this.$router.push(this.redirectPath);
 					})
 					.catch(error => {
 						// check for 422, 429
@@ -86,11 +80,6 @@
 
 				if (this.email.length == 0) {
 					errors['email'] = 'Enter a valid email address';
-					isFormValid = false;
-				}
-
-				if (this.password.length < 6) {
-					errors['password'] = 'Password must be atleast 6 characters.';
 					isFormValid = false;
 				}
 

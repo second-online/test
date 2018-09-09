@@ -14,7 +14,7 @@
     <link href="{{ asset('css/all.css') }}" rel="stylesheet">
 
     <script type="text/javascript">
-        window.AppUser = @json($user); 
+        window.AppUser = @if(isset($user)) @json($user); @else null; @endif
     </script>
 </head>
 <body>

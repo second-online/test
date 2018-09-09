@@ -1,52 +1,60 @@
 <template>
 	<div>
-		<p v-if="errors.length">
-			<ul>
-				<li v-for="error in errors">{{ error }}</li>
-			</ul>
-		</p>
+	 	<h1>Register</h1>
+	 	<p>{{ generalError }}</p>
+<!-- 		<ul>
+			<li v-for="error in errors">{{ error }}</li>
+		</ul> -->
 
 		<form v-on:submit.prevent="register">
-			<input type="text" name="name" placeholder="name" v-model="name">
-			<input type="text" name="email" placeholder="email" v-model="email">
-			<input type="password" name="password" placeholder="password" v-model="password" min="6">
+			<input
+				v-bind:class="{ error: errors.name }"
+				v-model="name"
+				type="text"
+				placeholder="name"
+			> {{ errors.name }}
+			<input
+				v-bind:class="{ error: errors.email }"
+				v-model="email"
+				type="text"
+				placeholder="email"
+			> {{ errors.email }}
+			<input
+				v-bind:class="{ error: errors.password }"
+				v-model="password"
+				type="password"
+				placeholder="password"
+			> {{ errors.password }}
 			<button type="submit">Register</button>
 		</form>
+		<router-link to="register" :to="{ name: 'login', query: { redirect: redirectPath } }">
+			I already have an account. Login
+		</router-link>
 	</div>
 </template>
 
 <script>
 	export default {
-		beforeRouteEnter (to, from, next) {
-			next(vm => vm.setData(from));
-		},
 		data: function() {
 			return {
-				errors: [],
+				errors: {},
 				name: '',
 				email: '',
 				password: '',
 				isLoading: false,
-				redirectPath: 'broadcasts/3'
+				generalError: ''
+			}
+		},
+		computed: {
+			redirectPath: function() {
+				return this.$route.query.redirect ? this.$route.query.redirect : '/';
 			}
 		},
 		methods: {
 			register: function() {
 				if (this.isLoading) { return; }
 
-				this.errors = [];
-
-				if (this.name.length == 0) {
-					this.errors.push('Don\'t forget to add your name.')
-				}
-
-				if (this.password.length < 6) {
-					this.errors.push('Password must be atleast 6 characters.')
-				}
-
-				if (this.errors.length > 0) {
-					return;
-				}
+				if (! this.isFormValid()) { return; }
 
 				axios
 					.post('http://second.test/w/api/register', {
@@ -60,7 +68,20 @@
 						this.$router.push(this.redirectPath);
 					})
 					.catch(error => {
-						console.log('catch');
+						// check for 422, 429
+						const errorResponse = error.response.data.errors;
+ 
+						if (errorResponse !== undefined) { 
+							const errors = {};
+
+							for (const property in errorResponse) {
+								errors[property] = errorResponse[property][0];
+							}
+
+							this.errors = errors;
+						}else {
+							this.generalError = 'Something went wrong. Try again.';
+						}
 					})
 					.then(() => {
 						this.isLoading = false;
@@ -68,10 +89,35 @@
 
 				this.isLoading = true;
 			},
-			setData: function(data) {
-				//this.redirectPath = data.fullPath;
-				console.log(data);
+			isFormValid: function() {
+				let errors = {};
+				let isFormValid = true;
+
+				this.errors = {};
+
+				if (this.name.length == 0) {
+					errors['name'] = 'Enter your name.';
+					isFormValid = false;
+				}
+
+				if (this.email.length == 0) {
+					errors['email'] = 'Enter a valid email address';
+					isFormValid = false;
+				}
+
+				if (this.password.length < 6) {
+					errors['password'] = 'Password must be atleast 6 characters.';
+					isFormValid = false;
+				}
+
+				this.errors = errors;
+
+				return isFormValid;
 			}
 		}
 	}
 </script>
+
+<style>
+	.error {border: 1px solid red;}
+</style>

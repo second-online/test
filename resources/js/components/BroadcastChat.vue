@@ -73,7 +73,7 @@
 				this.isLoading = true;
 			},
 			login: function() {
-				this.$router.push({ name: 'login' });
+				this.$router.push({ name: 'login', query: { redirect: this.$route.path } });
 			}
 		},
 		mounted: function() {
@@ -81,6 +81,8 @@
 				.listen('BroadcastCommentCreated', comment => {
 					this.comments.push(comment)
 			});
+
+			console.log(this.$store.state.user);
 		}
 	}
 </script>
