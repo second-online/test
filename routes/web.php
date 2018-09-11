@@ -41,11 +41,11 @@ Route::get('logout', function() {
 Route::get('role', function() {
 	
 	$role = Role::find(2);
-	$user = User::find(10000);
+	$user = User::find(10014);
 	$user->roles()->attach($role);
 
-	$user = User::find(10001);
-	$user->roles()->attach($role);
+	// $user = User::find(10001);
+	// $user->roles()->attach($role);
 });
 
 
@@ -95,61 +95,61 @@ Route::get('password/reset/{token}', 'SPAController@index')->name('password.rese
 
 
 
-// Route::get('/schedule', function () {
+Route::get('/schedule', function () {
 
-// 	$broadcasts = Broadcast::all();
+	$broadcasts = Broadcast::all();
 
-// 	foreach ($broadcasts as $broadcast) {
-// 		$broadcast->save();
-// 	}
-// 	die;
+	foreach ($broadcasts as $broadcast) {
+		$broadcast->save();
+	}
+	die;
 
-// 	$broadcasts = Broadcast::all();
-// 	$schedule = collect();
+	$broadcasts = Broadcast::all();
+	$schedule = collect();
 
-// 	foreach ($broadcasts as $broadcast) {
+	foreach ($broadcasts as $broadcast) {
 
-// 		$format = 'l H:i:s';
-// 		$time = $broadcast->day . ' ' . $broadcast->time;
-// 		$timezone = 'America/Chicago';
-// 		$date = Carbon::createFromFormat($format, $time, $timezone);
+		$format = 'l H:i:s';
+		$time = $broadcast->day . ' ' . $broadcast->time;
+		$timezone = 'America/Chicago';
+		$date = Carbon::createFromFormat($format, $time, $timezone);
 
-// 		if ($date->isPast()) {
-// 			$date->addWeek();
-// 		}
+		if ($date->isPast()) {
+			$date->addWeek();
+		}
 		
-// 		$newDate = clone $date;
-// 		echo $newDate->addHour()->toDateTimeString();
-// 		echo "<br>";
-// 		echo $date->toDateTimeString();
-// die;
-// 		// $date->timezone('utc');
+		$newDate = clone $date;
+		echo $newDate->addHour()->toDateTimeString();
+		echo "<br>";
+		echo $date->toDateTimeString();
+die;
+		// $date->timezone('utc');
 
-// 		$schedule->push([
-// 			'name' => $broadcast->name,
-// 			'time' => $date->toDateTimeString(),
-// 			'time utc' => $date->timezone('UTC')->toDateTimeString()
-// 		]);
-// 	}
+		$schedule->push([
+			'name' => $broadcast->name,
+			'time' => $date->toDateTimeString(),
+			'time utc' => $date->timezone('UTC')->toDateTimeString()
+		]);
+	}
 
-// 	// var_dump($schedule);
-// 	$sorted = $schedule->sortBy('time');
-// 	var_dump($sorted);
+	// var_dump($schedule);
+	$sorted = $schedule->sortBy('time');
+	var_dump($sorted);
 	
 
-// return;
+return;
 
-// 	$broadcasts = Broadcast::all();
+	$broadcasts = Broadcast::all();
 
-// 	foreach ($broadcasts as $broadcast) {
+	foreach ($broadcasts as $broadcast) {
 
-// 		echo $broadcast->next_gathering;
-// 		return;
+		echo $broadcast->next_gathering;
+		return;
 
-// 	}
+	}
 
-// 	return response()->json($broadcasts);
-// });
+	return response()->json($broadcasts);
+});
 
 
 

@@ -27,13 +27,10 @@ class BroadcastCommentController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request, $broadcast_id)
-    {   
-        $text = $request->input('text');
-        $user = $request->user();
-
+    {      
         $broadcastComment = new BroadcastComment;
-        $broadcastComment->text = $text;
-        $broadcastComment->user()->associate($user);
+        $broadcastComment->text = $request->input('text');
+        $broadcastComment->user()->associate($request->user());
         $broadcastComment->broadcast_id = $broadcast_id;
         
         // change to try catch /// return something

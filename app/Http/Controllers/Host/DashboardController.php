@@ -17,8 +17,10 @@ class DashboardController extends Controller
     	$this->middleware(['auth', 'role:host']);
     }
 
-    public function index()
+    public function index(Request $reqest)
     {
+
+            
     	return response()->json(['hello' => 'world']);
     }
 }

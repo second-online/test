@@ -26,7 +26,7 @@
 		methods: {
 			fetchSermon: function() {
 				axios
-					.get('http://second.test/w/api/sermons/' + this.sermonId)
+					.get(process.env.MIX_APP_URL + '/w/api/sermons/' + this.sermonId)
 					.then(response => {
 						this.sermon = response.data.sermon;
 						this.showVideo = true;

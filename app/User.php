@@ -55,5 +55,5 @@ class User extends Authenticatable
     public function isHost()
     {
         return $this->hasRole('host');
-    } 
+    }
 }

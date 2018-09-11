@@ -96,3 +96,12 @@ input {
 }
 
 #ytplayer {pointer-events: none;}
+
+.popup-video {
+	position: fixed;
+	left: 60px;
+	bottom: 60px;
+	width: 200px;
+	height: 200px;
+	background: red;
+}

@@ -64,7 +64,7 @@
 				if (! this.isFormValid()) { return; }
 
 				axios
-					.post('http://second.test/w/api/register', {
+					.post(process.env.MIX_APP_URL + '/w/api/register', {
 						name: this.name,
 						email: this.email,
 						password: this.password,

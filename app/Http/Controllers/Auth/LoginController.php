@@ -48,6 +48,10 @@ class LoginController extends Controller
      */
     protected function authenticated(Request $request, $user)
     {
+        if ($user->isHost()) {
+            $user = array_add($user->toArray(), 'is_host', true); 
+        }
+
         return response()->json($user);
     }
 

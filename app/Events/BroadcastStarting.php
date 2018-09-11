@@ -10,35 +10,25 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class HostCommentCreated implements ShouldBroadcast
+class BroadcastStarting implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     /**
-     * The comment that was created.
+     * The broadcast that is starting.
      *
      * @var array
      */
-    public $comment;
+    public $broadcast;
 
     /**
      * Create a new event instance.
-     * @param  array  $comment
+     * @param  array  $broadcast
      * @return void
      */
-    public function __construct($comment)
+    public function __construct($broadcast)
     {
-        $this->comment = $comment;
-    }
-
-    /**
-     * Get the data to broadcast.
-     *
-     * @return array
-     */
-    public function broadcastWith()
-    {
-        return $this->comment;
+        $this->broadcast = $broadcast;
     }
 
     /**
@@ -48,6 +38,6 @@ class HostCommentCreated implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PresenceChannel('host.chat');
+        return new Channel('main');
     }
 }

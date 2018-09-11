@@ -25468,7 +25468,8 @@ window.Echo = new __WEBPACK_IMPORTED_MODULE_0_laravel_echo___default.a({
   broadcaster: 'pusher',
   key: "032cce1f53d25a8af793",
   cluster: "us2",
-  encrypted: true
+  encrypted: true,
+  authEndpoint: "http://second.test" + '/w/api/broadcasting/auth'
 });
 
 /***/ }),
@@ -57554,16 +57555,29 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    mounted: function mounted() {
-        var _this = this;
+	data: function data() {
+		return {
+			showVideo: false
+		};
+	},
+	methods: {},
+	mounted: function mounted() {
+		var _this = this;
 
-        // move this to seperate file?
-        window.onYouTubeIframeAPIReady = function () {
-            _this.$store.state.youtubeApiReady = true;
-        };
-    }
+		// move this to seperate file?
+		window.onYouTubeIframeAPIReady = function () {
+			_this.$store.state.youtubeApiReady = true;
+		};
+
+		Echo.channel('main').listen('BroadcastStarting', function (data) {
+			console.log(data);
+		});
+	}
 });
 
 /***/ }),
@@ -57574,7 +57588,16 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("router-view")
+  return _c(
+    "div",
+    { staticStyle: { height: "100%" } },
+    [
+      _c("router-view"),
+      _vm._v(" "),
+      _vm.showVideo ? _c("div", { staticClass: "popup-video" }) : _vm._e()
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -58591,7 +58614,7 @@ var index_esm = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_Register___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8__components_Register__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__components_PasswordReset__ = __webpack_require__(86);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__components_PasswordReset___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9__components_PasswordReset__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__components_PasswordResetChange__ = __webpack_require__(98);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__components_PasswordResetChange__ = __webpack_require__(91);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__components_PasswordResetChange___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10__components_PasswordResetChange__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__components_404__ = __webpack_require__(96);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__components_404___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_11__components_404__);
@@ -61493,7 +61516,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 		};
 	},
 	beforeRouteEnter: function beforeRouteEnter(to, from, next) {
-		axios.get('http://second.test/w/api/broadcasts/' + to.params.broadcast_id).then(function (response) {
+		axios.get("http://second.test" + '/w/api/broadcasts/' + to.params.broadcast_id).then(function (response) {
 			next(function (vm) {
 				return vm.setData(response.data);
 			});
@@ -61672,7 +61695,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 			var localCommentId = this.newCommentId++;
 
-			axios.post('http://second.test/w/api/broadcasts/' + this.broadcastId + '/comments', {
+			axios.post("http://second.test" + '/w/api/broadcasts/' + this.broadcastId + '/comments', {
 				commentId: localCommentId,
 				text: this.newComment
 			}).then(function (response) {
@@ -61908,7 +61931,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 		fetchSermons: function fetchSermons() {
 			var _this = this;
 
-			axios.get('http://second.test/w/api/sermons/').then(function (response) {
+			axios.get("http://second.test" + '/w/api/sermons/').then(function (response) {
 				_this.$store.state.sermons = response.data.sermons;
 				console.log(response.data.sermons);
 			});
@@ -62049,7 +62072,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 		fetchSermon: function fetchSermon() {
 			var _this = this;
 
-			axios.get('http://second.test/w/api/sermons/' + this.sermonId).then(function (response) {
+			axios.get("http://second.test" + '/w/api/sermons/' + this.sermonId).then(function (response) {
 				_this.sermon = response.data.sermon;
 				_this.showVideo = true;
 				console.log(response.data.sermon);
@@ -62187,18 +62210,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 		BroadcastChat: __WEBPACK_IMPORTED_MODULE_1__components_BroadcastChat___default.a
 	},
 	beforeRouteEnter: function beforeRouteEnter(to, from, next) {
-		axios.get('http://second.test/w/api/host/dashboard').then(function (response) {
-			// if response successful continue on
-			console.log('test');
-			next();
-		}).catch(function (error) {
-			error.response.status === 401 ? next('login') : next('/');
-		}).then(function () {
-			// always executed
 
-		});
-
-		axios.get('http://second.test/w/api/host/dashboard').then(function (response) {
+		axios.get("http://second.test" + '/w/api/host/dashboard').then(function (response) {
 			next(function (vm) {
 				return vm.setData(response.data);
 			});
@@ -62214,9 +62227,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 	},
 	created: function created() {
 		console.log('host dashboard created');
-		axios.get('http://second.test/w/api/host/dashboard').then(function (response) {}).catch(function (error) {
-			console.log(error);
-		}).then(function () {});
 	},
 	mounted: function mounted() {
 		console.log('host dashboard mounted');
@@ -62298,6 +62308,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 		return {
 			comments: [],
 			newComment: '',
+			newCommentId: 1,
+			cachedComment: '',
 			isLoading: false,
 			hosts: []
 		};
@@ -62315,30 +62327,36 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 				return;
 			}
 
-			if (this.isUserAuthenticated) {
-				var comment = {
-					text: this.newComment,
-					user: this.$store.state.user
-				};
-
-				this.comments.push(comment);
+			if (!this.isUserAuthenticated) {
+				return;
 			}
 
-			axios.post('http://second.test/w/api/host/comments', {
+			var localCommentId = this.newCommentId++;
+
+			axios.post("http://second.test" + '/w/api/host/comments', {
+				commentId: localCommentId,
 				text: this.newComment
 			}).then(function (response) {
-				console.log('then');
-
-				if (!_this.isUserDefined) {
-					_this.$store.state.user = response.data.user;
-					_this.comments.push(response.data);
-				}
+				var index = _this.comments.findIndex(function (comment) {
+					return comment.localCommentId == response.data.local_id;
+				});
+				// flip the array to start at the end would be better.
+				_this.comments[index] = response.data;
 			}).catch(function (error) {
-				console.log('catch');
+				//console.log('catch');
+				_this.newComment = _this.cachedComment;
 			}).then(function () {
 				_this.isLoading = false;
 			});
 
+			var comment = {
+				localCommentId: localCommentId,
+				text: this.newComment,
+				user: this.$store.state.user
+			};
+
+			this.comments.push(comment);
+			this.cachedComment = this.newComment;
 			this.newComment = '';
 			this.isLoading = true;
 		}
@@ -62350,6 +62368,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 		var _this2 = this;
 
 		console.log('host chat mounted');
+
+		window.Echo.connector.pusher.config.auth.headers['X-XSRF-TOKEN'] = decodeURIComponent(document.cookie.split('=')[1]);
 
 		Echo.join('host.chat').here(function (users) {
 			_this2.hosts = users;
@@ -62665,10 +62685,11 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 				return;
 			}
 
-			axios.post('http://second.test/w/api/login', {
+			axios.post("http://second.test" + '/w/api/login', {
 				email: this.email,
 				password: this.password
 			}).then(function (response) {
+				console.log(response.data);
 				_this.$store.state.user = response.data;
 				_this.$router.push(_this.redirectPath);
 			}).catch(function (error) {
@@ -62985,7 +63006,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 				return;
 			}
 
-			axios.post('http://second.test/w/api/register', {
+			axios.post("http://second.test" + '/w/api/register', {
 				name: this.name,
 				email: this.email,
 				password: this.password
@@ -63314,7 +63335,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 				return;
 			}
 
-			axios.post('http://second.test/w/api/password/email', {
+			axios.post("http://second.test" + '/w/api/password/email', {
 				email: this.email
 			}).then(function (response) {
 				console.log(response.data);
@@ -63437,91 +63458,19 @@ if (false) {
 }
 
 /***/ }),
-/* 91 */,
-/* 92 */,
-/* 93 */,
-/* 94 */,
-/* 95 */,
-/* 96 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(0)
-/* script */
-var __vue_script__ = null
-/* template */
-var __vue_template__ = __webpack_require__(97)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/js/components/404.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-73992586", Component.options)
-  } else {
-    hotAPI.reload("data-v-73992586", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 97 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", [_vm._v("\n\tPage not found, fam.\n")])
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-73992586", module.exports)
-  }
-}
-
-/***/ }),
-/* 98 */
+/* 91 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(99)
+  __webpack_require__(92)
 }
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(101)
+var __vue_script__ = __webpack_require__(94)
 /* template */
-var __vue_template__ = __webpack_require__(102)
+var __vue_template__ = __webpack_require__(95)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -63560,13 +63509,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 99 */
+/* 92 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(100);
+var content = __webpack_require__(93);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -63586,7 +63535,7 @@ if(false) {
 }
 
 /***/ }),
-/* 100 */
+/* 93 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(3)(false);
@@ -63600,7 +63549,7 @@ exports.push([module.i, "\n.error {border: 1px solid red;\n}\n", ""]);
 
 
 /***/ }),
-/* 101 */
+/* 94 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -63661,7 +63610,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 				return;
 			}
 
-			axios.post('http://second.test/w/api/password/reset', {
+			axios.post("http://second.test" + '/w/api/password/reset', {
 				email: this.email,
 				password: this.password,
 				password_confirmation: this.confirmPassword,
@@ -63720,7 +63669,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 102 */
+/* 95 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -63826,6 +63775,73 @@ if (false) {
   module.hot.accept()
   if (module.hot.data) {
     require("vue-hot-reload-api")      .rerender("data-v-493fdfae", module.exports)
+  }
+}
+
+/***/ }),
+/* 96 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = null
+/* template */
+var __vue_template__ = __webpack_require__(97)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/components/404.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-73992586", Component.options)
+  } else {
+    hotAPI.reload("data-v-73992586", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 97 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [_vm._v("\n\tPage not found, fam.\n")])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-73992586", module.exports)
   }
 }
 

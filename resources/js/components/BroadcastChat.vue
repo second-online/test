@@ -42,7 +42,7 @@
 				const localCommentId = this.newCommentId++;
 
 				axios
-					.post('http://second.test/w/api/broadcasts/' + this.broadcastId + '/comments', {
+					.post(process.env.MIX_APP_URL + '/w/api/broadcasts/' + this.broadcastId + '/comments', {
 						commentId: localCommentId,
 						text: this.newComment,
 					})

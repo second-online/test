@@ -20,6 +20,8 @@
 			return {
 				comments: [],
 				newComment: '',
+				newCommentId: 1,
+				cachedComment: '',
 				isLoading: false,
 				hosts: []
 			}
@@ -33,35 +35,38 @@
 			submitComment: function() {
 				if (this.isLoading) { return; }
 
-				if (this.isUserAuthenticated) {
-					const comment = {
-						text: this.newComment,
-						user: this.$store.state.user
-					};
+				if (! this.isUserAuthenticated) { return; }
 
-					this.comments.push(comment);
-				}
+				const localCommentId = this.newCommentId++;
 
 				axios
-					.post('http://second.test/w/api/host/comments', {
+					.post(process.env.MIX_APP_URL + '/w/api/host/comments', {
+						commentId: localCommentId,
 						text: this.newComment,
 					})
 					.then(response => {
-						console.log('then');
-
-						if (! this.isUserDefined) {
-							this.$store.state.user = response.data.user;
-							this.comments.push(response.data);
-						} 
-						
+						const index = this.comments.findIndex(comment => {
+							return comment.localCommentId == response.data.local_id;
+						});
+						// flip the array to start at the end would be better.
+						this.comments[index] = response.data;
 					})
 					.catch(error => {
-						console.log('catch');
+						//console.log('catch');
+						this.newComment = this.cachedComment;
 					})
 					.then(() => {
 						this.isLoading = false;
 					});
 
+				const comment = {
+					localCommentId: localCommentId,
+					text: this.newComment,
+					user: this.$store.state.user
+				};
+
+				this.comments.push(comment);
+				this.cachedComment = this.newComment;
 				this.newComment = '';
 				this.isLoading = true;
 			}
@@ -71,6 +76,8 @@
 		},
 		mounted: function() {
 			console.log('host chat mounted');
+
+			window.Echo.connector.pusher.config.auth.headers['X-XSRF-TOKEN'] = decodeURIComponent(document.cookie.split('=')[1]);
 
 			Echo.join('host.chat')
 			    .here((users) => {

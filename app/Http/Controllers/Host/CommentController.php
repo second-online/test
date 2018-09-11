@@ -48,6 +48,8 @@ class CommentController extends Controller
 
             broadcast(new HostCommentCreated($data))->toOthers();
 
+            $data = array_add($data, 'local_id', $request->input('commentId'));
+            
             return response()->json($data);
         } else {
             return response()->json(['message' => 'Something happened. Try again.'], 500);

@@ -49,7 +49,7 @@
 				if (! this.isFormValid()) { return; }
  
 				axios
-					.post('http://second.test/w/api/password/email', {
+					.post(process.env.MIX_APP_URL + '/w/api/password/email', {
 						email: this.email,
 					})
 					.then(response => {

@@ -13,7 +13,13 @@ class SPAController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
-        return view('layouts.app')->with('user', Auth::user());
+    {	
+    	$user = Auth::user();
+
+    	if (!is_null($user) && $user->isHost()) {
+	    	$user = array_add($user->toArray(), 'is_host', true); 
+    	}
+
+        return view('layouts.app')->with('user', $user);
     }
 }

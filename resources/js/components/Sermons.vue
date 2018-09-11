@@ -17,7 +17,7 @@
 		methods: {
 			fetchSermons() {
 				axios
-					.get('http://second.test/w/api/sermons/')
+					.get(process.env.MIX_APP_URL + '/w/api/sermons/')
 					.then(response => {
 						this.$store.state.sermons = response.data.sermons;
 						console.log(response.data.sermons);

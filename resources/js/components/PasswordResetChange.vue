@@ -47,7 +47,7 @@
 				if (! this.isFormValid()) { return; }
 
 				axios
-					.post('http://second.test/w/api/password/reset', {
+					.post(process.env.MIX_APP_URL + '/w/api/password/reset', {
 						email: this.email,
 						password: this.password,
 						password_confirmation: this.confirmPassword,

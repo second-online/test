@@ -62,11 +62,12 @@
 				if (! this.isFormValid()) { return; }
 
 				axios
-					.post('http://second.test/w/api/login', {
+					.post(process.env.MIX_APP_URL + '/w/api/login', {
 						email: this.email,
 						password: this.password,
 					})
 					.then(response => {
+						console.log(response.data);
 						this.$store.state.user = response.data
 						this.$router.push(this.redirectPath);
 					})

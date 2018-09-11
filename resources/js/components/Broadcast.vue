@@ -33,7 +33,7 @@
 		},
 		beforeRouteEnter (to, from, next) {
 			axios
-				.get('http://second.test/w/api/broadcasts/' + to.params.broadcast_id)
+				.get(process.env.MIX_APP_URL + '/w/api/broadcasts/' + to.params.broadcast_id)
 				.then(response => {
 					next(vm => vm.setData(response.data));
 				})
