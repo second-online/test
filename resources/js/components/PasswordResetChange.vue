@@ -1,60 +1,61 @@
 <template>
 	<div>
-	 	<h1>Request Password Reset Link</h1>
+		<h1>Reset Password</h1>
 		<ul>
 			<li v-for="alert in alerts">{{ alert }}</li>
 		</ul>
 
-		<form v-on:submit.prevent="register">
+		<form v-on:submit.prevent="resetPassword">
 			<input
 				v-bind:class="{ error: alerts.email }"
 				v-model="email"
 				type="text"
 				placeholder="email"
 			>
+			<input
+				v-bind:class="{ error: alerts.password }"
+				v-model="password"
+				type="password"
+				placeholder="Password"
+			>
+			<input
+				v-bind:class="{ error: alerts.password }"
+				v-model="confirmPassword"
+				type="password"
+				placeholder="Confirm Password"
+			>
 			<button type="submit">Reset Password</button>
 		</form>
-		<router-link v-bind:to="loginURL">
-			Nvm, I remember my password.
-		</router-link>
 	</div>
 </template>
-
 <script>
 	export default {
 		data: function() {
 			return {
 				alerts: {},
 				email: '',
+				password: '',
+				confirmPassword: '',
+				token: this.$route.params.token,
 				isLoading: false
 			}
 		},
-		computed: {
-			redirectPath: function() {
-				return (typeof this.$route.query.redirect !== 'undefined')
-					? this.$route.query.redirect
-					: '/';
-			},
-			query: function() {
-				return this.redirectPath != '/' ? '?redirect=' + this.redirectPath : null;
-			},
-			loginURL: function() {
-				return this.query ? '/login' + this.query : '/login';
-			}
-		},
 		methods: {
-			register: function() {
+			resetPassword: function() {
 				if (this.isLoading) { return; }
 
 				if (! this.isFormValid()) { return; }
- 
+
 				axios
-					.post('http://second.test/w/api/password/email', {
+					.post('http://second.test/w/api/password/reset', {
 						email: this.email,
+						password: this.password,
+						password_confirmation: this.confirmPassword,
+						token: this.token
 					})
 					.then(response => {
-						console.log(response.data);
-						this.setAlerts(response.data);
+						this.$store.state.user = response.data;
+						this.$router.push('/');
 					})
 					.catch(error => {
 						if (error.response.data.errors != undefined) {
@@ -65,9 +66,9 @@
 					})
 					.then(() => {
 						this.isLoading = false;
-					});
+					});		
 
-				this.isLoading = true;
+				this.isLoading = true;		
 			},
 			setAlerts: function(alerts) {
 				const newAlerts = {};
@@ -91,6 +92,15 @@
 					isFormValid = false;
 				}
 
+				if (this.password.length < 6) {
+					newAlerts.password = 'Password must be at least 6 characters.';
+					isFormValid = false;
+				}
+
+				if (this.password != this.confirmPassword) {
+					newAlerts.password = 'Passwords do not match.';
+					isFormValid = false;
+				}
 				this.setAlerts(newAlerts);
 
 				return isFormValid;

@@ -1,33 +1,33 @@
 <template>
 	<div>
 	 	<h1>Register</h1>
-	 	<p>{{ generalError }}</p>
-<!-- 		<ul>
-			<li v-for="error in errors">{{ error }}</li>
-		</ul> -->
+		<ul>
+			<li v-for="alert in alerts">{{ alert }}</li>
+		</ul>
 
 		<form v-on:submit.prevent="register">
 			<input
-				v-bind:class="{ error: errors.name }"
+				v-bind:class="{ error: alerts.name }"
 				v-model="name"
 				type="text"
-				placeholder="name"
-			> {{ errors.name }}
+				placeholder="Full name"
+			>
 			<input
-				v-bind:class="{ error: errors.email }"
+				v-bind:class="{ error: alerts.email }"
 				v-model="email"
 				type="text"
-				placeholder="email"
-			> {{ errors.email }}
+				placeholder="Email"
+			>
 			<input
-				v-bind:class="{ error: errors.password }"
+				v-bind:class="{ error: alerts.password }"
 				v-model="password"
 				type="password"
-				placeholder="password"
-			> {{ errors.password }}
+				placeholder="Password"
+			>
 			<button type="submit">Register</button>
 		</form>
-		<router-link to="register" :to="{ name: 'login', query: { redirect: redirectPath } }">
+		<!-- <router-link :to="{ name: 'login', query: { redirect: redirectPath } }"> -->
+		<router-link v-bind:to="loginURL">
 			I already have an account. Login
 		</router-link>
 	</div>
@@ -37,17 +37,24 @@
 	export default {
 		data: function() {
 			return {
-				errors: {},
+				alerts: {},
 				name: '',
 				email: '',
 				password: '',
 				isLoading: false,
-				generalError: ''
 			}
 		},
 		computed: {
 			redirectPath: function() {
-				return this.$route.query.redirect ? this.$route.query.redirect : '/';
+				return (typeof this.$route.query.redirect !== 'undefined')
+					? this.$route.query.redirect
+					: '/';
+			},
+			query: function() {
+				return this.redirectPath != '/' ? '?redirect=' + this.redirectPath : null;
+			},
+			loginURL: function() {
+				return this.query ? '/login' + this.query : '/login';
 			}
 		},
 		methods: {
@@ -63,24 +70,14 @@
 						password: this.password,
 					})
 					.then(response => {
-						console.log(response);
 						this.$store.state.user = response.data
 						this.$router.push(this.redirectPath);
 					})
 					.catch(error => {
-						// check for 422, 429
-						const errorResponse = error.response.data.errors;
- 
-						if (errorResponse !== undefined) { 
-							const errors = {};
-
-							for (const property in errorResponse) {
-								errors[property] = errorResponse[property][0];
-							}
-
-							this.errors = errors;
-						}else {
-							this.generalError = 'Something went wrong. Try again.';
+						if (error.response.data.errors != undefined) {
+							this.setAlerts(error.response.data.errors);
+						} else {
+							this.setAlerts({error: 'Something went wrong. Try again.'});
 						}
 					})
 					.then(() => {
@@ -89,28 +86,39 @@
 
 				this.isLoading = true;
 			},
+			setAlerts: function(alerts) {
+				const newAlerts = {};
+
+				for (const property in alerts) {
+					if (typeof alerts[property] === 'object') {
+						newAlerts[property] = alerts[property][0];
+					} else {
+						newAlerts[property] = alerts[property];
+					}
+				}
+
+				this.alerts = newAlerts;
+			},
 			isFormValid: function() {
-				let errors = {};
+				const newAlerts = {};
 				let isFormValid = true;
 
-				this.errors = {};
-
 				if (this.name.length == 0) {
-					errors['name'] = 'Enter your name.';
+					newAlerts.name = 'Enter your name.';
 					isFormValid = false;
 				}
 
 				if (this.email.length == 0) {
-					errors['email'] = 'Enter a valid email address';
+					newAlerts.email = 'Enter a valid email address.';
 					isFormValid = false;
 				}
 
 				if (this.password.length < 6) {
-					errors['password'] = 'Password must be atleast 6 characters.';
+					newAlerts.password = 'Password must be at least 6 characters.';
 					isFormValid = false;
 				}
 
-				this.errors = errors;
+				this.setAlerts(newAlerts);
 
 				return isFormValid;
 			}

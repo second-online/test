@@ -9,6 +9,7 @@ import HostDashboard from './components/HostDashboard'
 import Login from './components/Login'
 import Register from './components/Register'
 import PasswordReset from './components/PasswordReset'
+import PasswordResetChange from './components/PasswordResetChange'
 import NotFound from './components/404'
 
 Vue.use(VueRouter)
@@ -57,6 +58,12 @@ export const router = new VueRouter({
 			path:'/password/reset',
 			name: 'password.reset',
 			component: PasswordReset,
+			meta: { guest: true }
+		},
+		{
+			path:'/password/reset/:token',
+			name: 'password.reset.change',
+			component: PasswordResetChange,
 			meta: { guest: true }
 		},
 		{

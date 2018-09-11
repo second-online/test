@@ -20,20 +20,13 @@ use App\Role;
 // 	echo 'test.....';
 // })->where('any', '.*');
 
-Auth::routes();
+//Auth::routes();
 
 // Route::get('login', function() {
 // echo 'keke';
 // 	Auth::loginUsingId(10000, true);
 // });
 
-Route::get('test', function() {
-	$user = User::find(1000);
-
-
-	var_dump(isset($x));
-
-});
 
 Route::get('jeff', function() {
 
@@ -56,8 +49,6 @@ Route::get('role', function() {
 });
 
 
-
-
 Route::group(['prefix' => 'w/api'], function() { 
 
 	Route::resource('sermons', 'SermonController')->only([
@@ -77,6 +68,10 @@ Route::group(['prefix' => 'w/api'], function() {
 
 	Route::post('logout', 'Auth\LoginController@logout');
 
+	Route::post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail');
+
+	Route::post('password/reset', 'Auth\ResetPasswordController@reset');
+
 });
 
 
@@ -89,6 +84,13 @@ Route::group(['prefix' => 'w/api/host', 'namespace' => 'Host'], function() {
 	Route::post('comments', 'CommentController@store');
 
 });
+
+
+Route::fallback('SPAController@index');
+
+// Define this route so we dont get 'password.reset' route 404 error.
+Route::get('password/reset/{token}', 'SPAController@index')->name('password.reset');
+
 
 
 
@@ -152,4 +154,3 @@ Route::group(['prefix' => 'w/api/host', 'namespace' => 'Host'], function() {
 
 
  
-Route::fallback('SPAController@index');

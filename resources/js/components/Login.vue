@@ -1,25 +1,30 @@
 <template>
 	<div>
 		<h1>Login</h1>
-		<p>{{ generalError }}</p>
+		<ul>
+			<li v-for="alert in alerts">{{ alert }}</li>
+		</ul>
 
 		<form v-on:submit.prevent="login">
 			<input
-				v-bind:class="{ error: errors.email }"
+				v-bind:class="{ error: alerts.email }"
 				v-model="email"
 				type="text"
 				placeholder="email"
-			> {{ errors.email }}
+			>
 			<input
-				v-bind:class="{ error: errors.password }"
+				v-bind:class="{ error: alerts.password }"
 				v-model="password"
 				type="password"
 				placeholder="password"
-			> {{ errors.password }}
+			>
 			<button type="submit">Login</button>
 		</form>
-		<router-link to="register" :to="{ name: 'register', query: { redirect: redirectPath } }">
+		<router-link v-bind:to="registerURL">
 			Don't have an account? Register now
+		</router-link>
+		<router-link v-bind:to="passwordResetURL">
+			Forgot password?
 		</router-link>
 	</div>
 </template>
@@ -28,16 +33,26 @@
 	export default {
 		data: function() {
 			return {
-				errors: {},
+				alerts: {},
 				email: '',
 				password: '',
-				isLoading: false,
-				generalError: ''
+				isLoading: false
 			}
 		},
 		computed: {
 			redirectPath: function() {
-				return this.$route.query.redirect ? this.$route.query.redirect : '/';
+				return (typeof this.$route.query.redirect !== 'undefined')
+					? this.$route.query.redirect
+					: '/';
+			},
+			query: function() {
+				return this.redirectPath != '/' ? '?redirect=' + this.redirectPath : null;
+			},
+			registerURL: function() {
+				return this.query ? '/register' + this.query : '/register';
+			},
+			passwordResetURL: function() {
+				return this.query ? '/password/reset' + this.query : '/password/reset';
 			}
 		},
 		methods: {
@@ -52,24 +67,14 @@
 						password: this.password,
 					})
 					.then(response => {
-						//console.log(response);
 						this.$store.state.user = response.data
 						this.$router.push(this.redirectPath);
 					})
 					.catch(error => {
-						// check for 422, 429
-						const errorResponse = error.response.data.errors;
- 
-						if (errorResponse !== undefined) { 
-							const errors = {};
-
-							for (const property in errorResponse) {
-								errors[property] = errorResponse[property][0];
-							}
-
-							this.errors = errors;
-						}else {
-							this.generalError = 'Something went wrong. Try again.';
+						if (error.response.data.errors != undefined) {
+							this.setAlerts(error.response.data.errors);
+						} else {
+							this.setAlerts({error: 'Something went wrong. Try again.'});
 						}
 					})
 					.then(() => {
@@ -78,23 +83,34 @@
 
 				this.isLoading = true;
 			},
+			setAlerts: function(alerts) {
+				const newAlerts = {};
+
+				for (const property in alerts) {
+					if (typeof alerts[property] === 'object') {
+						newAlerts[property] = alerts[property][0];
+					} else {
+						newAlerts[property] = alerts[property];
+					}
+				}
+
+				this.alerts = newAlerts;
+			},
 			isFormValid: function() {
-				let errors = {};
+				const newAlerts = {};
 				let isFormValid = true;
 
-				this.errors = {};
-
 				if (this.email.length == 0) {
-					errors['email'] = 'Enter a valid email address';
+					newAlerts.email = 'Enter a valid email address.';
 					isFormValid = false;
 				}
 
 				if (this.password.length < 6) {
-					errors['password'] = 'Password must be atleast 6 characters.';
+					newAlerts.password = 'Password must be at least 6 characters.';
 					isFormValid = false;
 				}
 
-				this.errors = errors;
+				this.setAlerts(newAlerts);
 
 				return isFormValid;
 			}
