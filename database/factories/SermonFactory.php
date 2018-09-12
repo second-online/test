@@ -9,6 +9,7 @@ $factory->define(App\Sermon::class, function (Faker $faker) {
 	        'notes' => $faker->paragraph,
 	        'speaker_id' => 1,
 	        'series_id' => 1,
-	        'youtube_id' => $faker->uuid
+	        'youtube_id' => $faker->uuid,
+	        'duration' => '00:45:12'
     ];
 });

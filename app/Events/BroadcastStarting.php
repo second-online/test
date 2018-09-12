@@ -8,9 +8,9 @@ use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 
-class BroadcastStarting implements ShouldBroadcast
+class BroadcastStarting implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -23,12 +23,23 @@ class BroadcastStarting implements ShouldBroadcast
 
     /**
      * Create a new event instance.
+     *
      * @param  array  $broadcast
      * @return void
      */
     public function __construct($broadcast)
     {
         $this->broadcast = $broadcast;
+    }
+
+    /**
+     * Get the data to broadcast.
+     *
+     * @return array
+     */
+    public function broadcastWith()
+    {
+        return $this->broadcast;
     }
 
     /**

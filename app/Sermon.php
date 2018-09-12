@@ -21,4 +21,17 @@ class Sermon extends Model
     {
         return $this->belongsTo('App\Series');
     }
+
+    /**
+     * Get the duration in seconds.
+     *
+     * @param  string  $value
+     * @return string
+     */
+    public function getDurationAttribute($value)
+    {   
+        $time = explode(':', $value);
+
+        return ($time[0] * 60 * 60) + ($time[1] * 60) + $time [2];
+    }
 }

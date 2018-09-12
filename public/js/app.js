@@ -57574,8 +57574,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 			_this.$store.state.youtubeApiReady = true;
 		};
 
-		Echo.channel('main').listen('BroadcastStarting', function (data) {
+		Echo.channel('main').listen('BroadcastOpen', function (data) {
+			console.log('broadcast open for chat');
 			console.log(data);
+			_this.showVideo = true;
+		}).listen('BroadcastStarting', function (data) {
+			console.log('broadcast starting');
+			console.log(data);
+			_this.showVideo = true;
+		}).listen('BroadcastClosed', function (data) {
+			console.log('broadcast chat is closed');
+			console.log(data);
+			_this.showVideo = false;
 		});
 	}
 });

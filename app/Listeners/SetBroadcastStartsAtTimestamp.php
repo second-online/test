@@ -5,7 +5,7 @@ namespace App\Listeners;
 use App\Events\BroadcastSaving;
 use Carbon\Carbon;
 
-class SetBroadcastTimestamp
+class SetBroadcastStartsAtTimestamp
 {
     /**
      * Create the event listener.
@@ -26,8 +26,8 @@ class SetBroadcastTimestamp
     public function handle(BroadcastSaving $event)
     {
         $broadcast = $event->broadcast;
-        $timestamp = $this->getBroadcastTimestamp($broadcast->day, $broadcast->time);
-        $event->broadcast->timestamp = $timestamp;
+        $timestamp = $this->getBroadcastStartsAtTimestamp($broadcast->day, $broadcast->time);
+        $event->broadcast->starts_at = $timestamp;
 
         return $event;
     }
@@ -39,16 +39,14 @@ class SetBroadcastTimestamp
      * @param  string  $time
      * @return string
      */
-    private function getBroadcastTimestamp($day, $time)
+    private function getBroadcastStartsAtTimestamp($day, $time)
     {
         $format = 'l H:i:s';
         $time = $day . ' ' . $time;
         $timezone = 'America/Chicago';
         $date = Carbon::createFromFormat($format, $time, $timezone);
 
-        $clonedDate = clone $date;
-
-        if ($clonedDate->addHour()->isPast()) {
+        if ($date->isPast()) {
             $date->addWeek();
         }
         

@@ -19,7 +19,7 @@ class EventServiceProvider extends ServiceProvider
             SendEmailVerificationNotification::class,
         ],
         'App\Events\BroadcastSaving' => [
-            'App\Listeners\SetBroadcastTimestamp',
+            'App\Listeners\SetBroadcastStartsAtTimestamp',
         ],
     ];
 

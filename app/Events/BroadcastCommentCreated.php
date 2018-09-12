@@ -8,10 +8,9 @@ use Illuminate\Queue\SerializesModels;
 // use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
-use Log;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 
-class BroadcastCommentCreated implements ShouldBroadcast
+class BroadcastCommentCreated implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -24,6 +23,7 @@ class BroadcastCommentCreated implements ShouldBroadcast
 
     /**
      * Create a new event instance.
+     *
      * @param  array  $comment
      * @return void
      */

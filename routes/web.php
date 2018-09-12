@@ -13,6 +13,7 @@
 
 use Carbon\Carbon;
 use App\Broadcast;
+use App\Sermon;
 use App\User;
 use App\Role;
 
@@ -93,16 +94,46 @@ Route::get('password/reset/{token}', 'SPAController@index')->name('password.rese
 
 
 
-
-
 Route::get('/schedule', function () {
 
-	$broadcasts = Broadcast::all();
+	$format = 'Y-m-d H:i';
+	$now = new Carbon();
+	$sermon = Sermon::orderBy('id', 'desc')->first();
+
+	$broadcasts = Broadcast::where('enabled', 1)->get();
 
 	foreach ($broadcasts as $broadcast) {
-		$broadcast->save();
+		// if time is opens_at == starts_at - 10 min
+		// if time is = starts_at
+		// if closes_at is in the past
+
+		$startsAt = Carbon::createFromFormat('Y-m-d H:i:s', $broadcast->starts_at);
+		$opensAt = clone $startsAt;
+		$opensAt->subMinutes(10);
+		$closesAt = clone $startsAt;
+        $closesAt->addSeconds($sermon->duration);
+        $closesAt->addMinutes(10);
+        $closesAt->second = 0;
+		
+		echo $opensAt . '<br>' . $startsAt . '<br>' . $closesAt;
+
+		die;
+
+		if ($opensAt->format($format) == $now->format($format)) {
+			// fire open event
+			//echo "open at right now" . '<br>';
+		} else if ($startsAt->format($format) == $now->format($format)) {
+			// fire broadcast starting event
+			//echo "broadcast starts now" . '<br>';
+		} else if ($closesAt->isPast()) {
+			// save broadcast so our listener can update the new timestamp
+			$broadcast->save();
+
+			// fire broadcast updated event?
+		}
 	}
-	die;
+
+die;
 
 	$broadcasts = Broadcast::all();
 	$schedule = collect();
@@ -139,16 +170,6 @@ die;
 
 return;
 
-	$broadcasts = Broadcast::all();
-
-	foreach ($broadcasts as $broadcast) {
-
-		echo $broadcast->next_gathering;
-		return;
-
-	}
-
-	return response()->json($broadcasts);
 });
 
 

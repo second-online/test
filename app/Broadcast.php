@@ -15,6 +15,16 @@ class Broadcast extends Model
     protected $dispatchesEvents = [
         'saving' => BroadcastSaving::class
     ];
+
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'enabled', 'created_at', 'updated_at',
+    ];
+
     /**
      * The attributes that are mass assignable.
      *
@@ -32,5 +42,15 @@ class Broadcast extends Model
         return $this->hasMany('App\BroadcastComment');
     }
 
+    /**
+     * Get live attribute.
+     *
+     * @param  int  $value
+     * @return boolean
+     */
+    public function getLiveAttribute($value)
+    {
+        return $value ? true : false;
+    }
 
 }

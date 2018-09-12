@@ -22,9 +22,21 @@
 	        }
 
 			Echo.channel('main')
-				.listen('BroadcastStarting', data => {
+				.listen('BroadcastOpen', data => {
+					console.log('broadcast open for chat');
 					console.log(data);
-			});
+					this.showVideo = true;
+				})
+				.listen('BroadcastStarting', data => {
+					console.log('broadcast starting');
+					console.log(data);
+					this.showVideo = true;
+				})
+				.listen('BroadcastClosed', data => {
+					console.log('broadcast chat is closed');
+					console.log(data);
+					this.showVideo = false;
+				});
 	    }
 	}
 </script>

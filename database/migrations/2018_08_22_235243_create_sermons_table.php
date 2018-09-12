@@ -21,6 +21,7 @@ class CreateSermonsTable extends Migration
             $table->string('youtube_id')->unique();
             $table->integer('speaker_id')->unsigned();
             $table->integer('series_id')->unsigned()->nullable();
+            $table->time('duration');
             $table->timestamps();
 
             $table->foreign('speaker_id')->references('id')->on('speakers');
