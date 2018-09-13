@@ -16,7 +16,7 @@ class BroadcastCommentController extends Controller
      */
     public function __construct()
     {
-        $this->middleware(['auth', 'ajax']);
+        $this->middleware(['auth']);
     }
 
     /**
