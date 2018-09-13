@@ -16,6 +16,9 @@
 
 <script>
 	export default {
+		props: {
+			previousComments: Array
+		},
 		data: function() {
 			return {
 				comments: [],
@@ -72,10 +75,9 @@
 			}
 		},
 		created: function() {
-			console.log('host chat created');
+			this.comments.push(...this.previousComments);
 		},
 		mounted: function() {
-			console.log('host chat mounted');
 
 			window.Echo.connector.pusher.config.auth.headers['X-XSRF-TOKEN'] = decodeURIComponent(document.cookie.split('=')[1]);
 

@@ -17,7 +17,7 @@ class SPAController extends Controller
     	$user = Auth::user();
 
     	if (!is_null($user) && $user->isHost()) {
-	    	$user = array_add($user->toArray(), 'is_host', true); 
+	    	$user->is_host = true; 
     	}
 
         return view('layouts.app')->with('user', $user);

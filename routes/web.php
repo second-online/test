@@ -42,7 +42,7 @@ Route::get('logout', function() {
 Route::get('role', function() {
 	
 	$role = Role::find(2);
-	$user = User::find(10014);
+	$user = User::find(10000);
 	$user->roles()->attach($role);
 
 	// $user = User::find(10001);
@@ -60,8 +60,7 @@ Route::group(['prefix' => 'w/api'], function() {
 
 	Route::get('broadcasts/{broadcast}/comments', 'BroadcastCommentController@index');
 
-	Route::post('broadcasts/{broadcast}/comments', 'BroadcastCommentController@store')
-		->name('broadcasts.comments.create');
+	Route::post('broadcasts/{broadcast}/comments', 'BroadcastCommentController@store');
 
 	Route::post('login', 'Auth\LoginController@login');
 
@@ -78,7 +77,7 @@ Route::group(['prefix' => 'w/api'], function() {
 
 Route::group(['prefix' => 'w/api/host', 'namespace' => 'Host'], function() { 
  	
- 	Route::get('authorize', 'AuthorizeController@check');
+ 	// Route::get('authorize', 'AuthorizeController@check');
 
 	Route::get('dashboard', 'DashboardController@index');
 
@@ -92,6 +91,22 @@ Route::fallback('SPAController@index');
 // Define this route so we dont get 'password.reset' route 404 error.
 Route::get('password/reset/{token}', 'SPAController@index')->name('password.reset');
 
+
+Route::get('test', function() {
+
+        $now = Carbon::now();
+
+        $broadcasts = Broadcast::where('enabled', 1)
+            ->orderBy('starts_at')
+            ->get();
+
+
+
+    	return response()->json([ 
+            'now' => $now->toDateTimeString(),
+            'schedule' => $broadcasts,
+        ]);
+});
 
 
 Route::get('/schedule', function () {

@@ -33,6 +33,16 @@ class BroadcastClosed implements ShouldBroadcastNow
     }
 
     /**
+     * Get the data to broadcast.
+     *
+     * @return array
+     */
+    public function broadcastWith()
+    {
+        return $this->broadcast;
+    }
+    
+    /**
      * Get the channels the event should broadcast on.
      *
      * @return \Illuminate\Broadcasting\Channel|array

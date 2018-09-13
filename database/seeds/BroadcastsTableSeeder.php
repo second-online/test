@@ -45,7 +45,10 @@ class BroadcastsTableSeeder extends Seeder
                 ['name' => 'Tuesday 11:00pm', 'day' => 'tuesday', 'time' => '23:00:00'],
                 ['name' => 'Wednesday 4:40am', 'day' => 'wednesday', 'time' => '04:40:00'],
                 ['name' => 'Wednesday 5:00am', 'day' => 'wednesday', 'time' => '05:00:00'],
-                ['name' => 'Wednesday 7:51am', 'day' => 'wednesday', 'time' => '07:51:00'],
+                ['name' => 'Wednesday 8:00pm', 'day' => 'wednesday', 'time' => '20:00:00'],
+                ['name' => 'Thursday 6:57am', 'day' => 'thursday', 'time' => '06:57:00'],
+                ['name' => 'Thursday 5:26am', 'day' => 'thursday', 'time' => '05:26:00'],
+
             ];
 
     		foreach($broadcasts as $broadcast) {

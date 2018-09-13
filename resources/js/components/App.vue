@@ -1,6 +1,6 @@
 <template>
 	<div style="height: 100%;">
-		<router-view></router-view>
+		<router-view ref="master"></router-view>
 		<div v-if="showVideo" class="popup-video"></div>
 	</div>
 </template>
@@ -13,7 +13,22 @@
 			}
 		},
 		methods: {
-
+		    broadcastOpen: function(broadcast) {
+		    	if (this.$refs.master.$options.name === 'host-dashboard') {
+		    		this.$refs.master.loadBroadcastChat(broadcast);
+		    		console.log(broadcast);
+		    	}
+		    },
+		    broadcastStarting: function(broadcast) {
+		    	if (this.$refs.master.$options.name === 'host-dashboard') {
+		    		this.$refs.master.loadBroadcastChat(broadcast);
+		    	}
+		    },
+		    broadcastClosed: function(broadcast) {
+		    	if (this.$refs.master.$options.name === 'host-dashboard') {
+		    		this.$refs.master.hideBroadcastChat(broadcast);
+		    	}
+		    }
 		},
 	    mounted: function() {
 	        // move this to seperate file?
@@ -23,20 +38,14 @@
 
 			Echo.channel('main')
 				.listen('BroadcastOpen', data => {
-					console.log('broadcast open for chat');
-					console.log(data);
-					this.showVideo = true;
+					this.broadcastOpen(data);
 				})
 				.listen('BroadcastStarting', data => {
-					console.log('broadcast starting');
-					console.log(data);
-					this.showVideo = true;
+					this.broadcastStarting(data)
 				})
 				.listen('BroadcastClosed', data => {
-					console.log('broadcast chat is closed');
-					console.log(data);
-					this.showVideo = false;
-				});
+					this.broadcastClosed(data);
+				});	
 	    }
 	}
 </script>

@@ -47,7 +47,7 @@ class SermonsTableSeeder extends Seeder
         $sermon3->youtube_id = 'MP645GgozHE';
         $sermon3->speaker()->associate($speaker);
         $sermon3->series()->associate($series);
-        $sermon3->duration = '00:40:32';
+        $sermon3->duration = '00:01:32';
         $sermon3->save();
     }
 }

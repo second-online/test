@@ -22,5 +22,13 @@ class UsersTableSeeder extends Seeder
             'email' => 'jeff@jeffhancock.com',
             'password' => bcrypt('secret'),
         ]);
+
+        $role = App\Role::find(2);
+        $userIds = [10000,10001];
+
+        foreach ($userIds as $id) {
+            $user = App\User::find($id);
+            $user->roles()->attach($role);
+        }
     }
 }

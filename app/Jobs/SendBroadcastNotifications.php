@@ -46,7 +46,7 @@ class SendBroadcastNotifications
             $closesAt = clone $startsAt;
             $closesAt->addSeconds($sermon->duration);
             // End broadcast chat 10 min after sermon ends
-            $closesAt->addMinutes(10);
+            $closesAt->addMinutes(1);
             // Set seconds to 0 so we don't just barely
             // miss a cron job cycle
             $closesAt->second = 0;

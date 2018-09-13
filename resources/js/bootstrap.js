@@ -55,3 +55,5 @@ window.Echo = new Echo({
     encrypted: true,
     authEndpoint: process.env.MIX_APP_URL + '/w/api/broadcasting/auth'
 });
+
+Window.Moment = require('moment');
