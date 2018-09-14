@@ -15,7 +15,7 @@ export const store = new Vuex.Store({
 			return state.sermons.find(sermon => sermon.id == id);	
 		},
 		isUserAuthenticated: state => {
-			return (state.user != null) ? true : false; 
+			return (state.user !== null) ? true : false; 
 		}
 	}
 });

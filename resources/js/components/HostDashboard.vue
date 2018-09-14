@@ -1,17 +1,29 @@
 <template>
-	<div id="host-page">
-		<host-chat
-			v-if="showHostChat"
-			v-bind:previousComments="hostComments"
-		/>
-		<broadcast-chat
-			v-if="showBroadcastChat"
-			v-bind:broadcastId="broadcastInProgress.id"
-		/>
+	<div class="container-fluid p-0">
+		<div class="row no-gutters">
+			<div class="col">
+				<vimeo-player
+
+				/>
+			</div>
+			<div class="col">
+				<host-chat
+					v-if="showHostChat"
+					v-bind:previousComments="hostComments"
+				/>
+			</div>
+			<div class="col">
+				<broadcast-chat
+					v-if="showBroadcastChat"
+					v-bind:broadcastId="broadcastInProgress.id"
+				/>
+			</div>
+		</div>
 	</div>
 </template>
 
 <script>
+	import VimeoPlayer from '../components/VimeoPlayer'
 	import HostChat from '../components/HostChat'
 	import BroadcastChat from '../components/BroadcastChat'
 
@@ -28,6 +40,7 @@
 			}
 		},
 		components: {
+			VimeoPlayer,
 			HostChat,
 			BroadcastChat
 		},
@@ -51,16 +64,16 @@
 				this.hostComments = data.host_comments;
 				this.showHostChat = true;
 
-				// const nows = Window.Moment.utc('2018-09-13 09:51:00');
-				// const broadcast = Window.Moment.utc('2018-09-13 10:00:00').subtract(10, 'minutes');
+				// const nows = Moment.utc('2018-09-13 09:51:00');
+				// const broadcast = Moment.utc('2018-09-13 10:00:00').subtract(10, 'minutes');
 				// console.log(broadcast.diff(nows));
 				// console.log(broadcast - nows);
 				// return;
 
-				const now = Window.Moment.utc(this.now);
+				const now = Moment.utc(this.now);
 
 				const inProgressBroadcast = this.broadcasts.find(function(broadcast) {
-					const startsAt = Window.Moment.utc(broadcast.starts_at).subtract(10, 'minutes');
+					const startsAt = Moment.utc(broadcast.starts_at).subtract(10, 'minutes');
 
 					return startsAt.diff(now) <= 0;
 				});
@@ -80,7 +93,7 @@
 				console.log('hideBroadcastChat');
 			}
 		},
-		created: function() {
+		mounted: function() {
 
 		}
 	}

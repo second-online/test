@@ -1,16 +1,14 @@
 <template>
-	<div>
-		<div class="comments-section2">
-			<span>{{ hosts.length }} hosts in here</span>
-			<div v-for="comment in comments">
-				<span class="comments-username">{{ comment.user.name }}</span>
-				<span>{{ comment.text }}</span>
-			</div>
-			<!-- avoid double enter with a sending flag -->
-			<form id="host-comment-form" v-on:submit.prevent="submitComment">
-				<input type="text" placeholder="Write a comment.." v-model="newComment">
-			</form>
+	<div class="comments-section">
+		<span>{{ hosts.length }} hosts in here</span>
+		<div v-for="comment in comments">
+			<span class="comments-username">{{ comment.user.name }}</span>
+			<span>{{ comment.text }}</span>
 		</div>
+		<!-- avoid double enter with a sending flag -->
+		<form id="host-comment-form" v-on:submit.prevent="submitComment">
+			<input type="text" placeholder="Write a comment.." v-model="newComment">
+		</form>
 	</div>
 </template>
 

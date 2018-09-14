@@ -10,8 +10,9 @@
     <title>@yield('title')</title>
 
     <!-- Styles -->
-    <link href="{{ asset('css/all.css') }}" rel="stylesheet">
-
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    {{-- <link href="{{ asset('css/all.css') }}" rel="stylesheet"> --}}
+    
     <script type="text/javascript">
         window.AppUser = @if(isset($user)) @json($user); @else null; @endif
     </script>
@@ -20,6 +21,6 @@
     <div id="app"></div>
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
-    <script src="https://www.youtube.com/iframe_api"></script>
+    {{-- <script src="https://www.youtube.com/iframe_api"></script> --}}
 </body>
 </html>

@@ -1,4 +1,7 @@
 
+import Echo from 'laravel-echo'
+import Vimeo from '@vimeo/player'
+
 // window._ = require('lodash');
 
 // window.Popper = require('popper.js').default;
@@ -45,7 +48,6 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
  * allows your team to easily build robust real-time web applications.
  */
 
-import Echo from 'laravel-echo'
 
 window.Pusher = require('pusher-js');
 
@@ -57,4 +59,6 @@ window.Echo = new Echo({
     authEndpoint: process.env.MIX_APP_URL + '/w/api/broadcasting/auth'
 });
 
-Window.Moment = require('moment');
+window.Vimeo = Vimeo;
+
+window.Moment = require('moment');

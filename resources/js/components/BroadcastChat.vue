@@ -1,16 +1,14 @@
 <template>
-	<div>
-		<div class="comments-section">
-			<div v-for="comment in comments">
-				<span class="comments-username">{{ comment.user.name }}</span>
-				<span>{{ comment.text }}</span>
-			</div>
-			<!-- avoid double enter with a sending flag -->
-			<form v-if="isUserAuthenticated" id="broadcast-comment-form" v-on:submit.prevent="submitComment">
-				<input type="text" placeholder="Write a comment.." v-model="newComment">
-			</form>
-			<div v-else v-on:click="login">Login to chat.</div>
+	<div class="comments-section">
+		<div v-for="comment in comments">
+			<span class="comments-username">{{ comment.user.name }}</span>
+			<span>{{ comment.text }}</span>
 		</div>
+		<!-- avoid double enter with a sending flag -->
+		<form v-if="isUserAuthenticated" id="broadcast-comment-form" v-on:submit.prevent="submitComment">
+			<input type="text" placeholder="Write a comment.." v-model="newComment">
+		</form>
+		<div v-else v-on:click="login">Login to chat.</div>
 	</div>
 </template>
 

@@ -1,5 +1,5 @@
 <template>
-	<div style="height: 100%;">
+	<div>
 		<router-view ref="master"></router-view>
 		<div v-if="showVideo" class="popup-video"></div>
 	</div>
@@ -45,7 +45,7 @@
 				})
 				.listen('BroadcastClosed', data => {
 					this.broadcastClosed(data);
-				});	
+				});
 	    }
 	}
 </script>
