@@ -1,13 +1,26 @@
 <template>
-	<div class="comments-section">
-		<span>{{ hosts.length }} hosts in here</span>
-		<div v-for="comment in comments">
-			<span class="comments-username">{{ comment.user.name }}</span>
-			<span>{{ comment.text }}</span>
-		</div>
-		<!-- avoid double enter with a sending flag -->
-		<form id="host-comment-form" v-on:submit.prevent="submitComment">
-			<input type="text" placeholder="Write a comment.." v-model="newComment">
+	<div class="d-flex flex-column h-100">
+		<!-- <span>{{ hosts.length }} hosts in here</span> -->
+		<div class="flex-grow-1 overflow-y" style="background: #e8e8e8">
+			<div
+				style="padding: 15px 40px; word-break: break-all"
+				v-for="comment in comments"
+			>
+				<span class="d-block"><b>{{ comment.user.name }}</b></span>
+				<span class="d-block">{{ comment.text }}</span>
+			</div>
+		</div> 
+
+		<form
+			class="comment-form flex-shrink-0"
+			v-on:keydown.enter="submitComment"
+		>	
+			<textarea
+				class="d-block w-100 h-100 p-0 border-0"
+				type="text"
+				placeholder="Write a comment.."
+				v-model="newComment">
+			></textarea>
 		</form>
 	</div>
 </template>
@@ -33,7 +46,8 @@
 			}
 		},
 		methods: {
-			submitComment: function() {
+			submitComment: function(e) {
+
 				if (this.isLoading) { return; }
 
 				if (! this.isUserAuthenticated) { return; }
@@ -70,6 +84,8 @@
 				this.cachedComment = this.newComment;
 				this.newComment = '';
 				this.isLoading = true;
+
+				e.preventDefault();
 			}
 		},
 		created: function() {

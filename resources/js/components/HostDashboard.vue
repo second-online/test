@@ -1,18 +1,18 @@
 <template>
-	<div class="container-fluid p-0">
-		<div class="row no-gutters">
-			<div class="col">
+	<div class="container-fluid p-0 h-100">
+		<div class="row no-gutters h-100">
+			<div class="col h-100">
 				<vimeo-player
 
 				/>
 			</div>
-			<div class="col">
+			<div class="col h-100">
 				<host-chat
 					v-if="showHostChat"
 					v-bind:previousComments="hostComments"
 				/>
 			</div>
-			<div class="col">
+			<div class="col h-100">
 				<broadcast-chat
 					v-if="showBroadcastChat"
 					v-bind:broadcastId="broadcastInProgress.id"

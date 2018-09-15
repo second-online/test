@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="h-100">
 		<router-view ref="master"></router-view>
 		<div v-if="showVideo" class="popup-video"></div>
 	</div>

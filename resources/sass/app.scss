@@ -1,9 +1,6 @@
 // Variables
 @import 'variables';
 
-// Bootstrap
-// @import '~bootstrap/scss/bootstrap';
-
 // Required
 @import "~bootstrap/scss/functions";
 @import "~bootstrap/scss/variables";
@@ -11,10 +8,31 @@
 
 // Optional
 @import "~bootstrap/scss/reboot";
-@import "~bootstrap/scss/images";
 @import "~bootstrap/scss/grid";
+@import "~bootstrap/scss/images";
+@import "~bootstrap/scss/utilities/display";
+@import "~bootstrap/scss/utilities/flex";
+@import "~bootstrap/scss/utilities/sizing";
 @import "~bootstrap/scss/utilities/spacing";
 @import "~bootstrap/scss/utilities/embed";
+@import "~bootstrap/scss/utilities/borders";
+@import "~bootstrap/scss/utilities/text";
 
 // Custom styles
-@import 'styles';
+//@import 'styles';
+
+html, body {
+	height: 100%;
+}
+
+.comment-form {
+	height: 80px;
+}
+
+textarea {
+	resize: none;
+}
+
+.overflow-y {
+	overflow-y: auto;
+}

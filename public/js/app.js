@@ -42286,6 +42286,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
+    { staticClass: "h-100" },
     [
       _c("router-view", { ref: "master" }),
       _vm._v(" "),
@@ -47141,6 +47142,19 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
 	props: {
@@ -47162,7 +47176,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 		}
 	},
 	methods: {
-		submitComment: function submitComment() {
+		submitComment: function submitComment(e) {
 			var _this = this;
 
 			if (this.isLoading) {
@@ -47201,6 +47215,8 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 			this.cachedComment = this.newComment;
 			this.newComment = '';
 			this.isLoading = true;
+
+			e.preventDefault();
 		}
 	},
 	created: function created() {
@@ -47237,35 +47253,50 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "comments-section" },
-    [
-      _c("span", [_vm._v(_vm._s(_vm.hosts.length) + " hosts in here")]),
-      _vm._v(" "),
+  return _c("div", { staticClass: "d-flex flex-column h-100" }, [
+    _c(
+      "div",
+      {
+        staticClass: "flex-grow-1 overflow-y",
+        staticStyle: { background: "#e8e8e8" }
+      },
       _vm._l(_vm.comments, function(comment) {
-        return _c("div", [
-          _c("span", { staticClass: "comments-username" }, [
-            _vm._v(_vm._s(comment.user.name))
-          ]),
-          _vm._v(" "),
-          _c("span", [_vm._v(_vm._s(comment.text))])
-        ])
-      }),
-      _vm._v(" "),
-      _c(
-        "form",
-        {
-          attrs: { id: "host-comment-form" },
-          on: {
-            submit: function($event) {
-              $event.preventDefault()
-              return _vm.submitComment($event)
+        return _c(
+          "div",
+          { staticStyle: { padding: "15px 40px", "word-break": "break-all" } },
+          [
+            _c("span", { staticClass: "d-block" }, [
+              _c("b", [_vm._v(_vm._s(comment.user.name))])
+            ]),
+            _vm._v(" "),
+            _c("span", { staticClass: "d-block" }, [
+              _vm._v(_vm._s(comment.text))
+            ])
+          ]
+        )
+      })
+    ),
+    _vm._v(" "),
+    _c(
+      "form",
+      {
+        staticClass: "comment-form flex-shrink-0",
+        on: {
+          keydown: function($event) {
+            if (
+              !("button" in $event) &&
+              _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
+            ) {
+              return null
             }
+            return _vm.submitComment($event)
           }
-        },
-        [
-          _c("input", {
+        }
+      },
+      [
+        _c(
+          "textarea",
+          {
             directives: [
               {
                 name: "model",
@@ -47274,6 +47305,7 @@ var render = function() {
                 expression: "newComment"
               }
             ],
+            staticClass: "d-block w-100 h-100 p-0 border-0",
             attrs: { type: "text", placeholder: "Write a comment.." },
             domProps: { value: _vm.newComment },
             on: {
@@ -47284,12 +47316,12 @@ var render = function() {
                 _vm.newComment = $event.target.value
               }
             }
-          })
-        ]
-      )
-    ],
-    2
-  )
+          },
+          [_vm._v("\t\t>")]
+        )
+      ]
+    )
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -47309,13 +47341,13 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "container-fluid p-0" }, [
-    _c("div", { staticClass: "row no-gutters" }, [
-      _c("div", { staticClass: "col" }, [_c("vimeo-player")], 1),
+  return _c("div", { staticClass: "container-fluid p-0 h-100" }, [
+    _c("div", { staticClass: "row no-gutters h-100" }, [
+      _c("div", { staticClass: "col h-100" }, [_c("vimeo-player")], 1),
       _vm._v(" "),
       _c(
         "div",
-        { staticClass: "col" },
+        { staticClass: "col h-100" },
         [
           _vm.showHostChat
             ? _c("host-chat", { attrs: { previousComments: _vm.hostComments } })
@@ -47326,7 +47358,7 @@ var render = function() {
       _vm._v(" "),
       _c(
         "div",
-        { staticClass: "col" },
+        { staticClass: "col h-100" },
         [
           _vm.showBroadcastChat
             ? _c("broadcast-chat", {

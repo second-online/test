@@ -19,8 +19,7 @@
 </head>
 <body>
     <div id="app"></div>
-    <!-- Scripts -->
+    
     <script src="{{ asset('js/app.js') }}"></script>
-    {{-- <script src="https://www.youtube.com/iframe_api"></script> --}}
 </body>
 </html>
