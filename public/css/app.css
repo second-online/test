@@ -4900,11 +4900,15 @@ body {
 }
 
 .comment-form {
-  height: 80px;
+  padding: 10px 40px;
+  min-height: 80px;
+  background: #fff;
 }
 
 textarea {
+  height: auto;
   resize: none;
+  outline: none;
 }
 
 .overflow-y {

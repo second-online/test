@@ -72,13 +72,27 @@
 			},
 			login: function() {
 				this.$router.push({ name: 'login', query: { redirect: this.$route.path } });
-			}
+			},
 		},
 		mounted: function() {
 			Echo.channel('broadcast.chat.' + this.broadcastId)
 				.listen('BroadcastCommentCreated', comment => {
 					this.comments.push(comment)
 			});
+
+			for (let i = 0; i < 10000; i++) {
+				const comment = {
+					text: 'this.newComment',
+					user: this.$store.state.user
+				};
+
+				this.comments.push(comment)
+			}
+		},
+		beforeDestroy: function() {
+			Echo.leave('broadcast.chat.' + this.broadcastId);
+
+			// this.comments = null;
 		}
 	}
 </script>

@@ -14,38 +14,33 @@
 		},
 		methods: {
 		    broadcastOpen: function(broadcast) {
-		    	if (this.$refs.master.$options.name === 'host-dashboard') {
-		    		this.$refs.master.loadBroadcastChat(broadcast);
-		    		console.log(broadcast);
-		    	}
+		    	// if (this.$refs.master.$options.name === 'host-dashboard') {
+		    	// 	this.$refs.master.loadBroadcastChat(broadcast);
+		    	// 	console.log(broadcast);
+		    	// }
 		    },
 		    broadcastStarting: function(broadcast) {
-		    	if (this.$refs.master.$options.name === 'host-dashboard') {
-		    		this.$refs.master.loadBroadcastChat(broadcast);
-		    	}
+		    	// if (this.$refs.master.$options.name === 'host-dashboard') {
+		    	// 	this.$refs.master.loadBroadcastChat(broadcast);
+		    	// }
 		    },
 		    broadcastClosed: function(broadcast) {
-		    	if (this.$refs.master.$options.name === 'host-dashboard') {
-		    		this.$refs.master.hideBroadcastChat(broadcast);
-		    	}
+		    	// if (this.$refs.master.$options.name === 'host-dashboard') {
+		    	// 	this.$refs.master.hideBroadcastChat(broadcast);
+		    	// }
 		    }
 		},
 	    mounted: function() {
-	        // move this to seperate file?
-	        window.onYouTubeIframeAPIReady = () => {
-	            this.$store.state.youtubeApiReady = true;       
-	        }
-
-			Echo.channel('main')
-				.listen('BroadcastOpen', data => {
-					this.broadcastOpen(data);
-				})
-				.listen('BroadcastStarting', data => {
-					this.broadcastStarting(data)
-				})
-				.listen('BroadcastClosed', data => {
-					this.broadcastClosed(data);
-				});
+			// Echo.channel('main')
+			// 	.listen('BroadcastOpen', data => {
+			// 		this.broadcastOpen(data);
+			// 	})
+			// 	.listen('BroadcastStarting', data => {
+			// 		this.broadcastStarting(data)
+			// 	})
+			// 	.listen('BroadcastClosed', data => {
+			// 		this.broadcastClosed(data);
+			// 	});
 	    }
 	}
 </script>

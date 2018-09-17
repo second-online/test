@@ -3,7 +3,7 @@
 		<!-- <span>{{ hosts.length }} hosts in here</span> -->
 		<div class="flex-grow-1 overflow-y" style="background: #e8e8e8">
 			<div
-				style="padding: 15px 40px; word-break: break-all"
+				style="padding: 10px 40px; word-break: break-all"
 				v-for="comment in comments"
 			>
 				<span class="d-block"><b>{{ comment.user.name }}</b></span>
@@ -11,24 +11,39 @@
 			</div>
 		</div> 
 
-		<form
-			class="comment-form flex-shrink-0"
-			v-on:keydown.enter="submitComment"
-		>	
+<!-- 		<div
+			class="d-flex align-items-center flex-shrink-0 comment-form"
+		>
+			<input-editable
+				v-bind:value="newComment"
+				v-on:input="newComment = $event"
+				v-on:key-down-enter="submitComment"
+			/>
+		</div> -->
+		
+		<form class="d-flex align-items-center flex-shrink-0 comment-form">	
 			<textarea
-				class="d-block w-100 h-100 p-0 border-0"
-				type="text"
+				id="comment-textarea"
+				class="d-block w-100 p-0 border-0"
 				placeholder="Write a comment.."
-				v-model="newComment">
+				v-on:input="resizeTextarea"
+				v-model="newComment"
+				v-on:keydown.enter="submitComment"
+				rows="1"
 			></textarea>
 		</form>
 	</div>
 </template>
 
 <script>
+	import InputEditable from '../components/InputEditable'
+
 	export default {
 		props: {
 			previousComments: Array
+		},
+		components: {
+			InputEditable
 		},
 		data: function() {
 			return {
@@ -37,7 +52,7 @@
 				newCommentId: 1,
 				cachedComment: '',
 				isLoading: false,
-				hosts: []
+				hosts: [],
 			}
 		},
 		computed: {
@@ -46,6 +61,13 @@
 			}
 		},
 		methods: {
+			resizeTextarea: function() {
+				// document.getElementById("comment-textarea").setAttribute('rows', '5');
+				// return;
+				const scrollHeight = document.getElementById("comment-textarea").scrollHeight;
+				document.getElementById("comment-textarea").style.height = scrollHeight + 'px';
+				console.log(document.getElementById("comment-textarea").scrollHeight)
+			},
 			submitComment: function(e) {
 
 				if (this.isLoading) { return; }
@@ -90,10 +112,18 @@
 		},
 		created: function() {
 			this.comments.push(...this.previousComments);
+
+			// for (let i = 0; i < 10000; i++) {
+			// 	const comment = {
+			// 		text: 'this.newComment',
+			// 		user: this.$store.state.user
+			// 	};
+			// 	this.comments.push(comment)
+			// }
 		},
 		mounted: function() {
-
-			window.Echo.connector.pusher.config.auth.headers['X-XSRF-TOKEN'] = decodeURIComponent(document.cookie.split('=')[1]);
+			// I need to finish the code to pull XSRF cookie. 
+			Echo.connector.pusher.config.auth.headers['X-XSRF-TOKEN'] = decodeURIComponent(document.cookie.split('=')[1]);
 
 			Echo.join('host.chat')
 			    .here((users) => {
@@ -110,6 +140,9 @@
 			    .listen('HostCommentCreated', (comment) => {
 			        this.comments.push(comment);
 			    });
+		},
+		beforeDestroy: function() {
+			Echo.leave('host.chat');
 		}
 	}
 </script>

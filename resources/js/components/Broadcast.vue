@@ -6,7 +6,7 @@
 				v-if="showVideo"
 				v-on:video-ended="videoEnded"
 				v-bind:video-id="broadcast.sermon.youtube_id"
-			/>
+			/> 
 		</div>
 		<broadcast-chat
 			v-if="showChat"

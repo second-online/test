@@ -2,9 +2,8 @@
 	<div class="container-fluid p-0 h-100">
 		<div class="row no-gutters h-100">
 			<div class="col h-100">
-				<vimeo-player
-
-				/>
+				<!-- <vimeo-player/> -->
+				<router-link v-bind:to="{ name: 'home' }">Home</router-link>
 			</div>
 			<div class="col h-100">
 				<host-chat
@@ -28,7 +27,7 @@
 	import BroadcastChat from '../components/BroadcastChat'
 
 	export default {
-		name: 'host-dashboard',
+		//name: 'host-dashboard',
 		data: function() {
 			return {
 				now: '',
@@ -83,18 +82,26 @@
 				}
 			},
 			loadBroadcastChat: function(broadcast) {
-				this.broadcastInProgress = broadcast;
-				this.showBroadcastChat = true;
-				console.log('loadBroadcastChat');
-				console.log(broadcast);
+				// this.broadcastInProgress = broadcast;
+				// this.showBroadcastChat = true;
+				// console.log('loadBroadcastChat');
+				// console.log(broadcast);
 			},
 			hideBroadcastChat: function(broadcast) {
-				this.showBroadcastChat = false;
-				console.log('hideBroadcastChat');
+				// this.showBroadcastChat = false;
+				// console.log('hideBroadcastChat');
 			}
 		},
 		mounted: function() {
 
+		},
+		beforeDestroy: function() {
+			// this.now= null,
+			// this.broadcasts= null,
+			// this.broadcastInProgress= null,
+			// this.hostComments= null,
+			// this.showHostChat= null,
+			// this.showBroadcastChat= null
 		}
 	}
 </script>

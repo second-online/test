@@ -42242,37 +42242,33 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 	},
 	methods: {
 		broadcastOpen: function broadcastOpen(broadcast) {
-			if (this.$refs.master.$options.name === 'host-dashboard') {
-				this.$refs.master.loadBroadcastChat(broadcast);
-				console.log(broadcast);
-			}
+			// if (this.$refs.master.$options.name === 'host-dashboard') {
+			// 	this.$refs.master.loadBroadcastChat(broadcast);
+			// 	console.log(broadcast);
+			// }
 		},
 		broadcastStarting: function broadcastStarting(broadcast) {
-			if (this.$refs.master.$options.name === 'host-dashboard') {
-				this.$refs.master.loadBroadcastChat(broadcast);
-			}
+			// if (this.$refs.master.$options.name === 'host-dashboard') {
+			// 	this.$refs.master.loadBroadcastChat(broadcast);
+			// }
 		},
 		broadcastClosed: function broadcastClosed(broadcast) {
-			if (this.$refs.master.$options.name === 'host-dashboard') {
-				this.$refs.master.hideBroadcastChat(broadcast);
-			}
+			// if (this.$refs.master.$options.name === 'host-dashboard') {
+			// 	this.$refs.master.hideBroadcastChat(broadcast);
+			// }
 		}
 	},
 	mounted: function mounted() {
-		var _this = this;
-
-		// move this to seperate file?
-		window.onYouTubeIframeAPIReady = function () {
-			_this.$store.state.youtubeApiReady = true;
-		};
-
-		Echo.channel('main').listen('BroadcastOpen', function (data) {
-			_this.broadcastOpen(data);
-		}).listen('BroadcastStarting', function (data) {
-			_this.broadcastStarting(data);
-		}).listen('BroadcastClosed', function (data) {
-			_this.broadcastClosed(data);
-		});
+		// Echo.channel('main')
+		// 	.listen('BroadcastOpen', data => {
+		// 		this.broadcastOpen(data);
+		// 	})
+		// 	.listen('BroadcastStarting', data => {
+		// 		this.broadcastStarting(data)
+		// 	})
+		// 	.listen('BroadcastClosed', data => {
+		// 		this.broadcastClosed(data);
+		// 	});
 	}
 });
 
@@ -42323,8 +42319,7 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
 	state: {
 		user: window.AppUser,
 		schedule: [],
-		sermons: [],
-		youtubeApiReady: false
+		sermons: []
 	},
 	getters: {
 		getSermonWithId: function getSermonWithId(state) {
@@ -42335,7 +42330,7 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
 			};
 		},
 		isUserAuthenticated: function isUserAuthenticated(state) {
-			return state.user !== null ? true : false;
+			return state.user !== null;
 		}
 	}
 });
@@ -46426,6 +46421,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 		Echo.channel('broadcast.chat.' + this.broadcastId).listen('BroadcastCommentCreated', function (comment) {
 			_this2.comments.push(comment);
 		});
+
+		for (var i = 0; i < 10000; i++) {
+			var comment = {
+				text: 'this.newComment',
+				user: this.$store.state.user
+			};
+
+			this.comments.push(comment);
+		}
+	},
+	beforeDestroy: function beforeDestroy() {
+		Echo.leave('broadcast.chat.' + this.broadcastId);
+
+		// this.comments = null;
 	}
 });
 
@@ -46906,14 +46915,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
 
 
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-	name: 'host-dashboard',
+	//name: 'host-dashboard',
 	data: function data() {
 		return {
 			now: '',
@@ -46967,17 +46975,25 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 			}
 		},
 		loadBroadcastChat: function loadBroadcastChat(broadcast) {
-			this.broadcastInProgress = broadcast;
-			this.showBroadcastChat = true;
-			console.log('loadBroadcastChat');
-			console.log(broadcast);
+			// this.broadcastInProgress = broadcast;
+			// this.showBroadcastChat = true;
+			// console.log('loadBroadcastChat');
+			// console.log(broadcast);
 		},
 		hideBroadcastChat: function hideBroadcastChat(broadcast) {
-			this.showBroadcastChat = false;
-			console.log('hideBroadcastChat');
+			// this.showBroadcastChat = false;
+			// console.log('hideBroadcastChat');
 		}
 	},
-	mounted: function mounted() {}
+	mounted: function mounted() {},
+	beforeDestroy: function beforeDestroy() {
+		// this.now= null,
+		// this.broadcasts= null,
+		// this.broadcastInProgress= null,
+		// this.hostComments= null,
+		// this.showHostChat= null,
+		// this.showBroadcastChat= null
+	}
 });
 
 /***/ }),
@@ -47126,6 +47142,8 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_InputEditable__ = __webpack_require__(230);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_InputEditable___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_InputEditable__);
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 //
@@ -47155,10 +47173,25 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
 
 /* harmony default export */ __webpack_exports__["default"] = ({
 	props: {
 		previousComments: Array
+	},
+	components: {
+		InputEditable: __WEBPACK_IMPORTED_MODULE_0__components_InputEditable___default.a
 	},
 	data: function data() {
 		return {
@@ -47176,6 +47209,13 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 		}
 	},
 	methods: {
+		resizeTextarea: function resizeTextarea() {
+			// document.getElementById("comment-textarea").setAttribute('rows', '5');
+			// return;
+			var scrollHeight = document.getElementById("comment-textarea").scrollHeight;
+			document.getElementById("comment-textarea").style.height = scrollHeight + 'px';
+			console.log(document.getElementById("comment-textarea").scrollHeight);
+		},
 		submitComment: function submitComment(e) {
 			var _this = this;
 
@@ -47223,11 +47263,20 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 		var _comments;
 
 		(_comments = this.comments).push.apply(_comments, _toConsumableArray(this.previousComments));
+
+		// for (let i = 0; i < 10000; i++) {
+		// 	const comment = {
+		// 		text: 'this.newComment',
+		// 		user: this.$store.state.user
+		// 	};
+		// 	this.comments.push(comment)
+		// }
 	},
 	mounted: function mounted() {
 		var _this2 = this;
 
-		window.Echo.connector.pusher.config.auth.headers['X-XSRF-TOKEN'] = decodeURIComponent(document.cookie.split('=')[1]);
+		// I need to finish the code to pull XSRF cookie. 
+		Echo.connector.pusher.config.auth.headers['X-XSRF-TOKEN'] = decodeURIComponent(document.cookie.split('=')[1]);
 
 		Echo.join('host.chat').here(function (users) {
 			_this2.hosts = users;
@@ -47242,6 +47291,9 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 		}).listen('HostCommentCreated', function (comment) {
 			_this2.comments.push(comment);
 		});
+	},
+	beforeDestroy: function beforeDestroy() {
+		Echo.leave('host.chat');
 	}
 });
 
@@ -47263,7 +47315,7 @@ var render = function() {
       _vm._l(_vm.comments, function(comment) {
         return _c(
           "div",
-          { staticStyle: { padding: "15px 40px", "word-break": "break-all" } },
+          { staticStyle: { padding: "10px 40px", "word-break": "break-all" } },
           [
             _c("span", { staticClass: "d-block" }, [
               _c("b", [_vm._v(_vm._s(comment.user.name))])
@@ -47279,46 +47331,45 @@ var render = function() {
     _vm._v(" "),
     _c(
       "form",
-      {
-        staticClass: "comment-form flex-shrink-0",
-        on: {
-          keydown: function($event) {
-            if (
-              !("button" in $event) &&
-              _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
-            ) {
-              return null
-            }
-            return _vm.submitComment($event)
-          }
-        }
-      },
+      { staticClass: "d-flex align-items-center flex-shrink-0 comment-form" },
       [
-        _c(
-          "textarea",
-          {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.newComment,
-                expression: "newComment"
-              }
-            ],
-            staticClass: "d-block w-100 h-100 p-0 border-0",
-            attrs: { type: "text", placeholder: "Write a comment.." },
-            domProps: { value: _vm.newComment },
-            on: {
-              input: function($event) {
+        _c("textarea", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.newComment,
+              expression: "newComment"
+            }
+          ],
+          staticClass: "d-block w-100 p-0 border-0",
+          attrs: {
+            id: "comment-textarea",
+            placeholder: "Write a comment..",
+            rows: "1"
+          },
+          domProps: { value: _vm.newComment },
+          on: {
+            input: [
+              function($event) {
                 if ($event.target.composing) {
                   return
                 }
                 _vm.newComment = $event.target.value
+              },
+              _vm.resizeTextarea
+            ],
+            keydown: function($event) {
+              if (
+                !("button" in $event) &&
+                _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
+              ) {
+                return null
               }
+              return _vm.submitComment($event)
             }
-          },
-          [_vm._v("\t\t>")]
-        )
+          }
+        })
       ]
     )
   ])
@@ -47343,7 +47394,16 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container-fluid p-0 h-100" }, [
     _c("div", { staticClass: "row no-gutters h-100" }, [
-      _c("div", { staticClass: "col h-100" }, [_c("vimeo-player")], 1),
+      _c(
+        "div",
+        { staticClass: "col h-100" },
+        [
+          _c("router-link", { attrs: { to: { name: "home" } } }, [
+            _vm._v("Home")
+          ])
+        ],
+        1
+      ),
       _vm._v(" "),
       _c(
         "div",
@@ -48745,6 +48805,138 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 224 */,
+/* 225 */,
+/* 226 */,
+/* 227 */,
+/* 228 */,
+/* 229 */,
+/* 230 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(1)
+/* script */
+var __vue_script__ = __webpack_require__(231)
+/* template */
+var __vue_template__ = __webpack_require__(232)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/components/InputEditable.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-eee2f61a", Component.options)
+  } else {
+    hotAPI.reload("data-v-eee2f61a", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 231 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: {
+    value: String
+  },
+  watch: {
+    value: function value(newVal, oldVal) {
+      if (newVal.length == 0) {
+        this.$refs.input.innerText = '';
+      }
+    }
+  },
+  methods: {
+    updateInput: function updateInput(e) {
+      this.$emit('input', e.target.innerText);
+    },
+    enterPressed: function enterPressed(e) {
+      this.$emit('key-down-enter');
+      e.preventDefault();
+    }
+  }
+});
+
+/***/ }),
+/* 232 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("span", {
+    ref: "input",
+    staticClass: "d-block",
+    attrs: {
+      contenteditable: "contenteditable",
+      placeholder: "write a comment.."
+    },
+    on: {
+      input: _vm.updateInput,
+      keydown: function($event) {
+        if (
+          !("button" in $event) &&
+          _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
+        ) {
+          return null
+        }
+        return _vm.enterPressed($event)
+      }
+    }
+  })
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-eee2f61a", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);
