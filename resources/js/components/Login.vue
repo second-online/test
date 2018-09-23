@@ -1,31 +1,44 @@
 <template>
-	<div>
-		<h1>Login</h1>
-		<ul>
-			<li v-for="alert in alerts">{{ alert }}</li>
-		</ul>
+	<div class="d-flex h-100 align-items-center justify-content-center">
+		<div class="form-page text-center">
+			<h1 class="text-center">Hello, again.</h1>
+			<ul class="mb-0 p-0 list-style-none text-left">
+				<li
+					class="mb-0 py-0 text-danger"
+					v-for="alert in alerts">{{ alert }}
+				</li>
+			</ul>
 
-		<form v-on:submit.prevent="login">
-			<input
-				v-bind:class="{ error: alerts.email }"
-				v-model="email"
-				type="text"
-				placeholder="email"
-			>
-			<input
-				v-bind:class="{ error: alerts.password }"
-				v-model="password"
-				type="password"
-				placeholder="password"
-			>
-			<button type="submit">Login</button>
-		</form>
-		<router-link v-bind:to="registerURL">
-			Don't have an account? Register now
-		</router-link>
-		<router-link v-bind:to="passwordResetURL">
-			Forgot password?
-		</router-link>
+			<form v-on:submit.prevent="login">
+				<input
+					class="mb-10 p-24 w-100"
+					v-bind:class="[ alerts.email ? 'border border-top-0 border-right-0 border-bottom-0 border-danger' : 'border-0' ]"
+					v-model="email"
+					type="text"
+					placeholder="Email"
+				>
+				<input
+					class="mb-20 p-24 w-100"
+					v-bind:class="[ alerts.password ? 'border border-top-0 border-right-0 border-bottom-0 border-danger' : 'border-0' ]"
+					v-model="password"
+					type="password"
+					placeholder="Password"
+				>
+				<router-link
+					class="d-inline-block mb-20"
+					v-bind:to="passwordResetURL">
+						Forgot password?
+				</router-link>
+				<button
+					class="mb-30 p-24 w-100 border-0 text-white bg-gray-900 font-weight-bold" 
+					type="submit"
+				>Sign in</button>
+			</form>
+<!-- 			<router-link v-bind:to="registerURL">
+				Don't have an account? Register now
+			</router-link> -->
+
+		</div>
 	</div>
 </template>
 
@@ -118,7 +131,3 @@
 		}
 	}
 </script>
-
-<style>
-	.error {border: 1px solid red;}
-</style>

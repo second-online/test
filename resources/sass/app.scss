@@ -1,15 +1,16 @@
-// Variables
-@import 'variables';
 
 // Required
 @import "~bootstrap/scss/functions";
-@import "~bootstrap/scss/variables";
 @import "~bootstrap/scss/mixins";
+// Custom Variables
+@import 'variables';
+@import "~bootstrap/scss/variables";
 
 // Optional
 @import "~bootstrap/scss/reboot";
 @import "~bootstrap/scss/grid";
 @import "~bootstrap/scss/images";
+@import "~bootstrap/scss/type";
 @import "~bootstrap/scss/utilities/display";
 @import "~bootstrap/scss/utilities/flex";
 @import "~bootstrap/scss/utilities/sizing";
@@ -17,18 +18,15 @@
 @import "~bootstrap/scss/utilities/embed";
 @import "~bootstrap/scss/utilities/borders";
 @import "~bootstrap/scss/utilities/text";
+@import "~bootstrap/scss/utilities/background";
 
-// Custom styles
-//@import 'styles';
 
 html, body {
 	height: 100%;
-}
-
-.comment-form {
-	padding: 10px 40px;
-	min-height: 80px;
-	background: #fff;
+	-moz-font-feature-settings: "ss01", "ss02";
+	-webkit-font-feature-settings: "ss01", "ss02";
+	font-feature-settings: "ss01", "ss02";
+	font-variant-numeric: slashed-zero;   
 }
 
 textarea {
@@ -39,4 +37,18 @@ textarea {
 
 .overflow-y {
 	overflow-y: auto;
+}
+
+.form-page {
+	width: 100%;
+}
+
+.list-style-none {
+	list-style: none;
+}
+
+@include media-breakpoint-up(sm) {
+	.form-page {
+		width: $spacer * 22.5;
+	}
 }

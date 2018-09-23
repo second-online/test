@@ -1,20 +1,57 @@
 
 // Body
-$body-bg: #f0f0f0;
+$body-bg: #e8e8e8;
+
 
 // Typography
-$font-family-sans-serif: "Nunito", sans-serif;
-$font-size-base: 0.9rem;
-$line-height-base: 1.6;
+$font-family-sans-serif: "Larsseit", sans-serif;
+$font-size-base: 0.875rem;
+$font-size-sm: ($font-size-base * .9285);
+$line-height-base: 1.5;
+
 
 // Colors
-$blue: #3490dc;
-$indigo: #6574cd;
-$purple: #9561e2;
-$pink: #f66D9b;
-$red: #e3342f;
-$orange: #f6993f;
-$yellow: #ffed4a;
-$green: #38c172;
-$teal: #4dc0b5;
-$cyan: #6cb2eb;
+$gray-900: #121111;
+$red: #ff0000;
+
+$theme-colors: (
+  "gray-900": $gray-900,
+  "dope-color": #f23919
+);
+
+
+// Spacing
+$spacer: 1rem;
+$spacers: ();
+$spacers: map-merge(
+  (
+    0: 0,
+    4: ($spacer * .25),
+    8: ($spacer * .5),
+    10: ($spacer * .625),
+    16: $spacer,
+    20: ($spacer * 1.25),
+    24: ($spacer * 1.5),
+    30: ($spacer * 1.875),
+    48: ($spacer * 3),
+  ),
+  $spacers
+);
+
+
+// Sizes
+$sizes: (
+	16: $spacer * 22.5,
+);
+
+
+// Fonts
+$headings-margin-bottom: ($spacer * 3);
+$headings-font-weight: 600;
+
+$h1-font-size: 1.875rem;
+
+
+// Links
+$link-color: theme-color("gray-900");
+$link-hover-color: theme-color("gray-900");
