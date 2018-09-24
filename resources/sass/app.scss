@@ -11,6 +11,7 @@
 @import "~bootstrap/scss/grid";
 @import "~bootstrap/scss/images";
 @import "~bootstrap/scss/type";
+@import "~bootstrap/scss/forms";
 @import "~bootstrap/scss/utilities/display";
 @import "~bootstrap/scss/utilities/flex";
 @import "~bootstrap/scss/utilities/sizing";
@@ -19,14 +20,18 @@
 @import "~bootstrap/scss/utilities/borders";
 @import "~bootstrap/scss/utilities/text";
 @import "~bootstrap/scss/utilities/background";
+@import "~bootstrap/scss/utilities/screenreaders";
 
 
-html, body {
+html { height: 100%; }
+
+body {
 	height: 100%;
 	-moz-font-feature-settings: "ss01", "ss02";
 	-webkit-font-feature-settings: "ss01", "ss02";
 	font-feature-settings: "ss01", "ss02";
-	font-variant-numeric: slashed-zero;   
+	font-variant-numeric: slashed-zero;
+	color: theme-color("black");
 }
 
 textarea {
@@ -35,20 +40,55 @@ textarea {
 	outline: none;
 }
 
+button:focus {
+  outline: none;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  -webkit-text-fill-color: theme-color("black");
+  // -webkit-box-shadow: 0 0 0px 1px #fff inset;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
 .overflow-y {
 	overflow-y: auto;
 }
 
-.form-page {
+.form-narrow {
 	width: 100%;
 }
 
-.list-style-none {
-	list-style: none;
-}
-
 @include media-breakpoint-up(sm) {
-	.form-page {
-		width: $spacer * 22.5;
+	.form-narrow {
+		width: $spacer * 20;
 	}
 }
+
+.border-3 {
+	border-width: 3px !important; 
+}
+
+.tiny {
+  font-size: $font-size-tiny;
+  font-weight: $font-weight-normal;
+}
+
+small,
+.small {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-normal;
+}
+
+.form-control {
+	height: auto;
+	color: theme-color("black");
+}
+

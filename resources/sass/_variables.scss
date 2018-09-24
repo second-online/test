@@ -1,25 +1,4 @@
 
-// Body
-$body-bg: #e8e8e8;
-
-
-// Typography
-$font-family-sans-serif: "Larsseit", sans-serif;
-$font-size-base: 0.875rem;
-$font-size-sm: ($font-size-base * .9285);
-$line-height-base: 1.5;
-
-
-// Colors
-$gray-900: #121111;
-$red: #ff0000;
-
-$theme-colors: (
-  "gray-900": $gray-900,
-  "dope-color": #f23919
-);
-
-
 // Spacing
 $spacer: 1rem;
 $spacers: ();
@@ -39,19 +18,51 @@ $spacers: map-merge(
 );
 
 
-// Sizes
-$sizes: (
-	16: $spacer * 22.5,
-);
+// Typography
+$font-family-sans-serif: "Larsseit", sans-serif;
+$font-size-tiny: 0.75rem;  
+$font-size-sm:   0.8125rem;
+$font-size-base: 0.875rem;
 
+$line-height-base: 1.5;
 
-// Fonts
 $headings-margin-bottom: ($spacer * 3);
 $headings-font-weight: 600;
 
 $h1-font-size: 1.875rem;
 
 
+// Colors
+$black: #121111;
+$light-grey: #eee;
+$red: #e92a2a;
+
+$theme-colors: (
+	"light-grey": $light-grey,
+	"black": $black
+);
+
+$gray-600: rgba($black, .5);
+
+$body-bg: #fff;
+
+
+// Sizes
+$sizes: (
+	16: $spacer * 22.5,
+);
+
+
 // Links
-$link-color: theme-color("gray-900");
-$link-hover-color: theme-color("gray-900");
+$link-color: theme-color("black");
+$link-hover-color: theme-color("black");
+
+
+// Rounded
+$enable-rounded: false;
+
+
+// Forms
+$input-focus-box-shadow: none;
+$input-btn-focus-width: 0;
+

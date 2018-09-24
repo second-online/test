@@ -1,43 +1,56 @@
 <template>
-	<div class="d-flex h-100 align-items-center justify-content-center">
-		<div class="form-page text-center">
-			<h1 class="text-center">Hello, again.</h1>
-			<ul class="mb-0 p-0 list-style-none text-left">
-				<li
-					class="mb-0 py-0 text-danger"
-					v-for="alert in alerts">{{ alert }}
-				</li>
-			</ul>
-
-			<form v-on:submit.prevent="login">
-				<input
-					class="mb-10 p-24 w-100"
-					v-bind:class="[ alerts.email ? 'border border-top-0 border-right-0 border-bottom-0 border-danger' : 'border-0' ]"
-					v-model="email"
-					type="text"
-					placeholder="Email"
-				>
-				<input
-					class="mb-20 p-24 w-100"
-					v-bind:class="[ alerts.password ? 'border border-top-0 border-right-0 border-bottom-0 border-danger' : 'border-0' ]"
-					v-model="password"
-					type="password"
-					placeholder="Password"
-				>
-				<router-link
-					class="d-inline-block mb-20"
-					v-bind:to="passwordResetURL">
-						Forgot password?
-				</router-link>
+	<div class="d-flex flex-column h-100 justify-content-center">
+		<div class="d-flex flex-column flex-grow-1 align-items-center justify-content-center bg-light-grey overflow-y">			 
+			<h1 class="text-center">Sign in.</h1>
+			<form class="form-narrow" v-on:submit.prevent="login">
+				<ul class="mb-0 list-unstyled text-left">
+					<li
+						class="mb-0 py-0 text-danger"
+						v-for="alert in alerts">{{ alert }}
+					</li>
+				</ul>
+				<div class="form-group mb-10">
+					<label for="email" class="sr-only font-weight-bold">Email</label>
+					<input
+						id="email"
+						class="form-control p-24 w-100"
+						v-bind:class="[ alerts.email ? 'border border-top-0 border-right-0 border-bottom-0 border-danger border-3' : 'border-0' ]"
+						v-model="email"
+						type="email"
+						placeholder="Email"
+					>
+				</div>
+				<div class="form-group mb-10"> 
+					<label for="password" class="sr-only font-weight-bold">Password</label>
+					<div class="d-flex mb-10 align-items-center bg-white">
+						<input
+							id="password"
+							class="form-control p-24 flex-grow-1"
+							v-bind:class="[ alerts.password ? 'border border-top-0 border-right-0 border-bottom-0 border-danger border-3' : 'border-0' ]"
+							v-model="password"
+							type="password"
+							placeholder="Password"
+						>
+						<router-link
+							class="mx-24 font-weight-bold"
+							v-bind:to="passwordResetURL">
+								Reset
+						</router-link>
+					</div>
+				</div>
 				<button
-					class="mb-30 p-24 w-100 border-0 text-white bg-gray-900 font-weight-bold" 
+					class="py-24 w-100 border-0 text-white bg-black font-weight-bold" 
 					type="submit"
 				>Sign in</button>
 			</form>
-<!-- 			<router-link v-bind:to="registerURL">
-				Don't have an account? Register now
-			</router-link> -->
-
+		</div>
+		<div class="py-48 text-center">
+			<span>Don't have an account?</span>
+			<router-link
+				class="ml-8 font-weight-bold"
+				v-bind:to="registerURL">
+				Sign up
+			</router-link>
 		</div>
 	</div>
 </template>
