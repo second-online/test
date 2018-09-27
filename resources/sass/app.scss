@@ -58,6 +58,11 @@ select:-webkit-autofill:focus {
   transition: background-color 5000s ease-in-out 0s;
 }
 
+[contentEditable=true]:empty:not(:focus):before {
+    content:attr(data-placeholder);
+    color: $gray-600;
+}
+
 .overflow-y {
 	overflow-y: auto;
 }
@@ -78,13 +83,15 @@ select:-webkit-autofill:focus {
 
 .tiny {
   font-size: $font-size-tiny;
-  font-weight: $font-weight-normal;
 }
 
 small,
 .small {
   font-size: $font-size-sm;
-  font-weight: $font-weight-normal;
+}
+
+.large {
+	font-size: $font-size-large;
 }
 
 .form-control {
@@ -92,3 +99,15 @@ small,
 	color: theme-color("black");
 }
 
+.chat-comment-box {
+	min-height: $spacer * 5;
+	max-height: 40%;
+}
+
+.image-faker {
+	display: block;
+	width: $spacer * 2.875;
+	height: $spacer * 2.875;
+	background: #aaa;
+	border-radius: 50%;
+}

@@ -46190,6 +46190,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 
 
@@ -46337,6 +46343,35 @@ if (false) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_CommentsTextarea__ = __webpack_require__(228);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_CommentsTextarea___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_CommentsTextarea__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_Editable__ = __webpack_require__(231);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_Editable___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__components_Editable__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -46352,9 +46387,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 
+
+
+
 /* harmony default export */ __webpack_exports__["default"] = ({
 	props: {
 		broadcastId: Number
+	},
+	components: {
+		CommentsTextarea: __WEBPACK_IMPORTED_MODULE_0__components_CommentsTextarea___default.a,
+		Editable: __WEBPACK_IMPORTED_MODULE_1__components_Editable___default.a
 	},
 	data: function data() {
 		return {
@@ -46406,11 +46448,37 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 				user: this.$store.state.user
 			};
 
-			this.comments.push(comment);
+			this.publishNewComment(comment);
+
 			this.cachedComment = this.newComment;
 			this.newComment = '';
 			this.isLoading = true;
 		},
+		publishNewComment: function publishNewComment(comment) {
+			var el = document.getElementById('broadcast-comments');
+			var amountScrollable = el.scrollHeight - el.clientHeight;
+			var distanceFromBottom = amountScrollable - el.scrollTop;
+
+			console.log('distanceFromBottom: ' + distanceFromBottom);
+
+			this.comments.push(comment);
+
+			console.log('scrollable: ' + amountScrollable);
+
+			setTimeout(function () {
+
+				if (distanceFromBottom < 80) {
+					amountScrollable = el.scrollHeight - el.clientHeight;
+					el.scrollTop = amountScrollable;
+					console.log('scrolled bottom');
+				} else {
+					console.log('dont scroll');
+				}
+
+				//console.log('client height: ' + el.clientHeight + ', scroll height: ' + el.scrollHeight + ', scroll top: ' + el.scrollTop);
+			}, 0);
+		},
+
 		login: function login() {
 			this.$router.push({ name: 'login', query: { redirect: this.$route.path } });
 		}
@@ -46421,16 +46489,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 		Echo.channel('broadcast.chat.' + this.broadcastId).listen('BroadcastCommentCreated', function (comment) {
 			_this2.comments.push(comment);
 		});
-
-		for (var i = 0; i < 10000; i++) {
-			var comment = {
-				text: 'this.newComment',
-				user: this.$store.state.user
-			};
-
-			this.comments.push(comment);
-		}
 	},
+	updated: function updated() {},
 	beforeDestroy: function beforeDestroy() {
 		Echo.leave('broadcast.chat.' + this.broadcastId);
 
@@ -46446,59 +46506,75 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "comments-section" },
-    [
+  return _c("div", { staticClass: "d-flex flex-column h-100" }, [
+    _c(
+      "div",
+      {
+        staticClass: "d-flex flex-column flex-grow-1 overflow-y bg-light-grey",
+        attrs: { id: "broadcast-comments" }
+      },
       _vm._l(_vm.comments, function(comment) {
-        return _c("div", [
-          _c("span", { staticClass: "comments-username" }, [
-            _vm._v(_vm._s(comment.user.name))
-          ]),
+        return _c("div", { staticClass: "d-flex px-40 flex-shrink-0" }, [
+          _c("img", {
+            staticClass: "mt-24 mr-20 image-faker",
+            attrs: {
+              src:
+                "https://cdn.dribbble.com/users/345970/avatars/normal/0092209c0eddd9d7a0cfaa54a92fd39d.png?1530163405"
+            }
+          }),
           _vm._v(" "),
-          _c("span", [_vm._v(_vm._s(comment.text))])
+          _c("div", { staticClass: "py-24 flex-grow-1 large" }, [
+            _c("div", { staticClass: "mb-4" }, [
+              _c(
+                "span",
+                { staticClass: "d-inline-block large font-weight-bold" },
+                [_vm._v(_vm._s(comment.user.name))]
+              )
+            ]),
+            _vm._v(" "),
+            _c("div", [
+              _c("span", { staticClass: "d-block large" }, [
+                _vm._v(_vm._s(comment.text))
+              ])
+            ])
+          ])
         ])
-      }),
-      _vm._v(" "),
-      _vm.isUserAuthenticated
-        ? _c(
-            "form",
-            {
-              attrs: { id: "broadcast-comment-form" },
-              on: {
-                submit: function($event) {
-                  $event.preventDefault()
-                  return _vm.submitComment($event)
-                }
-              }
-            },
-            [
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.newComment,
-                    expression: "newComment"
+      })
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
+      { staticClass: "d-flex chat-comment-box px-40 bg-white overflow-y" },
+      [
+        _vm.isUserAuthenticated
+          ? _c(
+              "form",
+              { staticClass: "py-20 w-100 m-auto" },
+              [
+                _c("comments-textarea", {
+                  ref: "commentsTextarea",
+                  attrs: { value: _vm.newComment },
+                  on: {
+                    input: function($event) {
+                      _vm.newComment = $event
+                    },
+                    submit: _vm.submitComment
                   }
-                ],
-                attrs: { type: "text", placeholder: "Write a comment.." },
-                domProps: { value: _vm.newComment },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.newComment = $event.target.value
-                  }
-                }
-              })
-            ]
-          )
-        : _c("div", { on: { click: _vm.login } }, [_vm._v("Login to chat.")])
-    ],
-    2
-  )
+                })
+              ],
+              1
+            )
+          : _c(
+              "span",
+              {
+                staticClass: "d-block p-30 font-weight-bold text-center",
+                on: { click: _vm.login }
+              },
+              [_vm._v("Sign in to chat")]
+            )
+      ]
+    )
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -46518,34 +46594,40 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { attrs: { id: "broadcast-page" } },
-    [
+  return _c("div", { staticClass: "container-fluid p-0 h-100" }, [
+    _c("div", { staticClass: "row no-gutters h-100" }, [
+      _c("div", { staticClass: "col-8 bg-black" }, [
+        _c(
+          "div",
+          { staticClass: "broadcast-video" },
+          [
+            _c("span", { staticClass: "back", on: { click: _vm.goBack } }, [
+              _vm._v("back")
+            ]),
+            _vm._v(" "),
+            _vm.showVideo
+              ? _c("youtube-player", {
+                  attrs: { "video-id": _vm.broadcast.sermon.youtube_id },
+                  on: { "video-ended": _vm.videoEnded }
+                })
+              : _vm._e()
+          ],
+          1
+        )
+      ]),
+      _vm._v(" "),
       _c(
         "div",
-        { staticClass: "broadcast-video" },
+        { staticClass: "col-4 bg-light-grey" },
         [
-          _c("span", { staticClass: "back", on: { click: _vm.goBack } }, [
-            _vm._v("back")
-          ]),
-          _vm._v(" "),
-          _vm.showVideo
-            ? _c("youtube-player", {
-                attrs: { "video-id": _vm.broadcast.sermon.youtube_id },
-                on: { "video-ended": _vm.videoEnded }
-              })
+          _vm.showChat
+            ? _c("broadcast-chat", { attrs: { broadcastId: _vm.broadcast.id } })
             : _vm._e()
         ],
         1
-      ),
-      _vm._v(" "),
-      _vm.showChat
-        ? _c("broadcast-chat", { attrs: { broadcastId: _vm.broadcast.id } })
-        : _vm._e()
-    ],
-    1
-  )
+      )
+    ])
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -47679,6 +47761,10 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
 	data: function data() {
@@ -47778,165 +47864,159 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { staticClass: "d-flex flex-column h-100 justify-content-center" },
+    {
+      staticClass:
+        "d-flex flex-column h-100 align-items-center justify-content-center"
+    },
     [
+      _c("h1", { staticClass: "mb-48 text-center" }, [_vm._v("Sign in.")]),
+      _vm._v(" "),
       _c(
-        "div",
+        "form",
         {
-          staticClass:
-            "d-flex flex-column flex-grow-1 align-items-center justify-content-center bg-light-grey overflow-y"
+          staticClass: "form-narrow",
+          on: {
+            submit: function($event) {
+              $event.preventDefault()
+              return _vm.login($event)
+            }
+          }
         },
         [
-          _c("h1", { staticClass: "text-center" }, [_vm._v("Sign in.")]),
-          _vm._v(" "),
           _c(
-            "form",
-            {
-              staticClass: "form-narrow",
+            "ul",
+            { staticClass: "mb-0 list-unstyled text-left" },
+            _vm._l(_vm.alerts, function(alert) {
+              return _c("li", { staticClass: "mb-0 py-0 text-danger" }, [
+                _vm._v(_vm._s(alert) + "\n\t\t\t\t")
+              ])
+            })
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "form-group mb-12" }, [
+            _c(
+              "label",
+              {
+                staticClass: "sr-only font-weight-bold",
+                attrs: { for: "email" }
+              },
+              [_vm._v("Email")]
+            ),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.email,
+                  expression: "email"
+                }
+              ],
+              staticClass: "form-control p-24 w-100 bg-light-grey",
+              class: [
+                _vm.alerts.email
+                  ? "border border-top-0 border-right-0 border-bottom-0 border-danger border-3"
+                  : "border-0"
+              ],
+              attrs: { id: "email", type: "email", placeholder: "Email" },
+              domProps: { value: _vm.email },
               on: {
-                submit: function($event) {
-                  $event.preventDefault()
-                  return _vm.login($event)
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.email = $event.target.value
                 }
               }
-            },
-            [
-              _c(
-                "ul",
-                { staticClass: "mb-0 list-unstyled text-left" },
-                _vm._l(_vm.alerts, function(alert) {
-                  return _c("li", { staticClass: "mb-0 py-0 text-danger" }, [
-                    _vm._v(_vm._s(alert) + "\n\t\t\t\t")
-                  ])
-                })
-              ),
-              _vm._v(" "),
-              _c("div", { staticClass: "form-group mb-10" }, [
-                _c(
-                  "label",
-                  {
-                    staticClass: "sr-only font-weight-bold",
-                    attrs: { for: "email" }
-                  },
-                  [_vm._v("Email")]
-                ),
-                _vm._v(" "),
+            })
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "form-group mb-12" }, [
+            _c(
+              "label",
+              {
+                staticClass: "sr-only font-weight-bold",
+                attrs: { for: "password" }
+              },
+              [_vm._v("Password")]
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "d-flex align-items-center bg-light-grey" },
+              [
                 _c("input", {
                   directives: [
                     {
                       name: "model",
                       rawName: "v-model",
-                      value: _vm.email,
-                      expression: "email"
+                      value: _vm.password,
+                      expression: "password"
                     }
                   ],
-                  staticClass: "form-control p-24 w-100",
+                  staticClass: "form-control p-24 flex-grow-1 bg-light-grey",
                   class: [
-                    _vm.alerts.email
+                    _vm.alerts.password
                       ? "border border-top-0 border-right-0 border-bottom-0 border-danger border-3"
                       : "border-0"
                   ],
-                  attrs: { id: "email", type: "email", placeholder: "Email" },
-                  domProps: { value: _vm.email },
+                  attrs: {
+                    id: "password",
+                    type: "password",
+                    placeholder: "Password"
+                  },
+                  domProps: { value: _vm.password },
                   on: {
                     input: function($event) {
                       if ($event.target.composing) {
                         return
                       }
-                      _vm.email = $event.target.value
+                      _vm.password = $event.target.value
                     }
                   }
-                })
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "form-group mb-10" }, [
-                _c(
-                  "label",
-                  {
-                    staticClass: "sr-only font-weight-bold",
-                    attrs: { for: "password" }
-                  },
-                  [_vm._v("Password")]
-                ),
+                }),
                 _vm._v(" "),
                 _c(
-                  "div",
-                  { staticClass: "d-flex mb-10 align-items-center bg-white" },
-                  [
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.password,
-                          expression: "password"
-                        }
-                      ],
-                      staticClass: "form-control p-24 flex-grow-1",
-                      class: [
-                        _vm.alerts.password
-                          ? "border border-top-0 border-right-0 border-bottom-0 border-danger border-3"
-                          : "border-0"
-                      ],
-                      attrs: {
-                        id: "password",
-                        type: "password",
-                        placeholder: "Password"
-                      },
-                      domProps: { value: _vm.password },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.password = $event.target.value
-                        }
-                      }
-                    }),
-                    _vm._v(" "),
-                    _c(
-                      "router-link",
-                      {
-                        staticClass: "mx-24 font-weight-bold",
-                        attrs: { to: _vm.passwordResetURL }
-                      },
-                      [_vm._v("\n\t\t\t\t\t\t\tReset\n\t\t\t\t\t")]
-                    )
-                  ],
-                  1
+                  "router-link",
+                  {
+                    staticClass: "mx-24 font-weight-bold",
+                    attrs: { to: _vm.passwordResetURL }
+                  },
+                  [_vm._v("\n\t\t\t\t\t\t\tReset\n\t\t\t\t\t")]
                 )
-              ]),
-              _vm._v(" "),
-              _c(
-                "button",
-                {
-                  staticClass:
-                    "py-24 w-100 border-0 text-white bg-black font-weight-bold",
-                  attrs: { type: "submit" }
-                },
-                [_vm._v("Sign in")]
-              )
-            ]
-          )
-        ]
-      ),
-      _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "py-48 text-center" },
-        [
-          _c("span", [_vm._v("Don't have an account?")]),
+              ],
+              1
+            )
+          ]),
           _vm._v(" "),
           _c(
-            "router-link",
+            "button",
             {
-              staticClass: "ml-8 font-weight-bold",
-              attrs: { to: _vm.registerURL }
+              staticClass:
+                "mb-48 py-24 w-100 border-0 text-white bg-black font-weight-bold",
+              attrs: { type: "submit" }
             },
-            [_vm._v("\n\t\t\tSign up\n\t\t")]
+            [_vm._v("Sign in")]
+          ),
+          _vm._v(" "),
+          _c(
+            "span",
+            { staticClass: "d-block text-center" },
+            [
+              _c("span", [_vm._v("Dont have an account?")]),
+              _vm._v(" "),
+              _c(
+                "router-link",
+                {
+                  staticClass: "ml-4 font-weight-bold",
+                  attrs: { to: _vm.registerURL }
+                },
+                [_vm._v("\n\t\t\t\t\tSign up\n\t\t\t\t")]
+              )
+            ],
+            1
           )
-        ],
-        1
+        ]
       )
     ]
   )
@@ -48996,6 +49076,261 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 225 */,
+/* 226 */,
+/* 227 */,
+/* 228 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(1)
+/* script */
+var __vue_script__ = __webpack_require__(229)
+/* template */
+var __vue_template__ = __webpack_require__(230)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/components/CommentsTextarea.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-925ffe8e", Component.options)
+  } else {
+    hotAPI.reload("data-v-925ffe8e", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 229 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+	props: {
+		value: String
+	},
+	watch: {
+		value: function value(newValue) {
+			if (newValue.length == 0) {
+				this.clearTextarea();
+			}
+		}
+	},
+	methods: {
+		input: function input(e) {
+			this.$emit('input', e.target.value);
+			this.resizeTextarea();
+		},
+		submit: function submit(e) {
+			this.$emit('submit');
+			e.preventDefault();
+		},
+		resizeTextarea: function resizeTextarea() {
+			this.$el.style.height = 'auto';
+			this.$el.style.height = this.$el.scrollHeight + 'px';
+		},
+		clearTextarea: function clearTextarea() {
+			this.$el.value = '';
+			this.resizeTextarea();
+		}
+	}
+});
+
+/***/ }),
+/* 230 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("textarea", {
+    staticClass: "d-block w-100 p-0 border-0",
+    attrs: { placeholder: "Write a comment..", rows: "1" },
+    domProps: { value: _vm.value },
+    on: {
+      input: _vm.input,
+      keydown: function($event) {
+        if (
+          !("button" in $event) &&
+          _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
+        ) {
+          return null
+        }
+        return _vm.submit($event)
+      }
+    }
+  })
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-925ffe8e", module.exports)
+  }
+}
+
+/***/ }),
+/* 231 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(1)
+/* script */
+var __vue_script__ = __webpack_require__(232)
+/* template */
+var __vue_template__ = __webpack_require__(233)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/components/Editable.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-083431cf", Component.options)
+  } else {
+    hotAPI.reload("data-v-083431cf", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 232 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+	props: {
+		value: String
+	},
+	// watch: {
+	// 	value: function() {
+	// 		this.$el.innerText = this.value;
+	// 	}
+	// },
+	methods: {
+		input: function input() {
+			console.log('input');
+			this.$emit('input', this.$el.innerText);
+		},
+		submit: function submit(e) {
+			this.$emit('submit');
+			e.preventDefault();
+		}
+	}
+});
+
+/***/ }),
+/* 233 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", {
+    attrs: { contenteditable: "true", "data-placeholder": "Write a comment.." },
+    on: {
+      input: _vm.input,
+      keydown: function($event) {
+        if (
+          !("button" in $event) &&
+          _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
+        ) {
+          return null
+        }
+        return _vm.submit($event)
+      }
+    }
+  })
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-083431cf", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);

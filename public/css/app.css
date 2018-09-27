@@ -3771,27 +3771,27 @@ textarea.form-control {
 }
 
 .m-5 {
-  margin: 3rem !important;
+  margin: 0.3125rem !important;
 }
 
 .mt-5,
 .my-5 {
-  margin-top: 3rem !important;
+  margin-top: 0.3125rem !important;
 }
 
 .mr-5,
 .mx-5 {
-  margin-right: 3rem !important;
+  margin-right: 0.3125rem !important;
 }
 
 .mb-5,
 .my-5 {
-  margin-bottom: 3rem !important;
+  margin-bottom: 0.3125rem !important;
 }
 
 .ml-5,
 .mx-5 {
-  margin-left: 3rem !important;
+  margin-left: 0.3125rem !important;
 }
 
 .m-8 {
@@ -3840,6 +3840,30 @@ textarea.form-control {
 .ml-10,
 .mx-10 {
   margin-left: 0.625rem !important;
+}
+
+.m-12 {
+  margin: 0.75rem !important;
+}
+
+.mt-12,
+.my-12 {
+  margin-top: 0.75rem !important;
+}
+
+.mr-12,
+.mx-12 {
+  margin-right: 0.75rem !important;
+}
+
+.mb-12,
+.my-12 {
+  margin-bottom: 0.75rem !important;
+}
+
+.ml-12,
+.mx-12 {
+  margin-left: 0.75rem !important;
 }
 
 .m-16 {
@@ -3936,6 +3960,30 @@ textarea.form-control {
 .ml-30,
 .mx-30 {
   margin-left: 1.875rem !important;
+}
+
+.m-40 {
+  margin: 2.5rem !important;
+}
+
+.mt-40,
+.my-40 {
+  margin-top: 2.5rem !important;
+}
+
+.mr-40,
+.mx-40 {
+  margin-right: 2.5rem !important;
+}
+
+.mb-40,
+.my-40 {
+  margin-bottom: 2.5rem !important;
+}
+
+.ml-40,
+.mx-40 {
+  margin-left: 2.5rem !important;
 }
 
 .m-48 {
@@ -4083,27 +4131,27 @@ textarea.form-control {
 }
 
 .p-5 {
-  padding: 3rem !important;
+  padding: 0.3125rem !important;
 }
 
 .pt-5,
 .py-5 {
-  padding-top: 3rem !important;
+  padding-top: 0.3125rem !important;
 }
 
 .pr-5,
 .px-5 {
-  padding-right: 3rem !important;
+  padding-right: 0.3125rem !important;
 }
 
 .pb-5,
 .py-5 {
-  padding-bottom: 3rem !important;
+  padding-bottom: 0.3125rem !important;
 }
 
 .pl-5,
 .px-5 {
-  padding-left: 3rem !important;
+  padding-left: 0.3125rem !important;
 }
 
 .p-8 {
@@ -4152,6 +4200,30 @@ textarea.form-control {
 .pl-10,
 .px-10 {
   padding-left: 0.625rem !important;
+}
+
+.p-12 {
+  padding: 0.75rem !important;
+}
+
+.pt-12,
+.py-12 {
+  padding-top: 0.75rem !important;
+}
+
+.pr-12,
+.px-12 {
+  padding-right: 0.75rem !important;
+}
+
+.pb-12,
+.py-12 {
+  padding-bottom: 0.75rem !important;
+}
+
+.pl-12,
+.px-12 {
+  padding-left: 0.75rem !important;
 }
 
 .p-16 {
@@ -4248,6 +4320,30 @@ textarea.form-control {
 .pl-30,
 .px-30 {
   padding-left: 1.875rem !important;
+}
+
+.p-40 {
+  padding: 2.5rem !important;
+}
+
+.pt-40,
+.py-40 {
+  padding-top: 2.5rem !important;
+}
+
+.pr-40,
+.px-40 {
+  padding-right: 2.5rem !important;
+}
+
+.pb-40,
+.py-40 {
+  padding-bottom: 2.5rem !important;
+}
+
+.pl-40,
+.px-40 {
+  padding-left: 2.5rem !important;
 }
 
 .p-48 {
@@ -4420,27 +4516,27 @@ textarea.form-control {
   }
 
   .m-sm-5 {
-    margin: 3rem !important;
+    margin: 0.3125rem !important;
   }
 
   .mt-sm-5,
   .my-sm-5 {
-    margin-top: 3rem !important;
+    margin-top: 0.3125rem !important;
   }
 
   .mr-sm-5,
   .mx-sm-5 {
-    margin-right: 3rem !important;
+    margin-right: 0.3125rem !important;
   }
 
   .mb-sm-5,
   .my-sm-5 {
-    margin-bottom: 3rem !important;
+    margin-bottom: 0.3125rem !important;
   }
 
   .ml-sm-5,
   .mx-sm-5 {
-    margin-left: 3rem !important;
+    margin-left: 0.3125rem !important;
   }
 
   .m-sm-8 {
@@ -4489,6 +4585,30 @@ textarea.form-control {
   .ml-sm-10,
   .mx-sm-10 {
     margin-left: 0.625rem !important;
+  }
+
+  .m-sm-12 {
+    margin: 0.75rem !important;
+  }
+
+  .mt-sm-12,
+  .my-sm-12 {
+    margin-top: 0.75rem !important;
+  }
+
+  .mr-sm-12,
+  .mx-sm-12 {
+    margin-right: 0.75rem !important;
+  }
+
+  .mb-sm-12,
+  .my-sm-12 {
+    margin-bottom: 0.75rem !important;
+  }
+
+  .ml-sm-12,
+  .mx-sm-12 {
+    margin-left: 0.75rem !important;
   }
 
   .m-sm-16 {
@@ -4585,6 +4705,30 @@ textarea.form-control {
   .ml-sm-30,
   .mx-sm-30 {
     margin-left: 1.875rem !important;
+  }
+
+  .m-sm-40 {
+    margin: 2.5rem !important;
+  }
+
+  .mt-sm-40,
+  .my-sm-40 {
+    margin-top: 2.5rem !important;
+  }
+
+  .mr-sm-40,
+  .mx-sm-40 {
+    margin-right: 2.5rem !important;
+  }
+
+  .mb-sm-40,
+  .my-sm-40 {
+    margin-bottom: 2.5rem !important;
+  }
+
+  .ml-sm-40,
+  .mx-sm-40 {
+    margin-left: 2.5rem !important;
   }
 
   .m-sm-48 {
@@ -4732,27 +4876,27 @@ textarea.form-control {
   }
 
   .p-sm-5 {
-    padding: 3rem !important;
+    padding: 0.3125rem !important;
   }
 
   .pt-sm-5,
   .py-sm-5 {
-    padding-top: 3rem !important;
+    padding-top: 0.3125rem !important;
   }
 
   .pr-sm-5,
   .px-sm-5 {
-    padding-right: 3rem !important;
+    padding-right: 0.3125rem !important;
   }
 
   .pb-sm-5,
   .py-sm-5 {
-    padding-bottom: 3rem !important;
+    padding-bottom: 0.3125rem !important;
   }
 
   .pl-sm-5,
   .px-sm-5 {
-    padding-left: 3rem !important;
+    padding-left: 0.3125rem !important;
   }
 
   .p-sm-8 {
@@ -4801,6 +4945,30 @@ textarea.form-control {
   .pl-sm-10,
   .px-sm-10 {
     padding-left: 0.625rem !important;
+  }
+
+  .p-sm-12 {
+    padding: 0.75rem !important;
+  }
+
+  .pt-sm-12,
+  .py-sm-12 {
+    padding-top: 0.75rem !important;
+  }
+
+  .pr-sm-12,
+  .px-sm-12 {
+    padding-right: 0.75rem !important;
+  }
+
+  .pb-sm-12,
+  .py-sm-12 {
+    padding-bottom: 0.75rem !important;
+  }
+
+  .pl-sm-12,
+  .px-sm-12 {
+    padding-left: 0.75rem !important;
   }
 
   .p-sm-16 {
@@ -4897,6 +5065,30 @@ textarea.form-control {
   .pl-sm-30,
   .px-sm-30 {
     padding-left: 1.875rem !important;
+  }
+
+  .p-sm-40 {
+    padding: 2.5rem !important;
+  }
+
+  .pt-sm-40,
+  .py-sm-40 {
+    padding-top: 2.5rem !important;
+  }
+
+  .pr-sm-40,
+  .px-sm-40 {
+    padding-right: 2.5rem !important;
+  }
+
+  .pb-sm-40,
+  .py-sm-40 {
+    padding-bottom: 2.5rem !important;
+  }
+
+  .pl-sm-40,
+  .px-sm-40 {
+    padding-left: 2.5rem !important;
   }
 
   .p-sm-48 {
@@ -5070,27 +5262,27 @@ textarea.form-control {
   }
 
   .m-md-5 {
-    margin: 3rem !important;
+    margin: 0.3125rem !important;
   }
 
   .mt-md-5,
   .my-md-5 {
-    margin-top: 3rem !important;
+    margin-top: 0.3125rem !important;
   }
 
   .mr-md-5,
   .mx-md-5 {
-    margin-right: 3rem !important;
+    margin-right: 0.3125rem !important;
   }
 
   .mb-md-5,
   .my-md-5 {
-    margin-bottom: 3rem !important;
+    margin-bottom: 0.3125rem !important;
   }
 
   .ml-md-5,
   .mx-md-5 {
-    margin-left: 3rem !important;
+    margin-left: 0.3125rem !important;
   }
 
   .m-md-8 {
@@ -5139,6 +5331,30 @@ textarea.form-control {
   .ml-md-10,
   .mx-md-10 {
     margin-left: 0.625rem !important;
+  }
+
+  .m-md-12 {
+    margin: 0.75rem !important;
+  }
+
+  .mt-md-12,
+  .my-md-12 {
+    margin-top: 0.75rem !important;
+  }
+
+  .mr-md-12,
+  .mx-md-12 {
+    margin-right: 0.75rem !important;
+  }
+
+  .mb-md-12,
+  .my-md-12 {
+    margin-bottom: 0.75rem !important;
+  }
+
+  .ml-md-12,
+  .mx-md-12 {
+    margin-left: 0.75rem !important;
   }
 
   .m-md-16 {
@@ -5235,6 +5451,30 @@ textarea.form-control {
   .ml-md-30,
   .mx-md-30 {
     margin-left: 1.875rem !important;
+  }
+
+  .m-md-40 {
+    margin: 2.5rem !important;
+  }
+
+  .mt-md-40,
+  .my-md-40 {
+    margin-top: 2.5rem !important;
+  }
+
+  .mr-md-40,
+  .mx-md-40 {
+    margin-right: 2.5rem !important;
+  }
+
+  .mb-md-40,
+  .my-md-40 {
+    margin-bottom: 2.5rem !important;
+  }
+
+  .ml-md-40,
+  .mx-md-40 {
+    margin-left: 2.5rem !important;
   }
 
   .m-md-48 {
@@ -5382,27 +5622,27 @@ textarea.form-control {
   }
 
   .p-md-5 {
-    padding: 3rem !important;
+    padding: 0.3125rem !important;
   }
 
   .pt-md-5,
   .py-md-5 {
-    padding-top: 3rem !important;
+    padding-top: 0.3125rem !important;
   }
 
   .pr-md-5,
   .px-md-5 {
-    padding-right: 3rem !important;
+    padding-right: 0.3125rem !important;
   }
 
   .pb-md-5,
   .py-md-5 {
-    padding-bottom: 3rem !important;
+    padding-bottom: 0.3125rem !important;
   }
 
   .pl-md-5,
   .px-md-5 {
-    padding-left: 3rem !important;
+    padding-left: 0.3125rem !important;
   }
 
   .p-md-8 {
@@ -5451,6 +5691,30 @@ textarea.form-control {
   .pl-md-10,
   .px-md-10 {
     padding-left: 0.625rem !important;
+  }
+
+  .p-md-12 {
+    padding: 0.75rem !important;
+  }
+
+  .pt-md-12,
+  .py-md-12 {
+    padding-top: 0.75rem !important;
+  }
+
+  .pr-md-12,
+  .px-md-12 {
+    padding-right: 0.75rem !important;
+  }
+
+  .pb-md-12,
+  .py-md-12 {
+    padding-bottom: 0.75rem !important;
+  }
+
+  .pl-md-12,
+  .px-md-12 {
+    padding-left: 0.75rem !important;
   }
 
   .p-md-16 {
@@ -5547,6 +5811,30 @@ textarea.form-control {
   .pl-md-30,
   .px-md-30 {
     padding-left: 1.875rem !important;
+  }
+
+  .p-md-40 {
+    padding: 2.5rem !important;
+  }
+
+  .pt-md-40,
+  .py-md-40 {
+    padding-top: 2.5rem !important;
+  }
+
+  .pr-md-40,
+  .px-md-40 {
+    padding-right: 2.5rem !important;
+  }
+
+  .pb-md-40,
+  .py-md-40 {
+    padding-bottom: 2.5rem !important;
+  }
+
+  .pl-md-40,
+  .px-md-40 {
+    padding-left: 2.5rem !important;
   }
 
   .p-md-48 {
@@ -5720,27 +6008,27 @@ textarea.form-control {
   }
 
   .m-lg-5 {
-    margin: 3rem !important;
+    margin: 0.3125rem !important;
   }
 
   .mt-lg-5,
   .my-lg-5 {
-    margin-top: 3rem !important;
+    margin-top: 0.3125rem !important;
   }
 
   .mr-lg-5,
   .mx-lg-5 {
-    margin-right: 3rem !important;
+    margin-right: 0.3125rem !important;
   }
 
   .mb-lg-5,
   .my-lg-5 {
-    margin-bottom: 3rem !important;
+    margin-bottom: 0.3125rem !important;
   }
 
   .ml-lg-5,
   .mx-lg-5 {
-    margin-left: 3rem !important;
+    margin-left: 0.3125rem !important;
   }
 
   .m-lg-8 {
@@ -5789,6 +6077,30 @@ textarea.form-control {
   .ml-lg-10,
   .mx-lg-10 {
     margin-left: 0.625rem !important;
+  }
+
+  .m-lg-12 {
+    margin: 0.75rem !important;
+  }
+
+  .mt-lg-12,
+  .my-lg-12 {
+    margin-top: 0.75rem !important;
+  }
+
+  .mr-lg-12,
+  .mx-lg-12 {
+    margin-right: 0.75rem !important;
+  }
+
+  .mb-lg-12,
+  .my-lg-12 {
+    margin-bottom: 0.75rem !important;
+  }
+
+  .ml-lg-12,
+  .mx-lg-12 {
+    margin-left: 0.75rem !important;
   }
 
   .m-lg-16 {
@@ -5885,6 +6197,30 @@ textarea.form-control {
   .ml-lg-30,
   .mx-lg-30 {
     margin-left: 1.875rem !important;
+  }
+
+  .m-lg-40 {
+    margin: 2.5rem !important;
+  }
+
+  .mt-lg-40,
+  .my-lg-40 {
+    margin-top: 2.5rem !important;
+  }
+
+  .mr-lg-40,
+  .mx-lg-40 {
+    margin-right: 2.5rem !important;
+  }
+
+  .mb-lg-40,
+  .my-lg-40 {
+    margin-bottom: 2.5rem !important;
+  }
+
+  .ml-lg-40,
+  .mx-lg-40 {
+    margin-left: 2.5rem !important;
   }
 
   .m-lg-48 {
@@ -6032,27 +6368,27 @@ textarea.form-control {
   }
 
   .p-lg-5 {
-    padding: 3rem !important;
+    padding: 0.3125rem !important;
   }
 
   .pt-lg-5,
   .py-lg-5 {
-    padding-top: 3rem !important;
+    padding-top: 0.3125rem !important;
   }
 
   .pr-lg-5,
   .px-lg-5 {
-    padding-right: 3rem !important;
+    padding-right: 0.3125rem !important;
   }
 
   .pb-lg-5,
   .py-lg-5 {
-    padding-bottom: 3rem !important;
+    padding-bottom: 0.3125rem !important;
   }
 
   .pl-lg-5,
   .px-lg-5 {
-    padding-left: 3rem !important;
+    padding-left: 0.3125rem !important;
   }
 
   .p-lg-8 {
@@ -6101,6 +6437,30 @@ textarea.form-control {
   .pl-lg-10,
   .px-lg-10 {
     padding-left: 0.625rem !important;
+  }
+
+  .p-lg-12 {
+    padding: 0.75rem !important;
+  }
+
+  .pt-lg-12,
+  .py-lg-12 {
+    padding-top: 0.75rem !important;
+  }
+
+  .pr-lg-12,
+  .px-lg-12 {
+    padding-right: 0.75rem !important;
+  }
+
+  .pb-lg-12,
+  .py-lg-12 {
+    padding-bottom: 0.75rem !important;
+  }
+
+  .pl-lg-12,
+  .px-lg-12 {
+    padding-left: 0.75rem !important;
   }
 
   .p-lg-16 {
@@ -6197,6 +6557,30 @@ textarea.form-control {
   .pl-lg-30,
   .px-lg-30 {
     padding-left: 1.875rem !important;
+  }
+
+  .p-lg-40 {
+    padding: 2.5rem !important;
+  }
+
+  .pt-lg-40,
+  .py-lg-40 {
+    padding-top: 2.5rem !important;
+  }
+
+  .pr-lg-40,
+  .px-lg-40 {
+    padding-right: 2.5rem !important;
+  }
+
+  .pb-lg-40,
+  .py-lg-40 {
+    padding-bottom: 2.5rem !important;
+  }
+
+  .pl-lg-40,
+  .px-lg-40 {
+    padding-left: 2.5rem !important;
   }
 
   .p-lg-48 {
@@ -6370,27 +6754,27 @@ textarea.form-control {
   }
 
   .m-xl-5 {
-    margin: 3rem !important;
+    margin: 0.3125rem !important;
   }
 
   .mt-xl-5,
   .my-xl-5 {
-    margin-top: 3rem !important;
+    margin-top: 0.3125rem !important;
   }
 
   .mr-xl-5,
   .mx-xl-5 {
-    margin-right: 3rem !important;
+    margin-right: 0.3125rem !important;
   }
 
   .mb-xl-5,
   .my-xl-5 {
-    margin-bottom: 3rem !important;
+    margin-bottom: 0.3125rem !important;
   }
 
   .ml-xl-5,
   .mx-xl-5 {
-    margin-left: 3rem !important;
+    margin-left: 0.3125rem !important;
   }
 
   .m-xl-8 {
@@ -6439,6 +6823,30 @@ textarea.form-control {
   .ml-xl-10,
   .mx-xl-10 {
     margin-left: 0.625rem !important;
+  }
+
+  .m-xl-12 {
+    margin: 0.75rem !important;
+  }
+
+  .mt-xl-12,
+  .my-xl-12 {
+    margin-top: 0.75rem !important;
+  }
+
+  .mr-xl-12,
+  .mx-xl-12 {
+    margin-right: 0.75rem !important;
+  }
+
+  .mb-xl-12,
+  .my-xl-12 {
+    margin-bottom: 0.75rem !important;
+  }
+
+  .ml-xl-12,
+  .mx-xl-12 {
+    margin-left: 0.75rem !important;
   }
 
   .m-xl-16 {
@@ -6535,6 +6943,30 @@ textarea.form-control {
   .ml-xl-30,
   .mx-xl-30 {
     margin-left: 1.875rem !important;
+  }
+
+  .m-xl-40 {
+    margin: 2.5rem !important;
+  }
+
+  .mt-xl-40,
+  .my-xl-40 {
+    margin-top: 2.5rem !important;
+  }
+
+  .mr-xl-40,
+  .mx-xl-40 {
+    margin-right: 2.5rem !important;
+  }
+
+  .mb-xl-40,
+  .my-xl-40 {
+    margin-bottom: 2.5rem !important;
+  }
+
+  .ml-xl-40,
+  .mx-xl-40 {
+    margin-left: 2.5rem !important;
   }
 
   .m-xl-48 {
@@ -6682,27 +7114,27 @@ textarea.form-control {
   }
 
   .p-xl-5 {
-    padding: 3rem !important;
+    padding: 0.3125rem !important;
   }
 
   .pt-xl-5,
   .py-xl-5 {
-    padding-top: 3rem !important;
+    padding-top: 0.3125rem !important;
   }
 
   .pr-xl-5,
   .px-xl-5 {
-    padding-right: 3rem !important;
+    padding-right: 0.3125rem !important;
   }
 
   .pb-xl-5,
   .py-xl-5 {
-    padding-bottom: 3rem !important;
+    padding-bottom: 0.3125rem !important;
   }
 
   .pl-xl-5,
   .px-xl-5 {
-    padding-left: 3rem !important;
+    padding-left: 0.3125rem !important;
   }
 
   .p-xl-8 {
@@ -6751,6 +7183,30 @@ textarea.form-control {
   .pl-xl-10,
   .px-xl-10 {
     padding-left: 0.625rem !important;
+  }
+
+  .p-xl-12 {
+    padding: 0.75rem !important;
+  }
+
+  .pt-xl-12,
+  .py-xl-12 {
+    padding-top: 0.75rem !important;
+  }
+
+  .pr-xl-12,
+  .px-xl-12 {
+    padding-right: 0.75rem !important;
+  }
+
+  .pb-xl-12,
+  .py-xl-12 {
+    padding-bottom: 0.75rem !important;
+  }
+
+  .pl-xl-12,
+  .px-xl-12 {
+    padding-left: 0.75rem !important;
   }
 
   .p-xl-16 {
@@ -6847,6 +7303,30 @@ textarea.form-control {
   .pl-xl-30,
   .px-xl-30 {
     padding-left: 1.875rem !important;
+  }
+
+  .p-xl-40 {
+    padding: 2.5rem !important;
+  }
+
+  .pt-xl-40,
+  .py-xl-40 {
+    padding-top: 2.5rem !important;
+  }
+
+  .pr-xl-40,
+  .px-xl-40 {
+    padding-right: 2.5rem !important;
+  }
+
+  .pb-xl-40,
+  .py-xl-40 {
+    padding-bottom: 2.5rem !important;
+  }
+
+  .pl-xl-40,
+  .px-xl-40 {
+    padding-left: 2.5rem !important;
   }
 
   .p-xl-48 {
@@ -7462,6 +7942,11 @@ select:-webkit-autofill:focus {
   transition: background-color 5000s ease-in-out 0s;
 }
 
+[contentEditable=true]:empty:not(:focus):before {
+  content: attr(data-placeholder);
+  color: rgba(18, 17, 17, 0.5);
+}
+
 .overflow-y {
   overflow-y: auto;
 }
@@ -7482,17 +7967,32 @@ select:-webkit-autofill:focus {
 
 .tiny {
   font-size: 0.75rem;
-  font-weight: 400;
 }
 
 small,
 .small {
   font-size: 0.8125rem;
-  font-weight: 400;
+}
+
+.large {
+  font-size: 0.9375rem;
 }
 
 .form-control {
   height: auto;
   color: #121111;
+}
+
+.chat-comment-box {
+  min-height: 5rem;
+  max-height: 40%;
+}
+
+.image-faker {
+  display: block;
+  width: 2.875rem;
+  height: 2.875rem;
+  background: #aaa;
+  border-radius: 50%;
 }
 
