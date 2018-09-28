@@ -3,7 +3,7 @@
 		v-bind:value="value"
 		v-on:input="input"
 		v-on:keydown.enter="submit"
-		class="d-block w-100 p-0 border-0"
+		class="d-block py-20 px-0 w-100 border-0"
 		placeholder="Write a comment.."
 		rows="1"
 	></textarea>

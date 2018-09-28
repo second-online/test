@@ -1,7 +1,7 @@
 <template>
 	<div class="container-fluid p-0 h-100">
 		<div class="row no-gutters h-100">
-			<div class="col-8 bg-black">
+			<div class="col-8 h-100 bg-black">
 				<div class="broadcast-video">
 					<span class="back" v-on:click="goBack">back</span>
 					<youtube-player 
@@ -11,7 +11,7 @@
 					/> 
 				</div>
 			</div>
-			<div class="col-4 bg-light-grey">
+			<div class="col-4 h-100 bg-light-grey">
 				<broadcast-chat
 					v-if="showChat"
 					v-bind:broadcastId="broadcast.id"

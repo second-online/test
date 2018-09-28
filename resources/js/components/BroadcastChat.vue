@@ -5,13 +5,13 @@
 				v-for="comment in comments"
 				class="d-flex px-40 flex-shrink-0"
 			>	
-				<img src="https://cdn.dribbble.com/users/345970/avatars/normal/0092209c0eddd9d7a0cfaa54a92fd39d.png?1530163405" class="mt-24 mr-20 image-faker"></span>
-				<div class="py-24 flex-grow-1 large">
-					<div class="mb-4">
-						<span class="d-inline-block large font-weight-bold">{{ comment.user.name }}</span>
+				<img src="https://cdn.dribbble.com/users/345970/avatars/normal/0092209c0eddd9d7a0cfaa54a92fd39d.png?1530163405" class="mt-16 mr-20 flex-shrink-0 image-faker"></span>
+				<div class="py-16 flex-grow-1">
+					<div class="">
+						<span class="font-weight-bold">{{ comment.user.name }}</span>
 					</div>
-					<div>
-						<span class="d-block large">{{ comment.text }}</span>
+					<div class="mt-4 ">
+						<span class="">{{ comment.text }}</span>
 					</div>
 				</div>
 			</div>
@@ -19,7 +19,7 @@
 		<div class="d-flex chat-comment-box px-40 bg-white overflow-y">
 			<form
 				v-if="isUserAuthenticated"
-				class="py-20 w-100 m-auto"
+				class="w-100 m-auto"
 			>	
 				<comments-textarea
 					v-bind:value="newComment"
@@ -56,6 +56,7 @@
 				newCommentId: 1,
 				cachedComment: '',
 				isLoading: false,
+
 			}
 		},
 		computed: {
@@ -97,34 +98,22 @@
 					user: this.$store.state.user
 				};
 
-				this.publishNewComment(comment);
+				this.publishComment(comment);
 
 				this.cachedComment = this.newComment;
 				this.newComment = '';
 				this.isLoading = true;
 			},
-			publishNewComment(comment) {
+			publishComment: function(comment) {
 				const el = document.getElementById('broadcast-comments');
-				let amountScrollable = el.scrollHeight - el.clientHeight;
-				let distanceFromBottom = amountScrollable - el.scrollTop;
-				 
-				console.log('distanceFromBottom: ' + distanceFromBottom);
-				 
+				const distanceFromBottom = el.scrollHeight - el.clientHeight - el.scrollTop;
+				 				 
 				this.comments.push(comment);
 
-				console.log('scrollable: ' + amountScrollable);
-
 				setTimeout(function() {
-					
-					if (distanceFromBottom < 80) {
-						amountScrollable = el.scrollHeight - el.clientHeight;
-						el.scrollTop = amountScrollable;
-						console.log('scrolled bottom');
-					} else {
-						console.log('dont scroll');
+					if (distanceFromBottom < 150) {
+						el.scrollTop = el.scrollHeight - el.clientHeight;
 					}
-					
-					//console.log('client height: ' + el.clientHeight + ', scroll height: ' + el.scrollHeight + ', scroll top: ' + el.scrollTop);
 				},0);
 			},
 			login: function() {
@@ -134,11 +123,11 @@
 		mounted: function() {
 			Echo.channel('broadcast.chat.' + this.broadcastId)
 				.listen('BroadcastCommentCreated', comment => {
-					this.comments.push(comment)
+					this.publishComment(comment);
 			});
-		},
-		updated: function() {
 
+			// document.getElementById('broadcast-comments')
+			// 	.addEventListener('scroll', this.scroll);
 
 		},
 		beforeDestroy: function() {
@@ -148,3 +137,4 @@
 		}
 	}
 </script>
+
