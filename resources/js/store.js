@@ -15,6 +15,9 @@ export const store = new Vuex.Store({
 		},
 		isUserAuthenticated: state => {
 			return state.user !== null; 
+		},
+		isUserHost: state => {
+			return state.user !== null && state.user.is_host === true;
 		}
 	}
 });

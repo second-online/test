@@ -3,15 +3,16 @@
 		<div id="broadcast-comments" class="d-flex flex-column flex-grow-1 overflow-y bg-light-grey">
 			<div
 				v-for="comment in comments"
-				class="d-flex px-40 flex-shrink-0"
+				class="d-flex px-40 py-20 flex-shrink-0"
 			>	
-				<img src="https://cdn.dribbble.com/users/345970/avatars/normal/0092209c0eddd9d7a0cfaa54a92fd39d.png?1530163405" class="mt-16 mr-20 flex-shrink-0 image-faker"></span>
-				<div class="py-16 flex-grow-1">
-					<div class="">
-						<span class="font-weight-bold">{{ comment.user.name }}</span>
+				<img src="https://cdn.dribbble.com/users/345970/avatars/normal/0092209c0eddd9d7a0cfaa54a92fd39d.png?1530163405" class="mr-24 flex-shrink-0 image-faker"></span>
+				<div class="flex-grow-1">
+					<div>
+						<span class="large font-weight-bold">{{ comment.user.name }}</span>
+						<span v-if="comment.user.is_host" class="text-muted">Host</span>
 					</div>
-					<div class="mt-4 ">
-						<span class="">{{ comment.text }}</span>
+					<div class="mt-2">
+						<span class="large">{{ comment.text }}</span>
 					</div>
 				</div>
 			</div>
@@ -39,7 +40,6 @@
 
 <script>
 	import CommentsTextarea from '../components/CommentsTextarea'
-	import Editable from '../components/Editable'
 
 	export default {
 		props: {
@@ -47,7 +47,6 @@
 		},
 		components: {
 			CommentsTextarea,
-			Editable
 		},
 		data: function() {
 			return {
@@ -60,8 +59,14 @@
 			}
 		},
 		computed: {
+			user: function() {
+				return this.$store.state.user;
+			},
 			isUserAuthenticated: function() {
 				return this.$store.getters.isUserAuthenticated;
+			},
+			isHost: function() {
+				return this.$store.getters.isUserHost;
 			}
 		},
 		methods: {
@@ -76,6 +81,7 @@
 					.post(process.env.MIX_APP_URL + '/w/api/broadcasts/' + this.broadcastId + '/comments', {
 						commentId: localCommentId,
 						text: this.newComment,
+						isHost: this.isHost
 					})
 					.then(response => {
 						const index = this.comments.findIndex(comment => {
@@ -85,8 +91,8 @@
 						this.comments[index] = response.data;
 					})
 					.catch(error => {
-						//console.log('catch');
-						this.newComment = this.cachedComment;
+						// Do something if comment fails
+						// this.newComment = this.cachedComment;
 					})
 					.then(() => {
 						this.isLoading = false;
@@ -95,7 +101,7 @@
 				const comment = {
 					localCommentId: localCommentId,
 					text: this.newComment,
-					user: this.$store.state.user
+					user: this.user
 				};
 
 				this.publishComment(comment);
@@ -109,12 +115,12 @@
 				const distanceFromBottom = el.scrollHeight - el.clientHeight - el.scrollTop;
 				 				 
 				this.comments.push(comment);
-
+				
 				setTimeout(function() {
 					if (distanceFromBottom < 150) {
 						el.scrollTop = el.scrollHeight - el.clientHeight;
 					}
-				},0);
+				}, 50);
 			},
 			login: function() {
 				this.$router.push({ name: 'login', query: { redirect: this.$route.path } });
@@ -125,10 +131,6 @@
 				.listen('BroadcastCommentCreated', comment => {
 					this.publishComment(comment);
 			});
-
-			// document.getElementById('broadcast-comments')
-			// 	.addEventListener('scroll', this.scroll);
-
 		},
 		beforeDestroy: function() {
 			Echo.leave('broadcast.chat.' + this.broadcastId);

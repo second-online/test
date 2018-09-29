@@ -3699,27 +3699,27 @@ textarea.form-control {
 }
 
 .m-2 {
-  margin: 0.5rem !important;
+  margin: 0.125rem !important;
 }
 
 .mt-2,
 .my-2 {
-  margin-top: 0.5rem !important;
+  margin-top: 0.125rem !important;
 }
 
 .mr-2,
 .mx-2 {
-  margin-right: 0.5rem !important;
+  margin-right: 0.125rem !important;
 }
 
 .mb-2,
 .my-2 {
-  margin-bottom: 0.5rem !important;
+  margin-bottom: 0.125rem !important;
 }
 
 .ml-2,
 .mx-2 {
-  margin-left: 0.5rem !important;
+  margin-left: 0.125rem !important;
 }
 
 .m-3 {
@@ -4059,27 +4059,27 @@ textarea.form-control {
 }
 
 .p-2 {
-  padding: 0.5rem !important;
+  padding: 0.125rem !important;
 }
 
 .pt-2,
 .py-2 {
-  padding-top: 0.5rem !important;
+  padding-top: 0.125rem !important;
 }
 
 .pr-2,
 .px-2 {
-  padding-right: 0.5rem !important;
+  padding-right: 0.125rem !important;
 }
 
 .pb-2,
 .py-2 {
-  padding-bottom: 0.5rem !important;
+  padding-bottom: 0.125rem !important;
 }
 
 .pl-2,
 .px-2 {
-  padding-left: 0.5rem !important;
+  padding-left: 0.125rem !important;
 }
 
 .p-3 {
@@ -4444,27 +4444,27 @@ textarea.form-control {
   }
 
   .m-sm-2 {
-    margin: 0.5rem !important;
+    margin: 0.125rem !important;
   }
 
   .mt-sm-2,
   .my-sm-2 {
-    margin-top: 0.5rem !important;
+    margin-top: 0.125rem !important;
   }
 
   .mr-sm-2,
   .mx-sm-2 {
-    margin-right: 0.5rem !important;
+    margin-right: 0.125rem !important;
   }
 
   .mb-sm-2,
   .my-sm-2 {
-    margin-bottom: 0.5rem !important;
+    margin-bottom: 0.125rem !important;
   }
 
   .ml-sm-2,
   .mx-sm-2 {
-    margin-left: 0.5rem !important;
+    margin-left: 0.125rem !important;
   }
 
   .m-sm-3 {
@@ -4804,27 +4804,27 @@ textarea.form-control {
   }
 
   .p-sm-2 {
-    padding: 0.5rem !important;
+    padding: 0.125rem !important;
   }
 
   .pt-sm-2,
   .py-sm-2 {
-    padding-top: 0.5rem !important;
+    padding-top: 0.125rem !important;
   }
 
   .pr-sm-2,
   .px-sm-2 {
-    padding-right: 0.5rem !important;
+    padding-right: 0.125rem !important;
   }
 
   .pb-sm-2,
   .py-sm-2 {
-    padding-bottom: 0.5rem !important;
+    padding-bottom: 0.125rem !important;
   }
 
   .pl-sm-2,
   .px-sm-2 {
-    padding-left: 0.5rem !important;
+    padding-left: 0.125rem !important;
   }
 
   .p-sm-3 {
@@ -5190,27 +5190,27 @@ textarea.form-control {
   }
 
   .m-md-2 {
-    margin: 0.5rem !important;
+    margin: 0.125rem !important;
   }
 
   .mt-md-2,
   .my-md-2 {
-    margin-top: 0.5rem !important;
+    margin-top: 0.125rem !important;
   }
 
   .mr-md-2,
   .mx-md-2 {
-    margin-right: 0.5rem !important;
+    margin-right: 0.125rem !important;
   }
 
   .mb-md-2,
   .my-md-2 {
-    margin-bottom: 0.5rem !important;
+    margin-bottom: 0.125rem !important;
   }
 
   .ml-md-2,
   .mx-md-2 {
-    margin-left: 0.5rem !important;
+    margin-left: 0.125rem !important;
   }
 
   .m-md-3 {
@@ -5550,27 +5550,27 @@ textarea.form-control {
   }
 
   .p-md-2 {
-    padding: 0.5rem !important;
+    padding: 0.125rem !important;
   }
 
   .pt-md-2,
   .py-md-2 {
-    padding-top: 0.5rem !important;
+    padding-top: 0.125rem !important;
   }
 
   .pr-md-2,
   .px-md-2 {
-    padding-right: 0.5rem !important;
+    padding-right: 0.125rem !important;
   }
 
   .pb-md-2,
   .py-md-2 {
-    padding-bottom: 0.5rem !important;
+    padding-bottom: 0.125rem !important;
   }
 
   .pl-md-2,
   .px-md-2 {
-    padding-left: 0.5rem !important;
+    padding-left: 0.125rem !important;
   }
 
   .p-md-3 {
@@ -5936,27 +5936,27 @@ textarea.form-control {
   }
 
   .m-lg-2 {
-    margin: 0.5rem !important;
+    margin: 0.125rem !important;
   }
 
   .mt-lg-2,
   .my-lg-2 {
-    margin-top: 0.5rem !important;
+    margin-top: 0.125rem !important;
   }
 
   .mr-lg-2,
   .mx-lg-2 {
-    margin-right: 0.5rem !important;
+    margin-right: 0.125rem !important;
   }
 
   .mb-lg-2,
   .my-lg-2 {
-    margin-bottom: 0.5rem !important;
+    margin-bottom: 0.125rem !important;
   }
 
   .ml-lg-2,
   .mx-lg-2 {
-    margin-left: 0.5rem !important;
+    margin-left: 0.125rem !important;
   }
 
   .m-lg-3 {
@@ -6296,27 +6296,27 @@ textarea.form-control {
   }
 
   .p-lg-2 {
-    padding: 0.5rem !important;
+    padding: 0.125rem !important;
   }
 
   .pt-lg-2,
   .py-lg-2 {
-    padding-top: 0.5rem !important;
+    padding-top: 0.125rem !important;
   }
 
   .pr-lg-2,
   .px-lg-2 {
-    padding-right: 0.5rem !important;
+    padding-right: 0.125rem !important;
   }
 
   .pb-lg-2,
   .py-lg-2 {
-    padding-bottom: 0.5rem !important;
+    padding-bottom: 0.125rem !important;
   }
 
   .pl-lg-2,
   .px-lg-2 {
-    padding-left: 0.5rem !important;
+    padding-left: 0.125rem !important;
   }
 
   .p-lg-3 {
@@ -6682,27 +6682,27 @@ textarea.form-control {
   }
 
   .m-xl-2 {
-    margin: 0.5rem !important;
+    margin: 0.125rem !important;
   }
 
   .mt-xl-2,
   .my-xl-2 {
-    margin-top: 0.5rem !important;
+    margin-top: 0.125rem !important;
   }
 
   .mr-xl-2,
   .mx-xl-2 {
-    margin-right: 0.5rem !important;
+    margin-right: 0.125rem !important;
   }
 
   .mb-xl-2,
   .my-xl-2 {
-    margin-bottom: 0.5rem !important;
+    margin-bottom: 0.125rem !important;
   }
 
   .ml-xl-2,
   .mx-xl-2 {
-    margin-left: 0.5rem !important;
+    margin-left: 0.125rem !important;
   }
 
   .m-xl-3 {
@@ -7042,27 +7042,27 @@ textarea.form-control {
   }
 
   .p-xl-2 {
-    padding: 0.5rem !important;
+    padding: 0.125rem !important;
   }
 
   .pt-xl-2,
   .py-xl-2 {
-    padding-top: 0.5rem !important;
+    padding-top: 0.125rem !important;
   }
 
   .pr-xl-2,
   .px-xl-2 {
-    padding-right: 0.5rem !important;
+    padding-right: 0.125rem !important;
   }
 
   .pb-xl-2,
   .py-xl-2 {
-    padding-bottom: 0.5rem !important;
+    padding-bottom: 0.125rem !important;
   }
 
   .pl-xl-2,
   .px-xl-2 {
-    padding-left: 0.5rem !important;
+    padding-left: 0.125rem !important;
   }
 
   .p-xl-3 {
@@ -7916,7 +7916,6 @@ body {
   height: 100%;
   -webkit-font-feature-settings: "ss01", "ss02";
   font-feature-settings: "ss01", "ss02";
-  font-variant-numeric: slashed-zero;
   color: #121111;
 }
 
@@ -7924,6 +7923,8 @@ textarea {
   height: auto;
   resize: none;
   outline: none;
+  -webkit-font-feature-settings: inherit;
+  font-feature-settings: inherit;
 }
 
 button:focus {
@@ -7940,11 +7941,6 @@ select:-webkit-autofill:focus {
   -webkit-text-fill-color: #121111;
   -webkit-transition: background-color 5000s ease-in-out 0s;
   transition: background-color 5000s ease-in-out 0s;
-}
-
-[contentEditable=true]:empty:not(:focus):before {
-  content: attr(data-placeholder);
-  color: rgba(18, 17, 17, 0.5);
 }
 
 .overflow-y {
@@ -7976,6 +7972,10 @@ small,
 
 .large {
   font-size: 0.9375rem;
+}
+
+.line-height-1 {
+  line-height: 1;
 }
 
 .form-control {

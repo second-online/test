@@ -16,7 +16,7 @@ class BroadcastCommentController extends Controller
      */
     public function __construct()
     {
-        $this->middleware(['auth']);
+        $this->middleware('auth');
     }
 
     /**
@@ -28,20 +28,27 @@ class BroadcastCommentController extends Controller
      */
     public function store(Request $request, $broadcast_id)
     {      
+        // Need to add validation for text
+
         $broadcastComment = new BroadcastComment;
         $broadcastComment->text = $request->input('text');
         $broadcastComment->user()->associate($request->user());
         $broadcastComment->broadcast_id = $broadcast_id;
-        
+
         // change to try catch /// return something
         if ($broadcastComment->save()) {
-            $data = $broadcastComment->toArray();
+            
+            if ($request->input('isHost') === true) {
+                $broadcastComment->user->is_host = $request->user()->isHost();
+            } else {
+                $broadcastComment->user->is_host = false;
+            }
 
-            broadcast(new BroadcastCommentCreated($data))->toOthers();
+            broadcast(new BroadcastCommentCreated($broadcastComment->toArray()))->toOthers();
+            
+            $broadcastComment->local_id = $request->input('commentId');
 
-            $data = array_add($data, 'local_id', $request->input('commentId'));
-
-            return response()->json($data);
+            return response()->json($broadcastComment);
         } else {
             return response()->json(['message' => 'Something happed. Try again.'], 500);
         }

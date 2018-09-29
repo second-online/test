@@ -30,7 +30,6 @@ body {
 	-moz-font-feature-settings: "ss01", "ss02";
 	-webkit-font-feature-settings: "ss01", "ss02";
 	font-feature-settings: "ss01", "ss02";
-	font-variant-numeric: slashed-zero;
 	color: theme-color("black");
 }
 
@@ -38,6 +37,9 @@ textarea {
 	height: auto;
 	resize: none;
 	outline: none;
+	-moz-font-feature-settings: inherit;
+	-webkit-font-feature-settings: inherit;
+	font-feature-settings: inherit;
 }
 
 button:focus {
@@ -56,11 +58,6 @@ select:-webkit-autofill:focus {
   -webkit-text-fill-color: theme-color("black");
   // -webkit-box-shadow: 0 0 0px 1px #fff inset;
   transition: background-color 5000s ease-in-out 0s;
-}
-
-[contentEditable=true]:empty:not(:focus):before {
-    content:attr(data-placeholder);
-    color: $gray-600;
 }
 
 .overflow-y {
@@ -92,6 +89,10 @@ small,
 
 .large {
 	font-size: $font-size-large;
+}
+
+.line-height-1 {
+	line-height: 1;
 }
 
 .form-control {

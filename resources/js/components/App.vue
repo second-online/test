@@ -31,16 +31,16 @@
 		    }
 		},
 	    mounted: function() {
-			// Echo.channel('main')
-			// 	.listen('BroadcastOpen', data => {
-			// 		this.broadcastOpen(data);
-			// 	})
-			// 	.listen('BroadcastStarting', data => {
-			// 		this.broadcastStarting(data)
-			// 	})
-			// 	.listen('BroadcastClosed', data => {
-			// 		this.broadcastClosed(data);
-			// 	});
+			Echo.channel('main')
+				.listen('BroadcastOpen', data => {
+					this.broadcastOpen(data);
+				})
+				.listen('BroadcastStarting', data => {
+					this.broadcastStarting(data)
+				})
+				.listen('BroadcastClosed', data => {
+					this.broadcastClosed(data);
+				});
 	    }
 	}
 </script>

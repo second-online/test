@@ -36,14 +36,10 @@
 </template>
 
 <script>
-	import InputEditable from '../components/InputEditable'
 
 	export default {
 		props: {
 			previousComments: Array
-		},
-		components: {
-			InputEditable
 		},
 		data: function() {
 			return {
