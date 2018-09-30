@@ -1,23 +1,21 @@
 <template>
-	<div class="container-fluid p-0 h-100">
-		<div class="row no-gutters h-100">
-			<div class="col-md-8 h-100 bg-black">
-				<span class="back" v-on:click="goBack">back</span>
-				<div class="broadcast-video px-40">
-					<vimeo-player 
-						v-if="showVideo"
-						v-on:video-ended="videoEnded"
-						v-bind:video-id="broadcast.sermon.youtube_id"
-					/> 
-				</div>
+	<div class="d-flex flex-column flex-md-row h-100">
+		<div class="broadcast-video-wrapper flex-shrink-0 flex-md-shrink-1 flex-md-grow-1 bg-black">
+			<div class="px-40 py-20">
+				<span class="back text-white" v-on:click="goBack">back</span>
 			</div>
-			<div class="col-md-4 h-100 bg-light-grey">
-				<broadcast-chat
-					v-if="showChat"
-					v-bind:broadcastId="broadcast.id"
-				/>
-			</div>
+			<vimeo-player 
+				v-if="showVideo"
+				v-on:video-ended="videoEnded"
+				v-bind:video-id="broadcast.sermon.youtube_id"
+				class="broadcast-video"
+			/> 
 		</div>
+		<broadcast-chat
+			v-if="showChat"
+			v-bind:broadcastId="broadcast.id"
+			class="broadcast-chat-wrapper"
+		/>
 	</div>
 </template>
 

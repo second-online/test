@@ -7947,6 +7947,10 @@ select:-webkit-autofill:focus {
   overflow-y: auto;
 }
 
+.mh-0 {
+  min-height: 0;
+}
+
 .form-narrow {
   width: 100%;
 }
@@ -7994,5 +7998,24 @@ small,
   height: 2.875rem;
   background: #aaa;
   border-radius: 50%;
+}
+
+.broadcast-video-wrapper {
+  width: 100%;
+}
+
+.broadcast-chat {
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .broadcast-video-wrapper {
+    width: 55%;
+  }
+
+  .broadcast-chat-wrapper {
+    width: 45%;
+    max-width: 28rem;
+  }
 }
 

@@ -1,17 +1,18 @@
 <template>
-	<div class="d-flex flex-column h-100">
-		<div id="broadcast-comments" class="d-flex flex-column flex-grow-1 overflow-y bg-light-grey">
+	<div class="d-flex flex-column flex-grow-1 flex-md-grow-0 mh-0 bg-light-grey">
+		<div id="broadcast-comments" class="d-flex flex-column flex-grow-1 overflow-y">
 			<div
-				v-for="comment in comments"
-				class="d-flex px-40 py-20 flex-shrink-0"
+				v-for="(comment, key) in comments"
+				class="d-flex px-40 py-16 flex-shrink-0"
+				v-bind:class="{ 'pt-40': key == 0 }"
 			>	
-				<img src="https://cdn.dribbble.com/users/345970/avatars/normal/0092209c0eddd9d7a0cfaa54a92fd39d.png?1530163405" class="mr-24 flex-shrink-0 image-faker"></span>
+				<img src="https://cdn.dribbble.com/users/1166392/avatars/normal/7765da9b241339c9885a24bb0c48a363.jpg?1499245430" class="mr-20 flex-shrink-0 image-faker"></span>
 				<div class="flex-grow-1">
 					<div>
 						<span class="large font-weight-bold">{{ comment.user.name }}</span>
-						<span v-if="comment.user.is_host" class="text-muted">Host</span>
+						<span v-if="comment.user.is_host" class="d-none pl-8 text-muted">Host</span>
 					</div>
-					<div class="mt-2">
+					<div class="mt-4">
 						<span class="large">{{ comment.text }}</span>
 					</div>
 				</div>

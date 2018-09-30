@@ -64,6 +64,10 @@ select:-webkit-autofill:focus {
 	overflow-y: auto;
 }
 
+.mh-0 {
+	min-height: 0;
+}
+
 .form-narrow {
 	width: 100%;
 }
@@ -111,4 +115,27 @@ small,
 	height: $spacer * 2.875;
 	background: #aaa;
 	border-radius: 50%;
+}
+
+.broadcast-video-wrapper {
+	width: 100%;
+}
+
+.broadcast-chat {
+	width: 100%;
+}
+
+@include media-breakpoint-up(md) {
+	.broadcast-video-wrapper {
+		width: 55%;
+	}
+
+	.broadcast-video {
+		// padding: 0 ($spacer * 2.5);
+	}
+
+	.broadcast-chat-wrapper {
+		width: 45%;
+		max-width: $spacer * 28;
+	}
 }
