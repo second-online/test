@@ -56,6 +56,8 @@ Route::group(['prefix' => 'w/api'], function() {
 	    'index', 'show'
 	]);
 
+	Route::get('schedule', 'BroadcastController@index');
+
 	Route::get('broadcasts/{broadcast}', 'BroadcastController@show');
 
 	Route::get('broadcasts/{broadcast}/comments', 'BroadcastCommentController@index');
@@ -100,16 +102,24 @@ Route::get('test', function() {
             ->orderBy('starts_at')
             ->get();
 
-
-
     	return response()->json([ 
             'now' => $now->toDateTimeString(),
             'schedule' => $broadcasts,
         ]);
 });
 
+Route::get('/test', function() {
+	$broadcast = new Broadcast;
+	$broadcast->name = 'Sunday 11:11am';
+	$broadcast->day = 'sunday';
+	$broadcast->time = '11:11:00';
+	$broadcast->live = 0;
+	$broadcast->enabled = 1;
+	$broadcast->save();
+});
 
-Route::get('/schedule', function () {
+
+Route::get('/scheduled', function () {
 
 	$format = 'Y-m-d H:i';
 	$now = new Carbon();

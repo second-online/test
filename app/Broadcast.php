@@ -22,7 +22,7 @@ class Broadcast extends Model
      * @var array
      */
     protected $hidden = [
-        'enabled', 'created_at', 'updated_at',
+        'day', 'time', 'enabled', 'created_at', 'updated_at',
     ];
 
     /**

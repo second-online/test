@@ -28996,6 +28996,17 @@ window.Vimeo = __WEBPACK_IMPORTED_MODULE_1__vimeo_player__["a" /* default */];
 
 window.Moment = __webpack_require__(0);
 
+window.Moment.locale('en', {
+  calendar: {
+    lastDay: '[Yesterday], MMM D',
+    sameDay: '[Today], MMM D',
+    nextDay: '[Tomorrow], MMM D',
+    lastWeek: '[last] dddd [at] LT',
+    nextWeek: 'dddd, MMM D',
+    sameElse: 'L'
+  }
+});
+
 /***/ }),
 /* 143 */
 /***/ (function(module, exports) {
@@ -43299,18 +43310,21 @@ var index_esm = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_Sermons___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__components_Sermons__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_Sermon__ = __webpack_require__(191);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_Sermon___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__components_Sermon__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_HostDashboard__ = __webpack_require__(197);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_HostDashboard___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__components_HostDashboard__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_Login__ = __webpack_require__(203);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_Login___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__components_Login__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_Register__ = __webpack_require__(206);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_Register___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8__components_Register__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__components_PasswordReset__ = __webpack_require__(212);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__components_PasswordReset___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9__components_PasswordReset__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__components_PasswordResetChange__ = __webpack_require__(217);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__components_PasswordResetChange___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10__components_PasswordResetChange__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__components_404__ = __webpack_require__(222);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__components_404___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_11__components_404__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_Schedule__ = __webpack_require__(228);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_Schedule___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__components_Schedule__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_HostDashboard__ = __webpack_require__(197);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_HostDashboard___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__components_HostDashboard__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_Login__ = __webpack_require__(203);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_Login___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8__components_Login__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__components_Register__ = __webpack_require__(206);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__components_Register___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9__components_Register__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__components_PasswordReset__ = __webpack_require__(212);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__components_PasswordReset___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10__components_PasswordReset__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__components_PasswordResetChange__ = __webpack_require__(217);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__components_PasswordResetChange___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_11__components_PasswordResetChange__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__components_404__ = __webpack_require__(222);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__components_404___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_12__components_404__);
+
 
 
 
@@ -43346,33 +43360,37 @@ var router = new __WEBPACK_IMPORTED_MODULE_1_vue_router__["a" /* default */]({
 		name: 'sermon',
 		component: __WEBPACK_IMPORTED_MODULE_5__components_Sermon___default.a
 	}, {
+		path: '/schedule',
+		name: 'schedule',
+		component: __WEBPACK_IMPORTED_MODULE_6__components_Schedule___default.a
+	}, {
 		path: '/host',
 		name: 'host',
-		component: __WEBPACK_IMPORTED_MODULE_6__components_HostDashboard___default.a
+		component: __WEBPACK_IMPORTED_MODULE_7__components_HostDashboard___default.a
 	}, {
 		path: '/login',
 		name: 'login',
-		component: __WEBPACK_IMPORTED_MODULE_7__components_Login___default.a,
+		component: __WEBPACK_IMPORTED_MODULE_8__components_Login___default.a,
 		meta: { guest: true }
 	}, {
 		path: '/register',
 		name: 'register',
-		component: __WEBPACK_IMPORTED_MODULE_8__components_Register___default.a,
+		component: __WEBPACK_IMPORTED_MODULE_9__components_Register___default.a,
 		meta: { guest: true }
 	}, {
 		path: '/password/reset',
 		name: 'password.reset',
-		component: __WEBPACK_IMPORTED_MODULE_9__components_PasswordReset___default.a,
+		component: __WEBPACK_IMPORTED_MODULE_10__components_PasswordReset___default.a,
 		meta: { guest: true }
 	}, {
 		path: '/password/reset/:token',
 		name: 'password.reset.change',
-		component: __WEBPACK_IMPORTED_MODULE_10__components_PasswordResetChange___default.a,
+		component: __WEBPACK_IMPORTED_MODULE_11__components_PasswordResetChange___default.a,
 		meta: { guest: true }
 	}, {
 		path: '/404',
 		name: '404',
-		component: __WEBPACK_IMPORTED_MODULE_11__components_404___default.a
+		component: __WEBPACK_IMPORTED_MODULE_12__components_404___default.a
 	}, {
 		path: '*',
 		redirect: '/404'
@@ -49129,6 +49147,153 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 225 */,
+/* 226 */,
+/* 227 */,
+/* 228 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(1)
+/* script */
+var __vue_script__ = __webpack_require__(230)
+/* template */
+var __vue_template__ = __webpack_require__(229)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/components/Schedule.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-5f748482", Component.options)
+  } else {
+    hotAPI.reload("data-v-5f748482", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 229 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    _vm._l(_vm.schedule, function(day) {
+      return _c(
+        "div",
+        [
+          _c("h1", { staticClass: "font-weight-bold" }, [
+            _vm._v(_vm._s(day.header))
+          ]),
+          _vm._v(" "),
+          _vm._l(day.broadcasts, function(broadcasts) {
+            return _c("div", [_c("span", [_vm._v(_vm._s(broadcasts.name))])])
+          })
+        ],
+        2
+      )
+    })
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-5f748482", module.exports)
+  }
+}
+
+/***/ }),
+/* 230 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+	data: function data() {
+		return {
+			schedule: []
+		};
+	},
+	mounted: function mounted() {
+		var _this = this;
+
+		axios.get("http://second.test" + '/w/api/schedule/').then(function (response) {
+			var data = response.data;
+
+			_this.schedule = data.reduce(function (accumulator, broadcast) {
+				var time = Moment.utc(broadcast.starts_at).local();
+				var date = time.format('MM_DD_Y');
+				var header = time.calendar();
+
+				if (!accumulator.hasOwnProperty(date)) {
+					accumulator[date] = {
+						header: header,
+						broadcasts: []
+					};
+				}
+
+				accumulator[date].broadcasts.push(broadcast);
+
+				return accumulator;
+			}, {});
+
+			console.log(_this.schedule);
+			// for (let i = 0; i < data.length; i++) {
+			// 	const broadcast = data[i];
+			// 	const time = Moment.utc(broadcast.starts_at);
+
+			// 	//console.log('UTC: ' + time.format('MM-DD-Y h:mm') + ', Local: ' + time.local().format('MM-DD-Y h:mm'));
+			// 	console.log(time.local().calendar());
+			// }
+		});
+	}
+});
 
 /***/ })
 /******/ ]);

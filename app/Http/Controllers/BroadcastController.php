@@ -17,6 +17,11 @@ class BroadcastController extends Controller
     public function index()
     {
         // show broadcast schedule
+        $broadcasts = Broadcast::where('enabled', 1)
+            ->orderBy('starts_at')
+            ->get();
+
+        return response()->json($broadcasts);
     }
 
     /**

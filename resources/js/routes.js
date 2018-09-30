@@ -5,6 +5,7 @@ import Home from './components/Home'
 import Broadcast from './components/Broadcast'
 import Sermons from './components/Sermons'
 import Sermon from './components/Sermon'
+import Schedule from './components/Schedule'
 import HostDashboard from './components/HostDashboard'
 import Login from './components/Login'
 import Register from './components/Register'
@@ -36,6 +37,11 @@ export const router = new VueRouter({
 			path: '/sermons/:sermon_id',
 			name: 'sermon',
 			component: Sermon
+		},
+		{
+			path: '/schedule',
+			name: 'schedule',
+			component: Schedule 
 		},
 		{
 			path:'/host',

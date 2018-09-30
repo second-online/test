@@ -62,3 +62,14 @@ window.Echo = new Echo({
 window.Vimeo = Vimeo;
 
 window.Moment = require('moment');
+
+window.Moment.locale('en', {
+    calendar : {
+        lastDay : '[Yesterday], MMM D',
+        sameDay : '[Today], MMM D',
+        nextDay : '[Tomorrow], MMM D',
+        lastWeek : '[last] dddd [at] LT',
+        nextWeek : 'dddd, MMM D',
+        sameElse : 'L'
+    }
+});
