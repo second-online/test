@@ -82,8 +82,12 @@ select:-webkit-autofill:focus {
 	border-width: 3px !important; 
 }
 
-.tiny {
-  font-size: $font-size-tiny;
+.xxsmall {
+	font-size: $font-size-xx-sm;
+}
+
+.xsmall {
+  font-size: $font-size-x-sm;
 }
 
 small,
@@ -138,4 +142,34 @@ small,
 		width: 45%;
 		max-width: $spacer * 28;
 	}
+}
+
+.narrow-container {
+	max-width: 720px;
+}
+
+.schedule-time {
+	flex-basis: 25%;
+}
+
+.schedule-name {
+	flex-basis: 50%;
+}
+
+.schedule-reminder {
+	flex-basis: 25%;
+}
+
+.live-broadcast { 
+	font-size: $font-size-xx-sm;
+	font-weight: $font-weight-bold;
+	line-height: 1;
+	letter-spacing: .1em;
+	text-transform: uppercase;
+}
+
+.flex-grow-3 {
+  -webkit-box-flex: 3 !important;
+      -ms-flex-positive: 3 !important;
+          flex-grow: 3 !important;
 }

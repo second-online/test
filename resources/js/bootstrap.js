@@ -68,7 +68,7 @@ window.Moment.locale('en', {
         lastDay : '[Yesterday], MMM D',
         sameDay : '[Today], MMM D',
         nextDay : '[Tomorrow], MMM D',
-        lastWeek : '[last] dddd [at] LT',
+        lastWeek : '[Last] dddd, MMM D',
         nextWeek : 'dddd, MMM D',
         sameElse : 'L'
     }

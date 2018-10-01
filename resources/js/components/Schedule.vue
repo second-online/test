@@ -1,13 +1,26 @@
 <template>
-	<div>
-		<div v-for="day in schedule">
-			<h1 class="font-weight-bold">{{ day.header }}</h1>
-			<div v-for="broadcasts in day.broadcasts">
-				<span>{{ broadcasts.name }}</span>
+	<section class="narrow-container m-auto">
+		<section
+			v-for="day in schedule"
+			class="mb-40"
+		>
+			<h1 class="mt-80 mb-56 line-height-1">{{ day.title }}</h1>
+			<div
+				v-for="broadcast in day.broadcasts"
+				class="row no-gutters py-24 border-bottom"
+			>
+				<span class="col-2 font-weight-bold">{{ broadcast.time }}</span>
+				<div class="col-8 d-flex pl-40 pr-60 flex-grow-1">
+					<span class="flex-grow-1">Entrance to the Kingdom</span>
+					<span
+						v-if="broadcast.live"
+						class="text-danger"
+					>Live broadcast</span>
+				</div>
+				<span class="col-2 font-weight-bold text-right text-muted">Get reminder</span>
 			</div>
-
-		</div>
-	</div>
+		</section>
+	</section>
 </template>
 
 <script>
@@ -21,34 +34,27 @@
 			axios
 				.get(process.env.MIX_APP_URL + '/w/api/schedule/')
 				.then(response => {
-					const data = response.data;
-
-					this.schedule = data.reduce((accumulator, broadcast) => {
+					this.schedule = response.data.reduce((accumulator, broadcast) => {
 						const time = Moment.utc(broadcast.starts_at).local();
-						const date = time.format('MM_DD_Y');
-						const header = time.calendar(); 
+						const key = time.format('MM_DD_Y');
+						const title = time.calendar();
 
-						if (! accumulator.hasOwnProperty(date)) {
-							accumulator[date] = {
-								header: header, 
+						if (! accumulator.hasOwnProperty(key)) {
+							accumulator[key] = {
+								title: title, 
 								broadcasts: []
 							};
 						}
 
-						accumulator[date].broadcasts.push(broadcast);
+						broadcast.time = time.format('h:mm a');
+
+						accumulator[key].broadcasts.push(broadcast);
 
 						return accumulator;
 
 					}, {});
 
 					console.log(this.schedule);
-					// for (let i = 0; i < data.length; i++) {
-					// 	const broadcast = data[i];
-					// 	const time = Moment.utc(broadcast.starts_at);
-
-					// 	//console.log('UTC: ' + time.format('MM-DD-Y h:mm') + ', Local: ' + time.local().format('MM-DD-Y h:mm'));
-					// 	console.log(time.local().calendar());
-					// }
 				});
 		}
 	}

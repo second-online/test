@@ -29001,7 +29001,7 @@ window.Moment.locale('en', {
     lastDay: '[Yesterday], MMM D',
     sameDay: '[Today], MMM D',
     nextDay: '[Tomorrow], MMM D',
-    lastWeek: '[last] dddd [at] LT',
+    lastWeek: '[Last] dddd, MMM D',
     nextWeek: 'dddd, MMM D',
     sameElse: 'L'
   }
@@ -42291,7 +42291,7 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c(
-    "div",
+    "main",
     { staticClass: "h-100" },
     [
       _c("router-view", { ref: "master" }),
@@ -49207,17 +49207,51 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c(
-    "div",
+    "section",
+    { staticClass: "narrow-container m-auto" },
     _vm._l(_vm.schedule, function(day) {
       return _c(
-        "div",
+        "section",
+        { staticClass: "mb-40" },
         [
-          _c("h1", { staticClass: "font-weight-bold" }, [
-            _vm._v(_vm._s(day.header))
+          _c("h1", { staticClass: "mt-80 mb-56 line-height-1" }, [
+            _vm._v(_vm._s(day.title))
           ]),
           _vm._v(" "),
-          _vm._l(day.broadcasts, function(broadcasts) {
-            return _c("div", [_c("span", [_vm._v(_vm._s(broadcasts.name))])])
+          _vm._l(day.broadcasts, function(broadcast) {
+            return _c(
+              "div",
+              { staticClass: "row no-gutters py-24 border-bottom" },
+              [
+                _c("span", { staticClass: "col-2 font-weight-bold" }, [
+                  _vm._v(_vm._s(broadcast.time))
+                ]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "col-8 d-flex pl-40 pr-60 flex-grow-1" },
+                  [
+                    _c("span", { staticClass: "flex-grow-1" }, [
+                      _vm._v("Entrance to the Kingdom")
+                    ]),
+                    _vm._v(" "),
+                    broadcast.live
+                      ? _c("span", { staticClass: "text-danger" }, [
+                          _vm._v("Live broadcast")
+                        ])
+                      : _vm._e()
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "span",
+                  {
+                    staticClass: "col-2 font-weight-bold text-right text-muted"
+                  },
+                  [_vm._v("Get reminder")]
+                )
+              ]
+            )
           })
         ],
         2
@@ -49253,6 +49287,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
 	data: function data() {
@@ -49264,33 +49311,26 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 		var _this = this;
 
 		axios.get("http://second.test" + '/w/api/schedule/').then(function (response) {
-			var data = response.data;
-
-			_this.schedule = data.reduce(function (accumulator, broadcast) {
+			_this.schedule = response.data.reduce(function (accumulator, broadcast) {
 				var time = Moment.utc(broadcast.starts_at).local();
-				var date = time.format('MM_DD_Y');
-				var header = time.calendar();
+				var key = time.format('MM_DD_Y');
+				var title = time.calendar();
 
-				if (!accumulator.hasOwnProperty(date)) {
-					accumulator[date] = {
-						header: header,
+				if (!accumulator.hasOwnProperty(key)) {
+					accumulator[key] = {
+						title: title,
 						broadcasts: []
 					};
 				}
 
-				accumulator[date].broadcasts.push(broadcast);
+				broadcast.time = time.format('h:mm a');
+
+				accumulator[key].broadcasts.push(broadcast);
 
 				return accumulator;
 			}, {});
 
 			console.log(_this.schedule);
-			// for (let i = 0; i < data.length; i++) {
-			// 	const broadcast = data[i];
-			// 	const time = Moment.utc(broadcast.starts_at);
-
-			// 	//console.log('UTC: ' + time.format('MM-DD-Y h:mm') + ', Local: ' + time.local().format('MM-DD-Y h:mm'));
-			// 	console.log(time.local().calendar());
-			// }
 		});
 	}
 });

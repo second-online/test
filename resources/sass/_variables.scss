@@ -18,6 +18,10 @@ $spacers: map-merge(
     30: ($spacer * 1.875),
     40: ($spacer * 2.5),
     48: ($spacer * 3),
+    56: ($spacer * 3.5),
+    60: ($spacer * 3.75),
+    64: ($spacer * 4),
+    80: ($spacer * 5),
   ),
   $spacers
 );
@@ -25,7 +29,8 @@ $spacers: map-merge(
 
 // Typography
 $font-family-sans-serif: "Larsseit", sans-serif;
-$font-size-tiny: 0.75rem;  
+$font-size-xx-sm: 0.625rem; 
+$font-size-x-sm: 0.75rem;  
 $font-size-sm:   0.8125rem;
 $font-size-base: 0.875rem;
 $font-size-large: 0.9375rem; 
@@ -42,7 +47,7 @@ $h1-font-size: 1.875rem;
 $white: #fff;
 $black: #121111;
 $light-grey: #eee;
-$red: #e92a2a;
+$red: #ef5858;
 
 $theme-colors: (
 	"light-grey": $light-grey,
