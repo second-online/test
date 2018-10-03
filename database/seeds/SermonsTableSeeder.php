@@ -25,9 +25,11 @@ class SermonsTableSeeder extends Seeder
         $sermon->description = 'Short description of this video';
         $sermon->notes = 'Notes for this video';
         $sermon->youtube_id = 'x6HmpEG7OKM';
+        $sermon->vimeo_id = '291790268';
         $sermon->speaker()->associate($speaker);
         $sermon->series()->associate($series);
         $sermon->duration = '00:45:12';
+        $sermon->publish_on = '2018-09-19 12:00:00';
         $sermon->save();
 
         $sermon2 = new Sermon;
@@ -35,9 +37,11 @@ class SermonsTableSeeder extends Seeder
         $sermon2->description = 'Short description of this video';
         $sermon2->notes = 'Notes for this video';
         $sermon2->youtube_id = '6wzty6_LB-U';
+        $sermon2->vimeo_id = '290559345';
         $sermon2->speaker()->associate($speaker);
         $sermon2->series()->associate($series);
         $sermon2->duration = '00:48:12';
+        $sermon2->publish_on = '2018-09-26 12:00:00';
         $sermon2->save();
 
         $sermon3 = new Sermon;
@@ -45,9 +49,23 @@ class SermonsTableSeeder extends Seeder
         $sermon3->description = 'Short description of this video';
         $sermon3->notes = 'Notes for this video';
         $sermon3->youtube_id = 'MP645GgozHE';
+        $sermon3->vimeo_id = '293031937';
         $sermon3->speaker()->associate($speaker);
         $sermon3->series()->associate($series);
-        $sermon3->duration = '00:01:32';
+        $sermon3->duration = '00:45:00';
+        $sermon3->publish_on = '2018-10-03 12:00:00';
         $sermon3->save();
+
+        $sermon4 = new Sermon;
+        $sermon4->title = 'Faith in the Lord';
+        $sermon4->description = 'Short description of this video';
+        $sermon4->notes = 'Notes for this video';
+        $sermon4->youtube_id = 'MP645Ggoz4HE';
+        $sermon4->vimeo_id = '2930319347';
+        $sermon4->speaker()->associate($speaker);
+        $sermon4->series()->associate($series);
+        $sermon4->duration = '00:45:00';
+        $sermon4->publish_on = '2018-10-03 13:02:00';
+        $sermon4->save();
     }
 }

@@ -1,6 +1,6 @@
 <template>
 	<main class="h-100">
-		<router-view ref="master"></router-view>
+		<router-view ref="router"></router-view>
 		<div v-if="showVideo" class="popup-video"></div>
 	</main>
 </template>
@@ -41,6 +41,16 @@
 				.listen('BroadcastClosed', data => {
 					this.broadcastClosed(data);
 				});
+
+
+				// setTimeout(() => {
+
+				// 	if (this.$refs.router.$refs.video !== undefined) {
+				// 		// this.$refs.router.$refs.video.play();
+				// 	}
+
+				// },1000);
+
 	    }
 	}
 </script>

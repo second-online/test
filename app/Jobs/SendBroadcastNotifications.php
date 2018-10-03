@@ -40,16 +40,17 @@ class SendBroadcastNotifications
 
         foreach ($broadcasts as $broadcast) {
 
+            $opensAt = Carbon::createFromFormat('Y-m-d H:i:s', $broadcast->starts_at)
+                ->subMinutes(Broadcast::MINUTES_BEFORE_START);
+
             $startsAt = Carbon::createFromFormat('Y-m-d H:i:s', $broadcast->starts_at);
-            $opensAt = clone $startsAt;
-            $opensAt->subMinutes(10);
-            $closesAt = clone $startsAt;
-            $closesAt->addSeconds($sermon->duration);
-            // End broadcast chat 10 min after sermon ends
-            $closesAt->addMinutes(1);
-            // Set seconds to 0 so we don't just barely
-            // miss a cron job cycle
-            $closesAt->second = 0;
+
+            $closesAt = Carbon::createFromFormat('Y-m-d H:i:s', $broadcast->starts_at)
+                ->addSeconds($sermon->duration)
+                ->addMinutes(Broadcast::MINUTES_AFTER_END)
+                ->second(0);
+
+            Log::debug($closesAt->toDateTimeString());
 
             if ($opensAt->format($format) == $now->format($format)) {
                 // Broadcast chat open

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Broadcast; 
 use App\Sermon;
+use Carbon\Carbon;
 use Auth;
 
 class BroadcastController extends Controller
@@ -17,6 +18,7 @@ class BroadcastController extends Controller
     public function index()
     {
         // show broadcast schedule
+        //latest('starts_at')
         $broadcasts = Broadcast::where('enabled', 1)
             ->orderBy('starts_at')
             ->get();
@@ -32,16 +34,29 @@ class BroadcastController extends Controller
      */
     public function show($id)
     {
-       $broadcast = Broadcast::find($id);
+        $broadcast = Broadcast::find($id);
 
+        // use model exception middleware or something?
         if (! $broadcast) {
             return response()->json(['message' => 'Page not found.'], 404);
         }
 
-        $sermon = Sermon::orderBy('id', 'desc')->first()->toArray();
-        $broadcast = $broadcast->toArray();
-        $broadcast = array_add($broadcast, 'sermon', $sermon);
+        if (! $broadcast->live) {
+            // Check active date
+            $sermon = Sermon::orderBy('id', 'desc')->first();
+            $broadcast->sermon = $sermon;
+            $broadcast->trailer = ['link' => 'https://vimeo.com/218845426/1d582e7485'];
+            $broadcast->getStatus(2700);
+            
+        }
 
-        return response()->json($broadcast);
+        $response = [
+            'broadcast' => $broadcast,
+        ];
+
+        // Add the trailer
+        return response()->json([
+            'broadcast' => $broadcast,
+        ]);
     }
 }

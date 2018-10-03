@@ -6,14 +6,17 @@
 			</div>
 			<vimeo-player 
 				v-if="showVideo"
-				v-on:video-ended="videoEnded"
-				v-bind:video-id="broadcast.sermon.youtube_id"
+				v-on:broadcast-ended="broadcastEnded"
+				v-bind:video-id="videoId"
+				v-bind:seconds-elapsed="videoElapsedTime"
+				ref="video"
 				class="broadcast-video"
 			/> 
 		</div>
 		<broadcast-chat
 			v-if="showChat"
-			v-bind:broadcastId="broadcast.id"
+			v-bind:broadcast-id="broadcast.id"
+			ref="broadcastChat"
 			class="broadcast-chat-wrapper"
 		/>
 	</div>
@@ -31,8 +34,10 @@
 		data: function() {
 			return {
 				broadcast: {},
+				videoId: '',
+				videoElapsedTime: 0,
 				showVideo: false,
-				showChat: false
+				showChat: false,
 			}
 		},
 		beforeRouteEnter (to, from, next) {
@@ -50,12 +55,60 @@
 		},
 		methods: {
 			setData: function(data) {
-				this.broadcast = data;
+				
+				// const currentTime = Moment.utc(data.current_time);
+				// const opensAt = Moment.utc(data.broadcast.opens_at);
+				// const startsAt = Moment.utc(data.broadcast.starts_at);
+				// const endsAt = Moment.utc(data.broadcast.ends_at);
+
+				// this.broadcast = data.broadcast;
+
+				// console.log(data.current_time);
+				// console.log(data.broadcast.opens_at);
+				// console.log(data.broadcast.starts_at);
+				// console.log(data.broadcast.ends_at);
+
+				// //console.log(startsAt.subtract(10, 'minutes').format('Y-m-d H:mm'));
+
+				// console.log(currentTime.isAfter(endsAt));
+
+				// // The broadcast has ended but the chat is still open.
+				// if (currentTime.isAfter(endsAt)) {
+				// 	this.broadcastEnded();
+				// }
+				// // The broadcast is in progress.
+				// else if (currentTime.isAfter(startsAt)) {
+				// 	const elapsedSeconds = currentTime.diff(startsAt, 'seconds');
+				// 	this.broadcastInProgress(elapsedSeconds);
+				// }
+				// // The broadcast chat is open.
+				// else if (currentTime.isAfter(opensAt)) {
+				// 	this.broadcastOpen();
+				// }
+				// // The broadcast isn't open.
+				// else {
+
+				// }
+			},
+			broadcastOpen: function() {
+				this.videoId = this.broadcast.trailer.link;
 				this.showVideo = true;
 				this.showChat = true;
 			},
-	        videoEnded: function() {
-	            //this.showVideo = false;
+			broadcastInProgress: function(secondsElapsed = 0) {
+				this.videoId = this.broadcast.sermon.vimeo_id;
+				this.videoElapsedTime = secondsElapsed;
+				this.showVideo = true;
+				this.showChat = true;
+			},
+	        broadcastEnded: function() {
+	            this.showVideo = false;
+	            this.showChat = true;
+	        },
+	        broadcastClosed: function() {
+	        	// Display some message
+	        	this.showVideo = false;
+	        	this.showChat = false;
 	        }, 
 		    goBack () {
 				window.history.length > 1

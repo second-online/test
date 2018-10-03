@@ -73,7 +73,7 @@
 
 				const inProgressBroadcast = this.broadcasts.find(function(broadcast) {
 					const startsAt = Moment.utc(broadcast.starts_at).subtract(10, 'minutes');
-
+					// change to opensAt?
 					return startsAt.diff(now) <= 0;
 				});
 

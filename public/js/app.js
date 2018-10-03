@@ -42279,6 +42279,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 		}).listen('BroadcastClosed', function (data) {
 			_this.broadcastClosed(data);
 		});
+
+		// setTimeout(() => {
+
+		// 	if (this.$refs.router.$refs.video !== undefined) {
+		// 		// this.$refs.router.$refs.video.play();
+		// 	}
+
+		// },1000);
 	}
 });
 
@@ -42294,7 +42302,7 @@ var render = function() {
     "main",
     { staticClass: "h-100" },
     [
-      _c("router-view", { ref: "master" }),
+      _c("router-view", { ref: "router" }),
       _vm._v(" "),
       _vm.showVideo ? _c("div", { staticClass: "popup-video" }) : _vm._e()
     ],
@@ -46214,6 +46222,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 
 
@@ -46226,6 +46237,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 	data: function data() {
 		return {
 			broadcast: {},
+			videoId: '',
+			videoElapsedTime: 0,
 			showVideo: false,
 			showChat: false
 		};
@@ -46244,12 +46257,62 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 	methods: {
 		setData: function setData(data) {
-			this.broadcast = data;
+
+			// const currentTime = Moment.utc(data.current_time);
+			// const opensAt = Moment.utc(data.broadcast.opens_at);
+			// const startsAt = Moment.utc(data.broadcast.starts_at);
+			// const endsAt = Moment.utc(data.broadcast.ends_at);
+
+			// this.broadcast = data.broadcast;
+
+			// console.log(data.current_time);
+			// console.log(data.broadcast.opens_at);
+			// console.log(data.broadcast.starts_at);
+			// console.log(data.broadcast.ends_at);
+
+			// //console.log(startsAt.subtract(10, 'minutes').format('Y-m-d H:mm'));
+
+			// console.log(currentTime.isAfter(endsAt));
+
+			// // The broadcast has ended but the chat is still open.
+			// if (currentTime.isAfter(endsAt)) {
+			// 	this.broadcastEnded();
+			// }
+			// // The broadcast is in progress.
+			// else if (currentTime.isAfter(startsAt)) {
+			// 	const elapsedSeconds = currentTime.diff(startsAt, 'seconds');
+			// 	this.broadcastInProgress(elapsedSeconds);
+			// }
+			// // The broadcast chat is open.
+			// else if (currentTime.isAfter(opensAt)) {
+			// 	this.broadcastOpen();
+			// }
+			// // The broadcast isn't open.
+			// else {
+
+			// }
+		},
+		broadcastOpen: function broadcastOpen() {
+			this.videoId = this.broadcast.trailer.link;
 			this.showVideo = true;
 			this.showChat = true;
 		},
-		videoEnded: function videoEnded() {
-			//this.showVideo = false;
+		broadcastInProgress: function broadcastInProgress() {
+			var secondsElapsed = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+
+			this.videoId = this.broadcast.sermon.vimeo_id;
+			this.videoElapsedTime = secondsElapsed;
+			this.showVideo = true;
+			this.showChat = true;
+		},
+		broadcastEnded: function broadcastEnded() {
+			this.showVideo = false;
+			this.showChat = true;
+		},
+		broadcastClosed: function broadcastClosed() {
+			// Display some message
+			this.showVideo = false;
+			this.showChat = false;
 		},
 		goBack: function goBack() {
 			window.history.length > 1 ? this.$router.go(-1) : this.$router.push('/');
@@ -46269,6 +46332,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+	props: {
+		videoId: String,
+		secondsElapsed: Number
+	},
 	data: function data() {
 		return {
 			player: {}
@@ -46302,17 +46369,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 		var _this = this;
 
 		var options = {
-			id: 59777392
-			// autoplay: true
-
-			//playinline
+			id: this.videoId
 		};
 
 		this.player = new Vimeo('vimeo-player', options);
-		this.player.setVolume(0);
+
+		// this.player.setVolume(0);	
+		this.player.setCurrentTime(this.secondsElapsed);
 
 		this.player.ready().then(function () {
-			console.log('ready');
 			_this.play();
 		});
 	}
@@ -46761,9 +46826,13 @@ var render = function() {
           _vm._v(" "),
           _vm.showVideo
             ? _c("vimeo-player", {
+                ref: "video",
                 staticClass: "broadcast-video",
-                attrs: { "video-id": _vm.broadcast.sermon.youtube_id },
-                on: { "video-ended": _vm.videoEnded }
+                attrs: {
+                  "video-id": _vm.videoId,
+                  "seconds-elapsed": _vm.videoElapsedTime
+                },
+                on: { "broadcast-ended": _vm.broadcastEnded }
               })
             : _vm._e()
         ],
@@ -46772,8 +46841,9 @@ var render = function() {
       _vm._v(" "),
       _vm.showChat
         ? _c("broadcast-chat", {
+            ref: "broadcastChat",
             staticClass: "broadcast-chat-wrapper",
-            attrs: { broadcastId: _vm.broadcast.id }
+            attrs: { "broadcast-id": _vm.broadcast.id }
           })
         : _vm._e()
     ],
@@ -47344,7 +47414,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 			var inProgressBroadcast = this.broadcasts.find(function (broadcast) {
 				var startsAt = Moment.utc(broadcast.starts_at).subtract(10, 'minutes');
-
+				// change to opensAt?
 				return startsAt.diff(now) <= 0;
 			});
 

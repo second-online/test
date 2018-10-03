@@ -98,8 +98,8 @@ Route::get('test', function() {
 
         $now = Carbon::now();
 
-        $broadcasts = Broadcast::where('enabled', 1)
-            ->orderBy('starts_at')
+        $broadcasts = Sermon::where('publish_on', '<=', $now)
+            ->latest('publish_on')
             ->get();
 
     	return response()->json([ 
@@ -108,14 +108,33 @@ Route::get('test', function() {
         ]);
 });
 
-Route::get('/test', function() {
-	$broadcast = new Broadcast;
-	$broadcast->name = 'Sunday 11:11am';
-	$broadcast->day = 'sunday';
-	$broadcast->time = '11:11:00';
-	$broadcast->live = 0;
-	$broadcast->enabled = 1;
-	$broadcast->save();
+Route::get('/test2', function() {
+
+	$broadcast = Broadcast::find(1);
+	$sermon = Sermon::orderBy('id', 'desc')->first();
+
+	echo $broadcast->getStatus($sermon->duration);
+
+	die;
+
+	echo $broadcast->opensAt();
+	echo '<br>';
+	echo $broadcast->starts_at;
+	echo '<br>';
+	echo $broadcast->endsAt($sermon->duration);
+	echo '<br>';
+	echo $broadcast->closesAt($sermon->duration);
+	echo '<br>';
+	echo $broadcast->starts_at;
+
+
+	// $broadcast = new Broadcast;
+	// $broadcast->name = 'Sunday 11:11am';
+	// $broadcast->day = 'sunday';
+	// $broadcast->time = '11:11:00';
+	// $broadcast->live = 0;
+	// $broadcast->enabled = 1;
+	// $broadcast->save();
 });
 
 

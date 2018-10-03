@@ -4,6 +4,10 @@
 
 <script>
 	export default {
+		props: {
+			videoId: String,
+			secondsElapsed: Number
+		},
 		data: function() {
 			return {
 				player: {}
@@ -35,17 +39,15 @@
 		},
 		mounted: function() {
 		    var options = {
-		        id: 59777392,
-		        // autoplay: true
-		        
-		        //playinline
+		        id: this.videoId,
 		    };
 
 		    this.player = new Vimeo('vimeo-player', options);
-			this.player.setVolume(0);	
 
+			// this.player.setVolume(0);	
+			this.player.setCurrentTime(this.secondsElapsed);
+ 
 			this.player.ready().then(() => {
-				console.log('ready');
 				this.play();
 			});
 		}

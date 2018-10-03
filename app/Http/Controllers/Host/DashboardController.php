@@ -23,8 +23,6 @@ class DashboardController extends Controller
 
     public function index(Request $reqest)
     {
-        $now = Carbon::now();
-
         $broadcasts = Broadcast::where('enabled', 1)
             ->orderBy('starts_at')
             ->get();
@@ -37,7 +35,7 @@ class DashboardController extends Controller
             ->values();
 
     	return response()->json([ 
-            'now' => $now->toDateTimeString(),
+            'now' => Carbon::now()->toDateTimeString(),
             'broadcasts' => $broadcasts,
             'host_comments' => $hostComments
         ]);
