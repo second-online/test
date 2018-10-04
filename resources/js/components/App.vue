@@ -18,39 +18,58 @@
 		    	// 	this.$refs.master.loadBroadcastChat(broadcast);
 		    	// 	console.log(broadcast);
 		    	// }
+
+		    	if (this.$router.currentRoute.name == 'broadcast'
+		    		&& this.$refs.router.broadcast.id == broadcast.id) {
+
+		    		this.$refs.router.broadcast = broadcast;
+		    		this.$refs.router.broadcastOpen();
+
+		    		console.log('broadcast open');
+		    	}
 		    },
 		    broadcastStarting: function(broadcast) {
 		    	// if (this.$refs.master.$options.name === 'host-dashboard') {
 		    	// 	this.$refs.master.loadBroadcastChat(broadcast);
 		    	// }
+
+		    	if (this.$router.currentRoute.name == 'broadcast'
+		    		&& this.$refs.router.broadcast.id == broadcast.id) {
+
+		    		this.$refs.router.broadcast = broadcast;
+		    		this.$refs.router.broadcastInProgress();
+		    		
+		    		console.log('broadcast starting');
+		    	}
 		    },
 		    broadcastClosed: function(broadcast) {
 		    	// if (this.$refs.master.$options.name === 'host-dashboard') {
 		    	// 	this.$refs.master.hideBroadcastChat(broadcast);
 		    	// }
+
+		    	if (this.$router.currentRoute.name == 'broadcast'
+		    		&& this.$refs.router.broadcast.id == broadcast.id) {
+
+		    		this.$refs.router.broadcastClosed();
+		    		
+		    		console.log('broadcast closed');
+		    	}
 		    }
 		},
 	    mounted: function() {
 			Echo.channel('main')
 				.listen('BroadcastOpen', data => {
 					this.broadcastOpen(data);
+					console.log(data);
 				})
 				.listen('BroadcastStarting', data => {
 					this.broadcastStarting(data)
+					console.log(data);
 				})
 				.listen('BroadcastClosed', data => {
 					this.broadcastClosed(data);
+					console.log(data);
 				});
-
-
-				// setTimeout(() => {
-
-				// 	if (this.$refs.router.$refs.video !== undefined) {
-				// 		// this.$refs.router.$refs.video.play();
-				// 	}
-
-				// },1000);
-
 	    }
 	}
 </script>

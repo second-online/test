@@ -95,46 +95,12 @@ Route::get('password/reset/{token}', 'SPAController@index')->name('password.rese
 
 
 Route::get('test', function() {
-
-        $now = Carbon::now();
-
-        $broadcasts = Sermon::where('publish_on', '<=', $now)
-            ->latest('publish_on')
+	
+        $broadcasts = Broadcast::where('enabled', 1)
+            ->oldest('starts_at')
             ->get();
 
-    	return response()->json([ 
-            'now' => $now->toDateTimeString(),
-            'schedule' => $broadcasts,
-        ]);
-});
-
-Route::get('/test2', function() {
-
-	$broadcast = Broadcast::find(1);
-	$sermon = Sermon::orderBy('id', 'desc')->first();
-
-	echo $broadcast->getStatus($sermon->duration);
-
-	die;
-
-	echo $broadcast->opensAt();
-	echo '<br>';
-	echo $broadcast->starts_at;
-	echo '<br>';
-	echo $broadcast->endsAt($sermon->duration);
-	echo '<br>';
-	echo $broadcast->closesAt($sermon->duration);
-	echo '<br>';
-	echo $broadcast->starts_at;
-
-
-	// $broadcast = new Broadcast;
-	// $broadcast->name = 'Sunday 11:11am';
-	// $broadcast->day = 'sunday';
-	// $broadcast->time = '11:11:00';
-	// $broadcast->live = 0;
-	// $broadcast->enabled = 1;
-	// $broadcast->save();
+        return response()->json($broadcasts);
 });
 
 

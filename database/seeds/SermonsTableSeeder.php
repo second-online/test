@@ -52,7 +52,7 @@ class SermonsTableSeeder extends Seeder
         $sermon3->vimeo_id = '293031937';
         $sermon3->speaker()->associate($speaker);
         $sermon3->series()->associate($series);
-        $sermon3->duration = '00:45:00';
+        $sermon3->duration = '00:01:00';
         $sermon3->publish_on = '2018-10-03 12:00:00';
         $sermon3->save();
 
@@ -65,7 +65,7 @@ class SermonsTableSeeder extends Seeder
         $sermon4->speaker()->associate($speaker);
         $sermon4->series()->associate($series);
         $sermon4->duration = '00:45:00';
-        $sermon4->publish_on = '2018-10-03 13:02:00';
+        $sermon4->publish_on = '2018-10-10 00:00:00';
         $sermon4->save();
     }
 }

@@ -8,13 +8,13 @@
 				v-if="showVideo"
 				v-on:broadcast-ended="broadcastEnded"
 				v-bind:video-id="videoId"
-				v-bind:seconds-elapsed="videoElapsedTime"
+				v-bind:time-elapsed="timeElapsed"
 				ref="video"
 				class="broadcast-video"
 			/> 
 		</div>
 		<broadcast-chat
-			v-if="showChat"
+			v-bind:show-chat="showChat"
 			v-bind:broadcast-id="broadcast.id"
 			ref="broadcastChat"
 			class="broadcast-chat-wrapper"
@@ -34,10 +34,19 @@
 		data: function() {
 			return {
 				broadcast: {},
-				videoId: '',
-				videoElapsedTime: 0,
 				showVideo: false,
 				showChat: false,
+			}
+		},
+		computed: {
+			videoId: function() {
+				if (this.broadcast.sermon === undefined) {
+					return this.broadcast.trailer.link;
+				}
+				return this.broadcast.sermon.vimeo_id;
+			},
+			timeElapsed: function() {
+				return (this.broadcast.time_elapsed !== undefined) ? this.broadcast.time_elapsed : 0;
 			}
 		},
 		beforeRouteEnter (to, from, next) {
@@ -48,56 +57,37 @@
 				})
 				.catch(error => {
 					(error.response.status === 404) ? next('404') : next('/');
-				})
-				.then(() => {
-					// delete this?
 				});
 		},
 		methods: {
 			setData: function(data) {
-				
-				// const currentTime = Moment.utc(data.current_time);
-				// const opensAt = Moment.utc(data.broadcast.opens_at);
-				// const startsAt = Moment.utc(data.broadcast.starts_at);
-				// const endsAt = Moment.utc(data.broadcast.ends_at);
+				this.broadcast = data.broadcast;
 
-				// this.broadcast = data.broadcast;
-
-				// console.log(data.current_time);
-				// console.log(data.broadcast.opens_at);
-				// console.log(data.broadcast.starts_at);
-				// console.log(data.broadcast.ends_at);
-
-				// //console.log(startsAt.subtract(10, 'minutes').format('Y-m-d H:mm'));
-
-				// console.log(currentTime.isAfter(endsAt));
-
-				// // The broadcast has ended but the chat is still open.
-				// if (currentTime.isAfter(endsAt)) {
-				// 	this.broadcastEnded();
-				// }
-				// // The broadcast is in progress.
-				// else if (currentTime.isAfter(startsAt)) {
-				// 	const elapsedSeconds = currentTime.diff(startsAt, 'seconds');
-				// 	this.broadcastInProgress(elapsedSeconds);
-				// }
-				// // The broadcast chat is open.
-				// else if (currentTime.isAfter(opensAt)) {
-				// 	this.broadcastOpen();
-				// }
-				// // The broadcast isn't open.
-				// else {
-
-				// }
+				switch (data.status) {
+					case 'broadcast_closed':
+						this.broadcastClosed();
+						break;
+					case 'broadcast_open':
+						this.broadcastOpen();
+						break;
+					case 'broadcast_in_progress':
+						this.broadcastInProgress();
+						break;
+					case 'broadcast_ended':
+						this.broadcastEnded();
+						break;
+				}
 			},
+	        broadcastClosed: function() {
+	        	// Display some message
+	        	this.showVideo = this.showVideo ? true : false;
+	        	this.showChat = false;
+	        }, 
 			broadcastOpen: function() {
-				this.videoId = this.broadcast.trailer.link;
 				this.showVideo = true;
 				this.showChat = true;
 			},
-			broadcastInProgress: function(secondsElapsed = 0) {
-				this.videoId = this.broadcast.sermon.vimeo_id;
-				this.videoElapsedTime = secondsElapsed;
+			broadcastInProgress: function() {
 				this.showVideo = true;
 				this.showChat = true;
 			},
@@ -105,11 +95,6 @@
 	            this.showVideo = false;
 	            this.showChat = true;
 	        },
-	        broadcastClosed: function() {
-	        	// Display some message
-	        	this.showVideo = false;
-	        	this.showChat = false;
-	        }, 
 		    goBack () {
 				window.history.length > 1
 					? this.$router.go(-1)

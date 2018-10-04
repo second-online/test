@@ -6,50 +6,52 @@
 	export default {
 		props: {
 			videoId: String,
-			secondsElapsed: Number
+			timeElapsed: Number
 		},
 		data: function() {
 			return {
 				player: {}
 			}
 		},
+		watch: {
+			videoId: function() {
+				console.log('video id changed');
+				this.loadNewVideo();
+			}
+		},
 		methods: {
-			play: function() {
-				this.player.play();
-				// this.player.play().then(function() {
-				// 	console.log('video played');
-				//     // the video was played
-				// }).catch(function(error) {
-				//     switch (error.name) {
-				//         case 'PasswordError':
-				//             // the video is password-protected and the viewer needs to enter the
-				//             // password first
-				//             break;
+			loadVideo: function() {
+			    var options = {
+			        id: this.videoId,
+			    };
 
-				//         case 'PrivacyError':
-				//             // the video is private
-				//             break;
-
-				//         default:
-				//             // some other error occurred
-				//             break;
-				//     }
+			    this.player = new Vimeo('vimeo-player', options);
+				this.player.setVolume(0);	
+				this.player.setCurrentTime(this.timeElapsed);
+				// this.player.ready().then(() => {
+				// 	this.play();
 				// });
+			},
+			loadNewVideo: function() {
+				this.player.destroy().then(() => {
+				    this.loadVideo();
+				}).catch(function(error) {
+				    alert('Something went wrong. Reload the page.');
+				});
+
+			},
+			play: function() {
+				this.player.play().then(() => {
+					console.log('video played'); 
+
+					this.player.setCurrentTime(this.timeElapsed*2);
+				}).catch(function(error) {
+					alert('Something went wrong. Reload the page.');
+				});
 			}
 		},
 		mounted: function() {
-		    var options = {
-		        id: this.videoId,
-		    };
-
-		    this.player = new Vimeo('vimeo-player', options);
-
-			// this.player.setVolume(0);	
-			this.player.setCurrentTime(this.secondsElapsed);
- 
-			this.player.ready().then(() => {
-				this.play();
-			});
+			this.loadVideo();
 		}
 	}
 </script>

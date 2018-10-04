@@ -13,14 +13,14 @@ class Broadcast extends Model
      *
      * @var int
      */
-    const MINUTES_BEFORE_START = 10;
+    const MINUTES_BEFORE_START = 1;
 
     /**
      * The number of minutes after broadcast has ended to keep chat open.
      *
      * @var int
      */
-    const MINUTES_AFTER_END = 10;
+    const MINUTES_AFTER_END = 1;
 
     /**
      * The broadcast chat is open.
@@ -175,6 +175,28 @@ class Broadcast extends Model
     }
 
     /**
+     * Get the sermon for the broadcast.
+     * 
+     * @return Sermon  \App\Sermon
+     */
+    public function loadSermon() 
+    {
+        return Sermon::where('publish_on', '<=', $this->starts_at)
+            ->latest('publish_on')
+            ->first();
+    }
+
+    /**
+     * Load the latest trailer.
+     * 
+     * @return Sermon  \App\Sermon
+     */
+    public function loadTrailer()
+    {
+        $this->trailer = ['link' => 'https://vimeo.com/218845426/1d582e7485'];
+    }
+
+    /**
      * Get the status of the broadcast.
      * 
      * @param  int     $duration
@@ -196,26 +218,17 @@ class Broadcast extends Model
         $durationInSeconds = 90 * 60;
 
         if (! $this->live) {
-            $durationInSeconds = $this->endsAt(90 * 60); 
+            // Load the sermon so we can calculate end time.
+            $this->sermon = $this->loadSermon();
+            $durationInSeconds = $this->sermon->duration;
         }
 
+        $endsAt = $this->endsAt($durationInSeconds);
 
-        // Well is this a live broadcast or what?
-        $endsAt = $this->endsAt($duration);
-
-
-        if ($endsAt->isPast()) {
-            return self::BROADCAST_ENDED;
-        }
-
-        if ($startsAt->isPast()) {
+        if ($endsAt->isFuture()) {
             return self::BROADCAST_IN_PROGRESS;
         }
 
-        if ($opensAt->isPast()) {
-            return self::BROADCAST_OPEN;
-        }
-
-        return self::BROADCAST_CLOSED;
+        return self::BROADCAST_ENDED;
     }
 }

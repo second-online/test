@@ -63,7 +63,7 @@ window.Vimeo = Vimeo;
 
 window.Moment = require('moment');
 
-window.Moment.locale('en', {
+window.Moment.updateLocale('en', {
     calendar : {
         lastDay : '[Yesterday], MMM D',
         sameDay : '[Today], MMM D',

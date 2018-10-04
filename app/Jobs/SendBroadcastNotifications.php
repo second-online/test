@@ -33,50 +33,40 @@ class SendBroadcastNotifications
      */
     public function handle()
     {
-        $format = 'Y-m-d H:i';
-        $now = new Carbon();
-        $sermon = Sermon::orderBy('id', 'desc')->first();
+        $now = Carbon::now();
+        $now->second(0);
         $broadcasts = Broadcast::where('enabled', 1)->get();
 
+        $sermon = Sermon::where('publish_on', '<=', $now)
+            ->latest('publish_on')
+            ->first();
+
         foreach ($broadcasts as $broadcast) {
+            $opensAt = $broadcast->opensAt();
+            $startsAt = $broadcast->starts_at;
+            // What about if a LIVE broadcast...
+            $closesAt = $broadcast->closesAt($sermon->duration);
 
-            $opensAt = Carbon::createFromFormat('Y-m-d H:i:s', $broadcast->starts_at)
-                ->subMinutes(Broadcast::MINUTES_BEFORE_START);
-
-            $startsAt = Carbon::createFromFormat('Y-m-d H:i:s', $broadcast->starts_at);
-
-            $closesAt = Carbon::createFromFormat('Y-m-d H:i:s', $broadcast->starts_at)
-                ->addSeconds($sermon->duration)
-                ->addMinutes(Broadcast::MINUTES_AFTER_END)
-                ->second(0);
-
-            Log::debug($closesAt->toDateTimeString());
-
-            if ($opensAt->format($format) == $now->format($format)) {
-                // Broadcast chat open
-                if (! $broadcast->live) { 
-                    $broadcast->sermon = $sermon;
-                }
+            if ($now == $opensAt) {
+                $broadcast->loadTrailer();
 
                 broadcast(new BroadcastOpen($broadcast->toArray()));
 
-            } else if ($startsAt->format($format) == $now->format($format)) {
-                // Broadcast starts now
+            } else if ($now == $startsAt) {
                 if (! $broadcast->live) { 
                     $broadcast->sermon = $sermon;
                 }
 
                 broadcast(new BroadcastStarting($broadcast->toArray()));
-                
+
             } else if ($closesAt->isPast()) {
-                // Broadcast chat closed
                 // Save broadcast so our listener can update
                 // the new starts_at timestamp
                 $broadcast->save();
 
-                Log::debug("Broadcast {$broadcast->id} has closed. {$closesAt}");
-
                 broadcast(new BroadcastClosed($broadcast->toArray()));
+
+                Log::debug("Broadcast {$broadcast->id} has closed. {$closesAt}");
             }
         }
     }

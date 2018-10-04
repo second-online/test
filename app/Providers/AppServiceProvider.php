@@ -16,15 +16,15 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        DB::listen(function ($query) {
-            Log::debug([
-                $query->sql,
-                $query->bindings,
-                $query->time
-            ]);
-            //Log::debug($query->sql);
-            //Log::debug('-');    
-        });
+        // DB::listen(function ($query) {
+        //     Log::debug([
+        //         $query->sql,
+        //         $query->bindings,
+        //         $query->time
+        //     ]);
+        //     //Log::debug($query->sql);
+        //     //Log::debug('-');    
+        // });
     }
 
     /**

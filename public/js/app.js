@@ -28996,7 +28996,7 @@ window.Vimeo = __WEBPACK_IMPORTED_MODULE_1__vimeo_player__["a" /* default */];
 
 window.Moment = __webpack_require__(0);
 
-window.Moment.locale('en', {
+window.Moment.updateLocale('en', {
   calendar: {
     lastDay: '[Yesterday], MMM D',
     sameDay: '[Today], MMM D',
@@ -42257,16 +42257,39 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 			// 	this.$refs.master.loadBroadcastChat(broadcast);
 			// 	console.log(broadcast);
 			// }
+
+			if (this.$router.currentRoute.name == 'broadcast' && this.$refs.router.broadcast.id == broadcast.id) {
+
+				this.$refs.router.broadcast = broadcast;
+				this.$refs.router.broadcastOpen();
+
+				console.log('broadcast open');
+			}
 		},
 		broadcastStarting: function broadcastStarting(broadcast) {
 			// if (this.$refs.master.$options.name === 'host-dashboard') {
 			// 	this.$refs.master.loadBroadcastChat(broadcast);
 			// }
+
+			if (this.$router.currentRoute.name == 'broadcast' && this.$refs.router.broadcast.id == broadcast.id) {
+
+				this.$refs.router.broadcast = broadcast;
+				this.$refs.router.broadcastInProgress();
+
+				console.log('broadcast starting');
+			}
 		},
 		broadcastClosed: function broadcastClosed(broadcast) {
 			// if (this.$refs.master.$options.name === 'host-dashboard') {
 			// 	this.$refs.master.hideBroadcastChat(broadcast);
 			// }
+
+			if (this.$router.currentRoute.name == 'broadcast' && this.$refs.router.broadcast.id == broadcast.id) {
+
+				this.$refs.router.broadcastClosed();
+
+				console.log('broadcast closed');
+			}
 		}
 	},
 	mounted: function mounted() {
@@ -42274,19 +42297,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 		Echo.channel('main').listen('BroadcastOpen', function (data) {
 			_this.broadcastOpen(data);
+			console.log(data);
 		}).listen('BroadcastStarting', function (data) {
 			_this.broadcastStarting(data);
+			console.log(data);
 		}).listen('BroadcastClosed', function (data) {
 			_this.broadcastClosed(data);
+			console.log(data);
 		});
-
-		// setTimeout(() => {
-
-		// 	if (this.$refs.router.$refs.video !== undefined) {
-		// 		// this.$refs.router.$refs.video.play();
-		// 	}
-
-		// },1000);
 	}
 });
 
@@ -46121,8 +46139,8 @@ var render = function() {
       _vm._v("\n\tHomepage\n\t"),
       _c(
         "router-link",
-        { attrs: { to: { name: "broadcast", params: { broadcast_id: 3 } } } },
-        [_vm._v("Broadcast 5")]
+        { attrs: { to: { name: "broadcast", params: { broadcast_id: 1 } } } },
+        [_vm._v("Broadcast 1")]
       ),
       _vm._v(" "),
       _c("router-link", { attrs: { to: { name: "sermons" } } }, [
@@ -46237,11 +46255,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 	data: function data() {
 		return {
 			broadcast: {},
-			videoId: '',
-			videoElapsedTime: 0,
 			showVideo: false,
 			showChat: false
 		};
+	},
+	computed: {
+		videoId: function videoId() {
+			if (this.broadcast.sermon === undefined) {
+				return this.broadcast.trailer.link;
+			}
+			return this.broadcast.sermon.vimeo_id;
+		},
+		timeElapsed: function timeElapsed() {
+			return this.broadcast.time_elapsed !== undefined ? this.broadcast.time_elapsed : 0;
+		}
 	},
 	beforeRouteEnter: function beforeRouteEnter(to, from, next) {
 		axios.get("http://second.test" + '/w/api/broadcasts/' + to.params.broadcast_id).then(function (response) {
@@ -46250,69 +46277,44 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 			});
 		}).catch(function (error) {
 			error.response.status === 404 ? next('404') : next('/');
-		}).then(function () {
-			// delete this?
 		});
 	},
 
 	methods: {
 		setData: function setData(data) {
+			this.broadcast = data.broadcast;
 
-			// const currentTime = Moment.utc(data.current_time);
-			// const opensAt = Moment.utc(data.broadcast.opens_at);
-			// const startsAt = Moment.utc(data.broadcast.starts_at);
-			// const endsAt = Moment.utc(data.broadcast.ends_at);
-
-			// this.broadcast = data.broadcast;
-
-			// console.log(data.current_time);
-			// console.log(data.broadcast.opens_at);
-			// console.log(data.broadcast.starts_at);
-			// console.log(data.broadcast.ends_at);
-
-			// //console.log(startsAt.subtract(10, 'minutes').format('Y-m-d H:mm'));
-
-			// console.log(currentTime.isAfter(endsAt));
-
-			// // The broadcast has ended but the chat is still open.
-			// if (currentTime.isAfter(endsAt)) {
-			// 	this.broadcastEnded();
-			// }
-			// // The broadcast is in progress.
-			// else if (currentTime.isAfter(startsAt)) {
-			// 	const elapsedSeconds = currentTime.diff(startsAt, 'seconds');
-			// 	this.broadcastInProgress(elapsedSeconds);
-			// }
-			// // The broadcast chat is open.
-			// else if (currentTime.isAfter(opensAt)) {
-			// 	this.broadcastOpen();
-			// }
-			// // The broadcast isn't open.
-			// else {
-
-			// }
+			switch (data.status) {
+				case 'broadcast_closed':
+					this.broadcastClosed();
+					break;
+				case 'broadcast_open':
+					this.broadcastOpen();
+					break;
+				case 'broadcast_in_progress':
+					this.broadcastInProgress();
+					break;
+				case 'broadcast_ended':
+					this.broadcastEnded();
+					break;
+			}
+		},
+		broadcastClosed: function broadcastClosed() {
+			// Display some message
+			this.showVideo = this.showVideo ? true : false;
+			this.showChat = false;
 		},
 		broadcastOpen: function broadcastOpen() {
-			this.videoId = this.broadcast.trailer.link;
 			this.showVideo = true;
 			this.showChat = true;
 		},
 		broadcastInProgress: function broadcastInProgress() {
-			var secondsElapsed = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
-
-			this.videoId = this.broadcast.sermon.vimeo_id;
-			this.videoElapsedTime = secondsElapsed;
 			this.showVideo = true;
 			this.showChat = true;
 		},
 		broadcastEnded: function broadcastEnded() {
 			this.showVideo = false;
 			this.showChat = true;
-		},
-		broadcastClosed: function broadcastClosed() {
-			// Display some message
-			this.showVideo = false;
-			this.showChat = false;
 		},
 		goBack: function goBack() {
 			window.history.length > 1 ? this.$router.go(-1) : this.$router.push('/');
@@ -46334,52 +46336,55 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({
 	props: {
 		videoId: String,
-		secondsElapsed: Number
+		timeElapsed: Number
 	},
 	data: function data() {
 		return {
 			player: {}
 		};
 	},
+	watch: {
+		videoId: function videoId() {
+			console.log('video id changed');
+			this.loadNewVideo();
+		}
+	},
 	methods: {
-		play: function play() {
-			this.player.play();
-			// this.player.play().then(function() {
-			// 	console.log('video played');
-			//     // the video was played
-			// }).catch(function(error) {
-			//     switch (error.name) {
-			//         case 'PasswordError':
-			//             // the video is password-protected and the viewer needs to enter the
-			//             // password first
-			//             break;
+		loadVideo: function loadVideo() {
+			var options = {
+				id: this.videoId
+			};
 
-			//         case 'PrivacyError':
-			//             // the video is private
-			//             break;
-
-			//         default:
-			//             // some other error occurred
-			//             break;
-			//     }
+			this.player = new Vimeo('vimeo-player', options);
+			this.player.setVolume(0);
+			this.player.setCurrentTime(this.timeElapsed);
+			// this.player.ready().then(() => {
+			// 	this.play();
 			// });
+		},
+		loadNewVideo: function loadNewVideo() {
+			var _this = this;
+
+			this.player.destroy().then(function () {
+				_this.loadVideo();
+			}).catch(function (error) {
+				alert('Something went wrong. Reload the page.');
+			});
+		},
+		play: function play() {
+			var _this2 = this;
+
+			this.player.play().then(function () {
+				console.log('video played');
+
+				_this2.player.setCurrentTime(_this2.timeElapsed * 2);
+			}).catch(function (error) {
+				alert('Something went wrong. Reload the page.');
+			});
 		}
 	},
 	mounted: function mounted() {
-		var _this = this;
-
-		var options = {
-			id: this.videoId
-		};
-
-		this.player = new Vimeo('vimeo-player', options);
-
-		// this.player.setVolume(0);	
-		this.player.setCurrentTime(this.secondsElapsed);
-
-		this.player.ready().then(function () {
-			_this.play();
-		});
+		this.loadVideo();
 	}
 });
 
@@ -46455,11 +46460,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
 	props: {
+		showChat: Boolean,
 		broadcastId: Number
 	},
 	components: {
@@ -46472,7 +46481,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 			newCommentId: 1,
 			cachedComment: '',
 			isLoading: false
-
 		};
 	},
 	computed: {
@@ -46484,6 +46492,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 		},
 		isHost: function isHost() {
 			return this.$store.getters.isUserHost;
+		}
+	},
+	watch: {
+		showChat: function showChat(value) {
+			if (value) {
+				this.enableChat();
+			} else {
+				this.disableChat();
+			}
 		}
 	},
 	methods: {
@@ -46543,18 +46560,27 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 		},
 		login: function login() {
 			this.$router.push({ name: 'login', query: { redirect: this.$route.path } });
+		},
+		enableChat: function enableChat() {
+			var _this2 = this;
+
+			Echo.channel('broadcast.chat.' + this.broadcastId).listen('BroadcastCommentCreated', function (comment) {
+				_this2.publishComment(comment);
+			});
+			console.log('chat enabled');
+		},
+		disableChat: function disableChat() {
+			Echo.leave('broadcast.chat.' + this.broadcastId);
+			console.log('chat disabled');
 		}
 	},
 	mounted: function mounted() {
-		var _this2 = this;
-
-		Echo.channel('broadcast.chat.' + this.broadcastId).listen('BroadcastCommentCreated', function (comment) {
-			_this2.publishComment(comment);
-		});
+		if (this.showChat) {
+			this.enableChat();
+		}
 	},
 	beforeDestroy: function beforeDestroy() {
-		Echo.leave('broadcast.chat.' + this.broadcastId);
-
+		this.disableChat();
 		// this.comments = null;
 	}
 });
@@ -46706,85 +46732,95 @@ var render = function() {
         "d-flex flex-column flex-grow-1 flex-md-grow-0 mh-0 bg-light-grey"
     },
     [
-      _c(
-        "div",
-        {
-          staticClass: "d-flex flex-column flex-grow-1 overflow-y",
-          attrs: { id: "broadcast-comments" }
-        },
-        _vm._l(_vm.comments, function(comment, key) {
-          return _c(
-            "div",
-            {
-              staticClass: "d-flex px-40 py-16 flex-shrink-0",
-              class: { "pt-40": key == 0 }
-            },
-            [
-              _c("img", {
-                staticClass: "mr-20 flex-shrink-0 image-faker",
-                attrs: {
-                  src:
-                    "https://cdn.dribbble.com/users/1166392/avatars/normal/7765da9b241339c9885a24bb0c48a363.jpg?1499245430"
-                }
-              }),
-              _vm._v(" "),
-              _c("div", { staticClass: "flex-grow-1" }, [
-                _c("div", [
-                  _c("span", { staticClass: "large font-weight-bold" }, [
-                    _vm._v(_vm._s(comment.user.name))
-                  ]),
-                  _vm._v(" "),
-                  comment.user.is_host
-                    ? _c("span", { staticClass: "d-none pl-8 text-muted" }, [
-                        _vm._v("Host")
+      _vm.showChat
+        ? [
+            _c(
+              "div",
+              {
+                staticClass: "d-flex flex-column flex-grow-1 overflow-y",
+                attrs: { id: "broadcast-comments" }
+              },
+              _vm._l(_vm.comments, function(comment, key) {
+                return _c(
+                  "div",
+                  {
+                    staticClass: "d-flex px-40 py-16 flex-shrink-0",
+                    class: { "pt-40": key == 0 }
+                  },
+                  [
+                    _c("img", {
+                      staticClass: "mr-20 flex-shrink-0 image-faker",
+                      attrs: {
+                        src:
+                          "https://cdn.dribbble.com/users/1166392/avatars/normal/7765da9b241339c9885a24bb0c48a363.jpg?1499245430"
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "flex-grow-1" }, [
+                      _c("div", [
+                        _c("span", { staticClass: "large font-weight-bold" }, [
+                          _vm._v(_vm._s(comment.user.name))
+                        ]),
+                        _vm._v(" "),
+                        comment.user.is_host
+                          ? _c(
+                              "span",
+                              { staticClass: "d-none pl-8 text-muted" },
+                              [_vm._v("Host")]
+                            )
+                          : _vm._e()
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "mt-4" }, [
+                        _c("span", { staticClass: "large" }, [
+                          _vm._v(_vm._s(comment.text))
+                        ])
                       ])
-                    : _vm._e()
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "mt-4" }, [
-                  _c("span", { staticClass: "large" }, [
-                    _vm._v(_vm._s(comment.text))
-                  ])
-                ])
-              ])
-            ]
-          )
-        })
-      ),
-      _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "d-flex chat-comment-box px-40 bg-white overflow-y" },
-        [
-          _vm.isUserAuthenticated
-            ? _c(
-                "form",
-                { staticClass: "w-100 m-auto" },
-                [
-                  _c("comments-textarea", {
-                    ref: "commentsTextarea",
-                    attrs: { value: _vm.newComment },
-                    on: {
-                      input: function($event) {
-                        _vm.newComment = $event
+                    ])
+                  ]
+                )
+              })
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass: "d-flex chat-comment-box px-40 bg-white overflow-y"
+              },
+              [
+                _vm.isUserAuthenticated
+                  ? _c(
+                      "form",
+                      { staticClass: "w-100 m-auto" },
+                      [
+                        _c("comments-textarea", {
+                          ref: "commentsTextarea",
+                          attrs: { value: _vm.newComment },
+                          on: {
+                            input: function($event) {
+                              _vm.newComment = $event
+                            },
+                            submit: _vm.submitComment
+                          }
+                        })
+                      ],
+                      1
+                    )
+                  : _c(
+                      "span",
+                      {
+                        staticClass:
+                          "d-block p-30 font-weight-bold text-center",
+                        on: { click: _vm.login }
                       },
-                      submit: _vm.submitComment
-                    }
-                  })
-                ],
-                1
-              )
-            : _c(
-                "span",
-                {
-                  staticClass: "d-block p-30 font-weight-bold text-center",
-                  on: { click: _vm.login }
-                },
-                [_vm._v("Sign in to chat")]
-              )
-        ]
-      )
-    ]
+                      [_vm._v("Sign in to chat")]
+                    )
+              ]
+            )
+          ]
+        : [_vm._v("Chat closed.")]
+    ],
+    2
   )
 }
 var staticRenderFns = []
@@ -46830,7 +46866,7 @@ var render = function() {
                 staticClass: "broadcast-video",
                 attrs: {
                   "video-id": _vm.videoId,
-                  "seconds-elapsed": _vm.videoElapsedTime
+                  "time-elapsed": _vm.timeElapsed
                 },
                 on: { "broadcast-ended": _vm.broadcastEnded }
               })
@@ -46839,13 +46875,11 @@ var render = function() {
         1
       ),
       _vm._v(" "),
-      _vm.showChat
-        ? _c("broadcast-chat", {
-            ref: "broadcastChat",
-            staticClass: "broadcast-chat-wrapper",
-            attrs: { "broadcast-id": _vm.broadcast.id }
-          })
-        : _vm._e()
+      _c("broadcast-chat", {
+        ref: "broadcastChat",
+        staticClass: "broadcast-chat-wrapper",
+        attrs: { "show-chat": _vm.showChat, "broadcast-id": _vm.broadcast.id }
+      })
     ],
     1
   )
