@@ -1,5 +1,5 @@
 <template>
-	<div class="d-flex flex-column flex-grow-1 flex-md-grow-0 mh-0 bg-light-grey">
+	<div class="d-flex flex-column flex-grow-1 mh-0 bg-light-grey ">
 		<template v-if="showChat">
 			<div id="broadcast-comments" class="d-flex flex-column flex-grow-1 overflow-y">
 				<div
@@ -88,19 +88,18 @@
 
 				if (! this.isUserAuthenticated) { return; }
 
-				const localCommentId = this.newCommentId++;
-
 				axios
 					.post(process.env.MIX_APP_URL + '/w/api/broadcasts/' + this.broadcastId + '/comments', {
-						commentId: localCommentId,
+						commentId: this.newCommentId,
 						text: this.newComment,
 						isHost: this.isHost
 					})
 					.then(response => {
+						// Flip the array to start at the end would be better?
 						const index = this.comments.findIndex(comment => {
 							return comment.localCommentId == response.data.local_id;
 						});
-						// flip the array to start at the end would be better.
+
 						this.comments[index] = response.data;
 					})
 					.catch(error => {
@@ -112,7 +111,7 @@
 					});
 
 				const comment = {
-					localCommentId: localCommentId,
+					localCommentId: this.newCommentId,
 					text: this.newComment,
 					user: this.user
 				};
@@ -121,6 +120,7 @@
 
 				this.cachedComment = this.newComment;
 				this.newComment = '';
+				this.newCommentId++;
 				this.isLoading = true;
 			},
 			publishComment: function(comment) {
@@ -142,8 +142,7 @@
 				Echo.channel('broadcast.chat.' + this.broadcastId)
 					.listen('BroadcastCommentCreated', comment => {
 						this.publishComment(comment);
-				});	
-				console.log('chat enabled');			
+				});			
 			},
 			disableChat: function() {
 				Echo.leave('broadcast.chat.' + this.broadcastId);

@@ -14,13 +14,9 @@
 		},
 		methods: {
 		    broadcastOpen: function(broadcast) {
-		    	// if (this.$refs.master.$options.name === 'host-dashboard') {
-		    	// 	this.$refs.master.loadBroadcastChat(broadcast);
-		    	// 	console.log(broadcast);
-		    	// }
-
-		    	if (this.$router.currentRoute.name == 'broadcast'
-		    		&& this.$refs.router.broadcast.id == broadcast.id) {
+		    	if ((this.$router.currentRoute.name == 'broadcast' 
+		    		&& this.$refs.router.broadcast.id == broadcast.id)
+		    		|| this.$router.currentRoute.name == 'host') {
 
 		    		this.$refs.router.broadcast = broadcast;
 		    		this.$refs.router.broadcastOpen();
@@ -29,12 +25,9 @@
 		    	}
 		    },
 		    broadcastStarting: function(broadcast) {
-		    	// if (this.$refs.master.$options.name === 'host-dashboard') {
-		    	// 	this.$refs.master.loadBroadcastChat(broadcast);
-		    	// }
-
-		    	if (this.$router.currentRoute.name == 'broadcast'
-		    		&& this.$refs.router.broadcast.id == broadcast.id) {
+		    	if ((this.$router.currentRoute.name == 'broadcast'
+		    		&& this.$refs.router.broadcast.id == broadcast.id)
+		    		|| this.$router.currentRoute.name == 'host') {
 
 		    		this.$refs.router.broadcast = broadcast;
 		    		this.$refs.router.broadcastInProgress();
@@ -43,12 +36,9 @@
 		    	}
 		    },
 		    broadcastClosed: function(broadcast) {
-		    	// if (this.$refs.master.$options.name === 'host-dashboard') {
-		    	// 	this.$refs.master.hideBroadcastChat(broadcast);
-		    	// }
-
-		    	if (this.$router.currentRoute.name == 'broadcast'
-		    		&& this.$refs.router.broadcast.id == broadcast.id) {
+		    	if ((this.$router.currentRoute.name == 'broadcast'
+		    		&& this.$refs.router.broadcast.id == broadcast.id)
+		    		|| this.$router.currentRoute.name == 'host') {
 
 		    		this.$refs.router.broadcastClosed();
 		    		

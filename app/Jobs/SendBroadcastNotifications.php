@@ -33,22 +33,30 @@ class SendBroadcastNotifications
      */
     public function handle()
     {
-        $now = Carbon::now();
+        $now = new Carbon();
         $now->second(0);
-        $broadcasts = Broadcast::where('enabled', 1)->get();
 
-        $sermon = Sermon::where('publish_on', '<=', $now)
+        // Copy $now and add minutes so we can check if
+        // now + MINUTES_BEFORE_START == publish_on/start_at time
+        $startTime = $now->copy()->addMinutes(Broadcast::MINUTES_BEFORE_START);
+    
+        $sermon = Sermon::where('publish_on', '<=', $startTime)
             ->latest('publish_on')
             ->first();
+
+        $broadcasts = Broadcast::where('starts_at', '<=', $startTime)
+            ->where('enabled', 1)
+            ->oldest('starts_at')
+            ->get();
 
         foreach ($broadcasts as $broadcast) {
             $opensAt = $broadcast->opensAt();
             $startsAt = $broadcast->starts_at;
-            // What about if a LIVE broadcast...
-            $closesAt = $broadcast->closesAt($sermon->duration);
+            $durationInSeconds = $broadcast->live ? Broadcast::LIVE_BROADCAST_DURATION * 60 : $sermon->duration;
+            $closesAt = $broadcast->closesAt($durationInSeconds);
 
             if ($now == $opensAt) {
-                $broadcast->loadTrailer();
+                $broadcast->trailer = $broadcast->loadTrailer();
 
                 broadcast(new BroadcastOpen($broadcast->toArray()));
 
@@ -65,8 +73,6 @@ class SendBroadcastNotifications
                 $broadcast->save();
 
                 broadcast(new BroadcastClosed($broadcast->toArray()));
-
-                Log::debug("Broadcast {$broadcast->id} has closed. {$closesAt}");
             }
         }
     }

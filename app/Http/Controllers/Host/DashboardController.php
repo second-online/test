@@ -18,14 +18,17 @@ class DashboardController extends Controller
     public function __construct()
     {
     	$this->middleware('auth');
+        // I should probably use a gate or policy?
         $this->middleware('role:host');
     }
 
     public function index(Request $reqest)
     {
-        $broadcasts = Broadcast::where('enabled', 1)
-            ->orderBy('starts_at')
-            ->get();
+        $broadcast = Broadcast::where('enabled', 1)
+            ->oldest('starts_at')
+            ->first();
+
+        $broadcast->configure();
 
         $hostComments = HostComment::with('user')
             ->orderBy('id', 'desc')
@@ -35,8 +38,7 @@ class DashboardController extends Controller
             ->values();
 
     	return response()->json([ 
-            'now' => Carbon::now()->toDateTimeString(),
-            'broadcasts' => $broadcasts,
+            'broadcast' => $broadcast,
             'host_comments' => $hostComments
         ]);
     }

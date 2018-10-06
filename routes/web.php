@@ -95,12 +95,24 @@ Route::get('password/reset/{token}', 'SPAController@index')->name('password.rese
 
 
 Route::get('test', function() {
-	
-        $broadcasts = Broadcast::where('enabled', 1)
+
+        $now = new Carbon();
+        $now->second(0);
+
+        // Copy $now and add minutes so we can check if
+        // now + MINUTES_BEFORE_START == start_at/publish_on time
+        $startTime = $now->copy()->addMinutes(Broadcast::MINUTES_BEFORE_START);
+    
+        $sermon = Sermon::where('publish_on', '<=', $startTime)
+            ->latest('publish_on')
+            ->first();
+
+        $broadcasts = Broadcast::where('starts_at', '<=', $startTime)
+            ->where('enabled', 1)
             ->oldest('starts_at')
             ->get();
 
-        return response()->json($broadcasts);
+        return response()->json(['sermon' => $sermon, 'broadcasts' => $broadcasts]);
 });
 
 

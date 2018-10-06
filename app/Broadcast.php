@@ -13,14 +13,21 @@ class Broadcast extends Model
      *
      * @var int
      */
-    const MINUTES_BEFORE_START = 1;
+    const MINUTES_BEFORE_START = 10;
 
     /**
      * The number of minutes after broadcast has ended to keep chat open.
      *
      * @var int
      */
-    const MINUTES_AFTER_END = 1;
+    const MINUTES_AFTER_END = 10;
+
+    /**
+     * The duration in minutes for live broadcast.
+     *
+     * @var int
+     */
+    const LIVE_BROADCAST_DURATION = 90;
 
     /**
      * The broadcast chat is open.
@@ -110,34 +117,6 @@ class Broadcast extends Model
         return $this->hasMany('App\BroadcastComment');
     }
 
-    // /**
-    //  * Get the time the broadcast chat opens.
-    //  *
-    //  * @return string
-    //  */
-    // public function getOpensAtAttribute()
-    // {
-    //     return $this->opensAt($this->attributes['starts_at'])->toDateTimeString();
-    // }
-
-    // /**
-    //  * Get the time the broadcast ends.
-    //  *
-    //  * @return string
-    //  */
-    // public function getEndsAtAttribute() 
-    // {   
-    //     return $this->endsAt(
-    //             $this->attributes['starts_at'],
-    //             $this->attributes['sermon']['duration']
-    //         )
-    //         ->toDateTimeString();
-
-    //     // return Carbon::createFromFormat('Y-m-d H:i:s', $this->attributes['starts_at'])
-    //     //     ->addSeconds($this->attributes['sermon']['duration'])
-    //     //     ->toDateTimeString();
-    // }
-
     /**
      * Get the time the broadcast chat opens.
      * 
@@ -175,6 +154,16 @@ class Broadcast extends Model
     }
 
     /**
+     * Load the latest trailer.
+     * 
+     * @return array
+     */
+    public function loadTrailer()
+    {
+        return ['link' => 'https://vimeo.com/218845426/1d582e7485'];
+    }
+
+    /**
      * Get the sermon for the broadcast.
      * 
      * @return Sermon  \App\Sermon
@@ -187,48 +176,45 @@ class Broadcast extends Model
     }
 
     /**
-     * Load the latest trailer.
+     * Configure the broadcast by adding trailer, sermon & status.
      * 
-     * @return Sermon  \App\Sermon
+     * @return void
      */
-    public function loadTrailer()
-    {
-        $this->trailer = ['link' => 'https://vimeo.com/218845426/1d582e7485'];
-    }
-
-    /**
-     * Get the status of the broadcast.
-     * 
-     * @param  int     $duration
-     * @return string
-     */
-    public function getStatus()
+    public function configure()
     {
         $opensAt = $this->opensAt();
         $startsAt = $this->starts_at;
 
         if ($opensAt->isFuture()) {
-            return self::BROADCAST_CLOSED;
+            $this->status = self::BROADCAST_CLOSED;
+            return;
         }
 
         if ($startsAt->isFuture()) {
-            return self::BROADCAST_OPEN;
+            $this->trailer = $this->loadTrailer();
+            $this->status = self::BROADCAST_OPEN;
+            return;
         }
 
-        $durationInSeconds = 90 * 60;
+        $durationInSeconds = self::LIVE_BROADCAST_DURATION * 60;
 
         if (! $this->live) {
             // Load the sermon so we can calculate end time.
-            $this->sermon = $this->loadSermon();
-            $durationInSeconds = $this->sermon->duration;
+            $sermon = $this->loadSermon();
+            $durationInSeconds = $sermon->duration;
         }
 
         $endsAt = $this->endsAt($durationInSeconds);
 
         if ($endsAt->isFuture()) {
-            return self::BROADCAST_IN_PROGRESS;
+            if (isset($sermon)) {
+                $this->sermon = $sermon;
+            }
+            $this->time_elapsed = $startsAt->diffInSeconds();
+            $this->status = self::BROADCAST_IN_PROGRESS;
+            return;
         }
 
-        return self::BROADCAST_ENDED;
+        $this->status = self::BROADCAST_ENDED;
     }
 }

@@ -1,5 +1,5 @@
 <template>
-	<div id="vimeo-player" class="embed-responsive embed-responsive-16by9"></div>
+	<div id="vimeo-player" class="embed-responsive embed-responsive-16by9 broadcast-video"></div>
 </template>
 
 <script>

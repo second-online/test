@@ -70,6 +70,6 @@ window.Moment.updateLocale('en', {
         nextDay : '[Tomorrow], MMM D',
         lastWeek : '[Last] dddd, MMM D',
         nextWeek : 'dddd, MMM D',
-        sameElse : 'L'
+        sameElse : 'dddd, MMM D'
     }
 });

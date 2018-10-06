@@ -29003,7 +29003,7 @@ window.Moment.updateLocale('en', {
     nextDay: '[Tomorrow], MMM D',
     lastWeek: '[Last] dddd, MMM D',
     nextWeek: 'dddd, MMM D',
-    sameElse: 'L'
+    sameElse: 'dddd, MMM D'
   }
 });
 
@@ -42253,12 +42253,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 	},
 	methods: {
 		broadcastOpen: function broadcastOpen(broadcast) {
-			// if (this.$refs.master.$options.name === 'host-dashboard') {
-			// 	this.$refs.master.loadBroadcastChat(broadcast);
-			// 	console.log(broadcast);
-			// }
-
-			if (this.$router.currentRoute.name == 'broadcast' && this.$refs.router.broadcast.id == broadcast.id) {
+			if (this.$router.currentRoute.name == 'broadcast' && this.$refs.router.broadcast.id == broadcast.id || this.$router.currentRoute.name == 'host') {
 
 				this.$refs.router.broadcast = broadcast;
 				this.$refs.router.broadcastOpen();
@@ -42267,11 +42262,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 			}
 		},
 		broadcastStarting: function broadcastStarting(broadcast) {
-			// if (this.$refs.master.$options.name === 'host-dashboard') {
-			// 	this.$refs.master.loadBroadcastChat(broadcast);
-			// }
-
-			if (this.$router.currentRoute.name == 'broadcast' && this.$refs.router.broadcast.id == broadcast.id) {
+			if (this.$router.currentRoute.name == 'broadcast' && this.$refs.router.broadcast.id == broadcast.id || this.$router.currentRoute.name == 'host') {
 
 				this.$refs.router.broadcast = broadcast;
 				this.$refs.router.broadcastInProgress();
@@ -42280,11 +42271,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 			}
 		},
 		broadcastClosed: function broadcastClosed(broadcast) {
-			// if (this.$refs.master.$options.name === 'host-dashboard') {
-			// 	this.$refs.master.hideBroadcastChat(broadcast);
-			// }
-
-			if (this.$router.currentRoute.name == 'broadcast' && this.$refs.router.broadcast.id == broadcast.id) {
+			if (this.$router.currentRoute.name == 'broadcast' && this.$refs.router.broadcast.id == broadcast.id || this.$router.currentRoute.name == 'host') {
 
 				this.$refs.router.broadcastClosed();
 
@@ -46243,6 +46230,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
 
 
 
@@ -46268,6 +46259,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 		},
 		timeElapsed: function timeElapsed() {
 			return this.broadcast.time_elapsed !== undefined ? this.broadcast.time_elapsed : 0;
+		},
+		showBroadcastPage: function showBroadcastPage() {
+			return this.showVideo || this.showChat;
+		},
+		nextBroadcastTime: function nextBroadcastTime() {
+			return Moment.utc(this.broadcast.starts_at).local().format('dddd [at] h:mm a');
 		}
 	},
 	beforeRouteEnter: function beforeRouteEnter(to, from, next) {
@@ -46284,7 +46281,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 		setData: function setData(data) {
 			this.broadcast = data.broadcast;
 
-			switch (data.status) {
+			switch (this.broadcast.status) {
 				case 'broadcast_closed':
 					this.broadcastClosed();
 					break;
@@ -46300,7 +46297,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 			}
 		},
 		broadcastClosed: function broadcastClosed() {
-			// Display some message
 			this.showVideo = this.showVideo ? true : false;
 			this.showChat = false;
 		},
@@ -46397,7 +46393,7 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", {
-    staticClass: "embed-responsive embed-responsive-16by9",
+    staticClass: "embed-responsive embed-responsive-16by9 broadcast-video",
     attrs: { id: "vimeo-player" }
   })
 }
@@ -46515,17 +46511,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 				return;
 			}
 
-			var localCommentId = this.newCommentId++;
-
 			axios.post("http://second.test" + '/w/api/broadcasts/' + this.broadcastId + '/comments', {
-				commentId: localCommentId,
+				commentId: this.newCommentId,
 				text: this.newComment,
 				isHost: this.isHost
 			}).then(function (response) {
+				// Flip the array to start at the end would be better?
 				var index = _this.comments.findIndex(function (comment) {
 					return comment.localCommentId == response.data.local_id;
 				});
-				// flip the array to start at the end would be better.
+
 				_this.comments[index] = response.data;
 			}).catch(function (error) {
 				// Do something if comment fails
@@ -46535,7 +46530,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 			});
 
 			var comment = {
-				localCommentId: localCommentId,
+				localCommentId: this.newCommentId,
 				text: this.newComment,
 				user: this.user
 			};
@@ -46544,6 +46539,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 			this.cachedComment = this.newComment;
 			this.newComment = '';
+			this.newCommentId++;
 			this.isLoading = true;
 		},
 		publishComment: function publishComment(comment) {
@@ -46567,7 +46563,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 			Echo.channel('broadcast.chat.' + this.broadcastId).listen('BroadcastCommentCreated', function (comment) {
 				_this2.publishComment(comment);
 			});
-			console.log('chat enabled');
 		},
 		disableChat: function disableChat() {
 			Echo.leave('broadcast.chat.' + this.broadcastId);
@@ -46727,10 +46722,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    {
-      staticClass:
-        "d-flex flex-column flex-grow-1 flex-md-grow-0 mh-0 bg-light-grey"
-    },
+    { staticClass: "d-flex flex-column flex-grow-1 mh-0 bg-light-grey " },
     [
       _vm.showChat
         ? [
@@ -46845,43 +46837,58 @@ var render = function() {
     "div",
     { staticClass: "d-flex flex-column flex-md-row h-100" },
     [
-      _c(
-        "div",
-        {
-          staticClass:
-            "broadcast-video-wrapper flex-shrink-0 flex-md-shrink-1 flex-md-grow-1 bg-black"
-        },
-        [
-          _c("div", { staticClass: "px-40 py-20" }, [
+      _vm.showBroadcastPage
+        ? [
             _c(
-              "span",
-              { staticClass: "back text-white", on: { click: _vm.goBack } },
-              [_vm._v("back")]
+              "div",
+              {
+                staticClass:
+                  "broadcast-video-wrapper flex-shrink-0 flex-md-shrink-1 flex-md-grow-1 bg-black"
+              },
+              [
+                _c("div", { staticClass: "px-40 py-20" }, [
+                  _c(
+                    "span",
+                    {
+                      staticClass: "back text-white",
+                      on: { click: _vm.goBack }
+                    },
+                    [_vm._v("back")]
+                  )
+                ]),
+                _vm._v(" "),
+                _vm.showVideo
+                  ? _c("vimeo-player", {
+                      ref: "video",
+                      attrs: {
+                        "video-id": _vm.videoId,
+                        "time-elapsed": _vm.timeElapsed
+                      },
+                      on: { "broadcast-ended": _vm.broadcastEnded }
+                    })
+                  : _vm._e()
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c("broadcast-chat", {
+              ref: "broadcastChat",
+              staticClass: "broadcast-chat-wrapper",
+              attrs: {
+                "show-chat": _vm.showChat,
+                "broadcast-id": _vm.broadcast.id
+              }
+            })
+          ]
+        : [
+            _vm._v(
+              "\n\t\tNext broadcast is " +
+                _vm._s(_vm.nextBroadcastTime) +
+                "\n\t"
             )
-          ]),
-          _vm._v(" "),
-          _vm.showVideo
-            ? _c("vimeo-player", {
-                ref: "video",
-                staticClass: "broadcast-video",
-                attrs: {
-                  "video-id": _vm.videoId,
-                  "time-elapsed": _vm.timeElapsed
-                },
-                on: { "broadcast-ended": _vm.broadcastEnded }
-              })
-            : _vm._e()
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _c("broadcast-chat", {
-        ref: "broadcastChat",
-        staticClass: "broadcast-chat-wrapper",
-        attrs: { "show-chat": _vm.showChat, "broadcast-id": _vm.broadcast.id }
-      })
+          ]
     ],
-    1
+    2
   )
 }
 var staticRenderFns = []
@@ -47397,21 +47404,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-	//name: 'host-dashboard',
 	data: function data() {
 		return {
-			now: '',
-			broadcasts: [],
-			broadcastInProgress: {},
+			broadcast: {},
 			hostComments: [],
-			showHostChat: false,
-			showBroadcastChat: false
+			showVideo: false,
+			showChat: false
 		};
 	},
 	components: {
@@ -47426,48 +47435,57 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 			});
 		}).catch(function (error) {
 			error.response.status === 401 ? next('login') : next('/');
-		}).then(function () {
-			// delete this?
 		});
 	},
 
-	methods: {
-		setData: function setData(data) {
-			this.now = data.now;
-			this.broadcasts = data.broadcasts;
-			this.hostComments = data.host_comments;
-			this.showHostChat = true;
-
-			// const nows = Moment.utc('2018-09-13 09:51:00');
-			// const broadcast = Moment.utc('2018-09-13 10:00:00').subtract(10, 'minutes');
-			// console.log(broadcast.diff(nows));
-			// console.log(broadcast - nows);
-			// return;
-
-			var now = Moment.utc(this.now);
-
-			var inProgressBroadcast = this.broadcasts.find(function (broadcast) {
-				var startsAt = Moment.utc(broadcast.starts_at).subtract(10, 'minutes');
-				// change to opensAt?
-				return startsAt.diff(now) <= 0;
-			});
-
-			if (typeof inProgressBroadcast !== 'undefined') {
-				this.loadBroadcastChat(inProgressBroadcast);
+	computed: {
+		videoId: function videoId() {
+			if (this.broadcast.sermon === undefined) {
+				return this.broadcast.trailer.link;
 			}
+			return this.broadcast.sermon.vimeo_id;
 		},
-		loadBroadcastChat: function loadBroadcastChat(broadcast) {
-			// this.broadcastInProgress = broadcast;
-			// this.showBroadcastChat = true;
-			// console.log('loadBroadcastChat');
-			// console.log(broadcast);
-		},
-		hideBroadcastChat: function hideBroadcastChat(broadcast) {
-			// this.showBroadcastChat = false;
-			// console.log('hideBroadcastChat');
+		timeElapsed: function timeElapsed() {
+			return this.broadcast.time_elapsed !== undefined ? this.broadcast.time_elapsed : 0;
 		}
 	},
-	mounted: function mounted() {},
+	methods: {
+		setData: function setData(data) {
+			this.broadcast = data.broadcast;
+			this.hostComments = data.host_comments;
+
+			switch (this.broadcast.status) {
+				case 'broadcast_closed':
+					this.broadcastClosed();
+					break;
+				case 'broadcast_open':
+					this.broadcastOpen();
+					break;
+				case 'broadcast_in_progress':
+					this.broadcastInProgress();
+					break;
+				case 'broadcast_ended':
+					this.broadcastEnded();
+					break;
+			}
+		},
+		broadcastClosed: function broadcastClosed() {
+			this.showVideo = this.showVideo ? true : false;
+			this.showChat = false;
+		},
+		broadcastOpen: function broadcastOpen() {
+			this.showVideo = true;
+			this.showChat = true;
+		},
+		broadcastInProgress: function broadcastInProgress() {
+			this.showVideo = true;
+			this.showChat = true;
+		},
+		broadcastEnded: function broadcastEnded() {
+			this.showVideo = false;
+			this.showChat = true;
+		}
+	},
 	beforeDestroy: function beforeDestroy() {
 		// this.now= null,
 		// this.broadcasts= null,
@@ -47775,43 +47793,42 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "container-fluid p-0 h-100" }, [
-    _c("div", { staticClass: "row no-gutters h-100" }, [
-      _c(
-        "div",
-        { staticClass: "col h-100" },
-        [
-          _c("router-link", { attrs: { to: { name: "home" } } }, [
-            _vm._v("Home")
-          ])
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "col h-100" },
-        [
-          _vm.showHostChat
-            ? _c("host-chat", { attrs: { previousComments: _vm.hostComments } })
-            : _vm._e()
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "col h-100" },
-        [
-          _vm.showBroadcastChat
-            ? _c("broadcast-chat", {
-                attrs: { broadcastId: _vm.broadcastInProgress.id }
-              })
-            : _vm._e()
-        ],
-        1
-      )
-    ])
+  return _c("div", { staticClass: "d-flex no-gutters h-100 bg-warning" }, [
+    _c(
+      "div",
+      { staticClass: "col" },
+      [
+        _c("router-link", { attrs: { to: { name: "home" } } }, [
+          _vm._v("Home")
+        ]),
+        _vm._v(" "),
+        _vm.showVideo
+          ? _c("vimeo-player", {
+              ref: "video",
+              attrs: {
+                "video-id": _vm.videoId,
+                "time-elapsed": _vm.timeElapsed
+              },
+              on: { "broadcast-ended": _vm.broadcastEnded }
+            })
+          : _vm._e()
+      ],
+      1
+    ),
+    _vm._v(" "),
+    _c("div", { staticClass: "col bg-white" }),
+    _vm._v(" "),
+    _c(
+      "div",
+      { staticClass: "d-flex col" },
+      [
+        _c("broadcast-chat", {
+          ref: "broadcastChat",
+          attrs: { "show-chat": _vm.showChat, "broadcast-id": _vm.broadcast.id }
+        })
+      ],
+      1
+    )
   ])
 }
 var staticRenderFns = []

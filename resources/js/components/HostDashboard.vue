@@ -1,22 +1,27 @@
 <template>
-	<div class="container-fluid p-0 h-100">
-		<div class="row no-gutters h-100">
-			<div class="col h-100">
-				<!-- <vimeo-player/> -->
-				<router-link v-bind:to="{ name: 'home' }">Home</router-link>
-			</div>
-			<div class="col h-100">
-				<host-chat
-					v-if="showHostChat"
-					v-bind:previousComments="hostComments"
-				/>
-			</div>
-			<div class="col h-100">
-				<broadcast-chat
-					v-if="showBroadcastChat"
-					v-bind:broadcastId="broadcastInProgress.id"
-				/>
-			</div>
+	<div class="d-flex no-gutters h-100 bg-warning">
+		<div class="col">
+			<router-link v-bind:to="{ name: 'home' }">Home</router-link>
+			<vimeo-player 
+				v-if="showVideo"
+				v-on:broadcast-ended="broadcastEnded"
+				v-bind:video-id="videoId"
+				v-bind:time-elapsed="timeElapsed"
+				ref="video"
+			/> 
+		</div>
+		<div class="col bg-white">
+			
+<!-- 				<host-chat
+				v-bind:previousComments="hostComments"
+			/> -->
+		</div>
+		<div class="d-flex col">
+			<broadcast-chat
+				v-bind:show-chat="showChat"
+				v-bind:broadcast-id="broadcast.id"
+				ref="broadcastChat"
+			/>
 		</div>
 	</div>
 </template>
@@ -27,15 +32,12 @@
 	import BroadcastChat from '../components/BroadcastChat'
 
 	export default {
-		//name: 'host-dashboard',
 		data: function() {
 			return {
-				now: '',
-				broadcasts: [],
-				broadcastInProgress: {},
+				broadcast: {},
 				hostComments: [],
-				showHostChat: false,
-				showBroadcastChat: false
+				showVideo: false,
+				showChat: false
 			}
 		},
 		components: {
@@ -51,49 +53,55 @@
 				})
 				.catch(error => {
 					(error.response.status === 401) ? next('login') : next('/');
-				})
-				.then(() => {
-					// delete this?
 				});
+		},
+		computed: {
+			videoId: function() {
+				if (this.broadcast.sermon === undefined) {
+					return this.broadcast.trailer.link;
+				}
+				return this.broadcast.sermon.vimeo_id;
+			},
+			timeElapsed: function() {
+				return (this.broadcast.time_elapsed !== undefined) ? this.broadcast.time_elapsed : 0;
+			}
 		},
 		methods: {
 			setData: function(data) {
-				this.now = data.now;
-				this.broadcasts = data.broadcasts;
+				this.broadcast = data.broadcast;
 				this.hostComments = data.host_comments;
-				this.showHostChat = true;
 
-				// const nows = Moment.utc('2018-09-13 09:51:00');
-				// const broadcast = Moment.utc('2018-09-13 10:00:00').subtract(10, 'minutes');
-				// console.log(broadcast.diff(nows));
-				// console.log(broadcast - nows);
-				// return;
-
-				const now = Moment.utc(this.now);
-
-				const inProgressBroadcast = this.broadcasts.find(function(broadcast) {
-					const startsAt = Moment.utc(broadcast.starts_at).subtract(10, 'minutes');
-					// change to opensAt?
-					return startsAt.diff(now) <= 0;
-				});
-
-				if (typeof inProgressBroadcast !== 'undefined') {
-					this.loadBroadcastChat(inProgressBroadcast);
+				switch (this.broadcast.status) {
+					case 'broadcast_closed':
+						this.broadcastClosed();
+						break;
+					case 'broadcast_open':
+						this.broadcastOpen();
+						break;
+					case 'broadcast_in_progress':
+						this.broadcastInProgress();
+						break;
+					case 'broadcast_ended':
+						this.broadcastEnded();
+						break;
 				}
 			},
-			loadBroadcastChat: function(broadcast) {
-				// this.broadcastInProgress = broadcast;
-				// this.showBroadcastChat = true;
-				// console.log('loadBroadcastChat');
-				// console.log(broadcast);
+	        broadcastClosed: function() {
+	        	this.showVideo = this.showVideo ? true : false;
+	        	this.showChat = false;
+	        }, 
+			broadcastOpen: function() {
+				this.showVideo = true;
+				this.showChat = true;
 			},
-			hideBroadcastChat: function(broadcast) {
-				// this.showBroadcastChat = false;
-				// console.log('hideBroadcastChat');
-			}
-		},
-		mounted: function() {
-
+			broadcastInProgress: function() {
+				this.showVideo = true;
+				this.showChat = true;
+			},
+	        broadcastEnded: function() {
+	            this.showVideo = false;
+	            this.showChat = true;
+	        },
 		},
 		beforeDestroy: function() {
 			// this.now= null,

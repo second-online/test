@@ -27,29 +27,13 @@ class BroadcastController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Broadcast  $broadcast
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Broadcast $broadcast)
     {
-        $broadcast = Broadcast::find($id);
+        $broadcast->configure();
 
-        // use model exception middleware or something?
-        if (! $broadcast) {
-            return response()->json(['message' => 'Page not found.'], 404);
-        }
-
-        $status = $broadcast->getStatus();
-
-        if ($status == Broadcast::BROADCAST_OPEN) {
-            $broadcast->loadTrailer();
-        } else if ($status == Broadcast::BROADCAST_IN_PROGRESS) {
-            $broadcast->time_elapsed = $broadcast->starts_at->diffInSeconds();
-        }
-
-        return response()->json([
-            'broadcast' => $broadcast,
-            'status' => $status
-        ]);
+        return response()->json(['broadcast' => $broadcast]);
     }
 }
