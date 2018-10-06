@@ -47,7 +47,10 @@ class BroadcastsTableSeeder extends Seeder
             $broadcasts = [ 
                 ['name' => 'Friday 4:03am', 'day' => 'friday', 'time' => '04:05:00'],
                 ['name' => 'Friday 6:00am', 'day' => 'friday', 'time' => '06:00:00'],
-                ['name' => 'Friday 8:00am', 'day' => 'friday', 'time' => '08:00:00']
+                ['name' => 'Saturday 2:35am', 'day' => 'saturday', 'time' => '04:50:00'],
+//                 ['name' => 'Sunday 9:30am', 'day' => 'sunday', 'time' => '09:30:00', 'live' => 1, 'embed_code' => '<div id="la1-video-player" data-embed-id="f87344c6-2e5a-49fa-8dc2-863a8ca08453"></div>
+// <script type="application/javascript" data-main="//control.livingasone.com/webplayer/loader.js" src="//control.livingasone.com/webplayer/require.js"></script>'
+//                 ],
             ];
 
     		foreach($broadcasts as $broadcast) {

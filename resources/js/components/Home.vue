@@ -1,7 +1,7 @@
 <template>
 	<div class="home">
 		Homepage
-		<router-link v-bind:to="{ name: 'broadcast', params: { broadcast_id: 1} }">Broadcast 1</router-link>
+		<router-link v-bind:to="{ name: 'broadcast', params: { broadcast_id: 3} }">Broadcast</router-link>
 		<router-link v-bind:to="{ name: 'sermons' }">Sermons</router-link>
 		<router-link v-bind:to="{ name: 'host' }">Host</router-link>
 	</div>

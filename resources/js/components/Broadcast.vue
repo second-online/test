@@ -40,6 +40,7 @@
 				broadcast: {},
 				showVideo: false,
 				showChat: false,
+				previousPage: {}
 			}
 		},
 		computed: {
@@ -65,14 +66,15 @@
 			axios
 				.get(process.env.MIX_APP_URL + '/w/api/broadcasts/' + to.params.broadcast_id)
 				.then(response => {
-					next(vm => vm.setData(response.data));
+					next(vm => vm.setData(from, response.data));
 				})
 				.catch(error => {
 					error.response.status === 404 ? next('404') : next('/');
 				});
 		},
 		methods: {
-			setData: function(data) {
+			setData: function(from, data) {
+				this.previousPage = from;
 				this.broadcast = data.broadcast;
 
 				switch (this.broadcast.status) {
@@ -107,9 +109,11 @@
 	            this.showChat = true;
 	        },
 		    goBack () {
-				window.history.length > 1
-					? this.$router.go(-1)
-					: this.$router.push('/');
+		    	if (this.previousPage.name === null) {
+		    		this.$router.push({name: 'home'});
+		    	} else {
+		    		this.$router.go(-1);
+		    	}
 		    }
 		}
 	}

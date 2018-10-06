@@ -23,11 +23,11 @@ class Broadcast extends Model
     const MINUTES_AFTER_END = 10;
 
     /**
-     * The duration in minutes for live broadcast.
+     * The duration in seconds for live broadcast.
      *
      * @var int
      */
-    const LIVE_BROADCAST_DURATION = 90;
+    const LIVE_BROADCAST_DURATION = 90 * 60;
 
     /**
      * The broadcast chat is open.
@@ -131,24 +131,24 @@ class Broadcast extends Model
     /**
      * Get the time the broadcast ends.
      * 
-     * @param  int     $duration
+     * @param  int     $durationInSeconds
      * @return Carbon  \Carbon\Carbon
      */
-    public function endsAt($duration)
+    public function endsAt($durationInSeconds)
     {
         return $this->starts_at
-            ->addSeconds($duration);
+            ->addSeconds($durationInSeconds);
     }
 
     /**
      * Get the time the broadcast chat closes.
      * 
-     * @param  int     $duration
+     * @param  int     $durationInSeconds
      * @return Carbon  \Carbon\Carbon
      */
-    public function closesAt($duration)
+    public function closesAt($durationInSeconds)
     {
-        return $this->endsAt($duration)
+        return $this->endsAt($durationInSeconds)
             ->addMinutes(self::MINUTES_AFTER_END)
             ->second(0);
     }
@@ -187,19 +187,20 @@ class Broadcast extends Model
 
         if ($opensAt->isFuture()) {
             $this->status = self::BROADCAST_CLOSED;
+
             return;
         }
 
         if ($startsAt->isFuture()) {
             $this->trailer = $this->loadTrailer();
             $this->status = self::BROADCAST_OPEN;
+
             return;
         }
 
-        $durationInSeconds = self::LIVE_BROADCAST_DURATION * 60;
+        $durationInSeconds = self::LIVE_BROADCAST_DURATION;
 
         if (! $this->live) {
-            // Load the sermon so we can calculate end time.
             $sermon = $this->loadSermon();
             $durationInSeconds = $sermon->duration;
         }
@@ -210,8 +211,10 @@ class Broadcast extends Model
             if (isset($sermon)) {
                 $this->sermon = $sermon;
             }
+            
             $this->time_elapsed = $startsAt->diffInSeconds();
             $this->status = self::BROADCAST_IN_PROGRESS;
+
             return;
         }
 

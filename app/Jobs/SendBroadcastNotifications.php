@@ -35,11 +35,11 @@ class SendBroadcastNotifications
     {
         $now = new Carbon();
         $now->second(0);
-
+        
         // Copy $now and add minutes so we can check if
         // now + MINUTES_BEFORE_START == publish_on/start_at time
         $startTime = $now->copy()->addMinutes(Broadcast::MINUTES_BEFORE_START);
-    
+
         $sermon = Sermon::where('publish_on', '<=', $startTime)
             ->latest('publish_on')
             ->first();
@@ -50,9 +50,9 @@ class SendBroadcastNotifications
             ->get();
 
         foreach ($broadcasts as $broadcast) {
+            $durationInSeconds = $broadcast->live ? Broadcast::LIVE_BROADCAST_DURATION : $sermon->duration;
             $opensAt = $broadcast->opensAt();
             $startsAt = $broadcast->starts_at;
-            $durationInSeconds = $broadcast->live ? Broadcast::LIVE_BROADCAST_DURATION * 60 : $sermon->duration;
             $closesAt = $broadcast->closesAt($durationInSeconds);
 
             if ($now == $opensAt) {

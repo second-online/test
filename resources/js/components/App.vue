@@ -1,10 +1,8 @@
 <template>
 	<main class="h-100">
 		<router-view ref="router"></router-view>
-		<div v-if="showVideo" class="popup-video"></div>
 	</main>
 </template>
-
 <script>
 	export default {
 		data: function() {

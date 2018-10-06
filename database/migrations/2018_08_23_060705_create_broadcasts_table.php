@@ -21,6 +21,7 @@ class CreateBroadcastsTable extends Migration
             $table->boolean('live')->default(false);
             $table->boolean('enabled')->default(true);
             $table->timestamp('starts_at')->nullable();
+            $table->text('embed_code')->nullable();
             $table->timestamps();
         });
     }

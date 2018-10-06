@@ -129,7 +129,7 @@
 				 				 
 				this.comments.push(comment);
 				
-				setTimeout(function() {
+				setTimeout(() => {
 					if (distanceFromBottom < 150) {
 						el.scrollTop = el.scrollHeight - el.clientHeight;
 					}

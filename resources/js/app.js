@@ -15,7 +15,9 @@ import { router } from './routes'
 
 router.beforeEach((to, from, next) => {
 	if (to.matched.some(record => record.meta.guest)) {
-		store.getters.isUserAuthenticated ? next('/') : next();
+		if (store.getters.isUserAuthenticated) {
+			next('/');
+		}
 	}
 
 	next();

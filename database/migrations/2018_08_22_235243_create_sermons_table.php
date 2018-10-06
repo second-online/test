@@ -16,13 +16,14 @@ class CreateSermonsTable extends Migration
         Schema::create('sermons', function (Blueprint $table) {
             $table->increments('id');
             $table->string('title');
-            $table->text('description');
-            $table->text('notes');
-            $table->string('youtube_id')->unique();
-            $table->string('vimeo_id')->unique();
-            $table->integer('speaker_id')->unsigned();
+            $table->text('description')->nullable();
+            $table->text('notes')->nullable();
+            $table->string('youtube_id')->unique()->nullable();;
+            $table->string('vimeo_id')->unique()->nullable();;
+            $table->integer('speaker_id')->unsigned()->nullable();;
             $table->integer('series_id')->unsigned()->nullable();
-            $table->time('duration');
+            $table->integer('duration')->default(0);
+            $table->text('image')->nullable();
             $table->timestamp('publish_on')->nullable();
             $table->timestamps();
 

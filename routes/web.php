@@ -96,23 +96,66 @@ Route::get('password/reset/{token}', 'SPAController@index')->name('password.rese
 
 Route::get('test', function() {
 
-        $now = new Carbon();
-        $now->second(0);
 
-        // Copy $now and add minutes so we can check if
-        // now + MINUTES_BEFORE_START == start_at/publish_on time
-        $startTime = $now->copy()->addMinutes(Broadcast::MINUTES_BEFORE_START);
-    
-        $sermon = Sermon::where('publish_on', '<=', $startTime)
-            ->latest('publish_on')
-            ->first();
+	// $sermon = Sermon::find(1);
 
-        $broadcasts = Broadcast::where('starts_at', '<=', $startTime)
-            ->where('enabled', 1)
-            ->oldest('starts_at')
-            ->get();
+	// echo $sermon->duration;
 
-        return response()->json(['sermon' => $sermon, 'broadcasts' => $broadcasts]);
+	// die;
+
+	$opts = array(
+	  'http'=>array(
+	    'header'=> 'Authorization: Bearer 1145ef4001404718357f5bf704dcc536'
+	  )
+	);
+
+	$context = stream_context_create($opts);
+
+	// Open the file using the HTTP headers set above
+	$response = json_decode(file_get_contents('https://api.vimeo.com/me/videos?per_page=100&page=2', true, $context));
+
+	$videos = $response->data;
+
+	foreach ($videos as $video) {
+		if ($video->duration < 300)
+			continue;
+
+		// echo $video->name . '<br>';
+		// echo str_replace('/videos/', '', $video->uri) . '<br>';
+		// echo $video->duration . '<br>';
+
+		// foreach($video->pictures->sizes as $picture) {
+		// 	//var_dump(gettype($picture->width));
+			
+		// 	if ($picture->width == 1920) {
+		// 		$img = str_replace('?r=pad', '', $picture->link);
+		// 		echo '<a target="_blank" href="'.$img.'">' . $img . '</a>' . '<br>';
+		// 	}
+		// }
+
+		// echo '<br>';
+
+		$sermon = new Sermon;
+		$sermon->title = $video->name;
+		$sermon->vimeo_id = str_replace('/videos/', '', $video->uri);
+		$sermon->duration = $video->duration;
+		$sermon->speaker_id = 1;
+
+		foreach($video->pictures->sizes as $picture) {
+			//var_dump(gettype($picture->width));
+			
+			if ($picture->width == 1920) {
+				$img = str_replace('?r=pad', '', $picture->link);
+				$sermon->image = $img;
+			}
+		}
+		$sermon->publish_on = new Carbon();
+		$sermon->save();
+	}
+
+	//return response()->json($videos);
+
+//1145ef4001404718357f5bf704dcc536
 });
 
 
