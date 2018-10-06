@@ -1,18 +1,22 @@
 <template>
 	<div class="container-fluid">
-		<template v-for="(sermon, index) in sermons">
+<!-- 		<div
+			v-for="group in groupedSermons"
+			class="row"
+		>
 			<div
-				v-if="index % 2 == 1"
-				class="row"
+				v-for="sermon in group"
+				class="col-6"
 			>
-				<div class="col">
-					<img class="w-100" v-bind:src="sermons[index-1].image">
-				</div>
-				<div class="col">
-					<img class="w-100" v-bind:src="sermon.image">
-				</div>
+				<img v-bind:src="sermon.image" class="w-100">
 			</div>
-		</template>
+		</div> -->
+		<div class="row">
+			<div v-for="sermon in sermons" class="col-12 col-md-6 col-xl-4">
+				<img v-bind:src="sermon.image" class="w-100">
+				<span class="d-block">{{ sermon.title }}</span>
+			</div>
+		</div>
 	</div>
 </template>
 
@@ -20,7 +24,21 @@
 	export default {
 		data: function() {
 			return {
-				sermons: []
+				sermons: [],
+				itemsPerRow: 2
+			}
+		},
+		computed: {
+			groupedSermons: function() {
+				return this.sermons.reduce((accumulator, sermon, index) => {
+					if (index % this.itemsPerRow == 0) {
+						accumulator.push([sermon]);
+					} else {
+						accumulator[accumulator.length - 1].push(sermon);
+					} 
+
+					return accumulator;
+				}, []);
 			}
 		},
 		methods: {

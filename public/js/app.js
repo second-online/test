@@ -46974,19 +46974,39 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
 	data: function data() {
 		return {
-			sermons: []
+			sermons: [],
+			itemsPerRow: 2
 		};
+	},
+	computed: {
+		groupedSermons: function groupedSermons() {
+			var _this = this;
+
+			return this.sermons.reduce(function (accumulator, sermon, index) {
+				if (index % _this.itemsPerRow == 0) {
+					accumulator.push([sermon]);
+				} else {
+					accumulator[accumulator.length - 1].push(sermon);
+				}
+
+				return accumulator;
+			}, []);
+		}
 	},
 	methods: {
 		fetchSermons: function fetchSermons() {
-			var _this = this;
+			var _this2 = this;
 
 			axios.get("http://second.test" + '/w/api/sermons/').then(function (response) {
-				_this.sermons = response.data.sermons;
+				_this2.sermons = response.data.sermons;
 			});
 		},
 		openSermon: function openSermon(sermon) {
@@ -47009,34 +47029,19 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "container-fluid" },
-    [
-      _vm._l(_vm.sermons, function(sermon, index) {
-        return [
-          index % 2 == 1
-            ? _c("div", { staticClass: "row" }, [
-                _c("div", { staticClass: "col" }, [
-                  _c("img", {
-                    staticClass: "w-100",
-                    attrs: { src: _vm.sermons[index - 1].image }
-                  })
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "col" }, [
-                  _c("img", {
-                    staticClass: "w-100",
-                    attrs: { src: sermon.image }
-                  })
-                ])
-              ])
-            : _vm._e()
-        ]
+  return _c("div", { staticClass: "container-fluid" }, [
+    _c(
+      "div",
+      { staticClass: "row" },
+      _vm._l(_vm.sermons, function(sermon) {
+        return _c("div", { staticClass: "col-12 col-md-6 col-xl-4" }, [
+          _c("img", { staticClass: "w-100", attrs: { src: sermon.image } }),
+          _vm._v(" "),
+          _c("span", { staticClass: "d-block" }, [_vm._v(_vm._s(sermon.title))])
+        ])
       })
-    ],
-    2
-  )
+    )
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true

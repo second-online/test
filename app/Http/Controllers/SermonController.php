@@ -14,7 +14,7 @@ class SermonController extends Controller
      */
     public function index()
     {
-        $sermons = Sermon::take(3)->get();
+        $sermons = Sermon::take(11)->get();
 
         return response()->json([
             'sermons' => $sermons
