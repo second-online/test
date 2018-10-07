@@ -42337,17 +42337,13 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vuex
 var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
 	state: {
 		user: window.AppUser,
-		schedule: [],
-		sermons: []
+		schedule: []
+		//sermons: []
 	},
 	getters: {
-		getSermonWithId: function getSermonWithId(state) {
-			return function (id) {
-				return state.sermons.find(function (sermon) {
-					return sermon.id == id;
-				});
-			};
-		},
+		// getSermonWithId: (state) => (id) => {
+		// 	return state.sermons.find(sermon => sermon.id == id);	
+		// },
 		isUserAuthenticated: function isUserAuthenticated(state) {
 			return state.user !== null;
 		},
@@ -46978,6 +46974,44 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
 	data: function data() {
@@ -47029,21 +47063,70 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "container-fluid" }, [
-    _c(
-      "div",
-      { staticClass: "row" },
-      _vm._l(_vm.sermons, function(sermon) {
-        return _c("div", { staticClass: "col-12 col-md-6 col-xl-4" }, [
-          _c("img", { staticClass: "w-100", attrs: { src: sermon.image } }),
-          _vm._v(" "),
-          _c("span", { staticClass: "d-block" }, [_vm._v(_vm._s(sermon.title))])
-        ])
-      })
-    )
+  return _c("div", { staticClass: "container-fluid px-30 px-xl-60" }, [
+    _vm._m(0),
+    _vm._v(" "),
+    _c("div", { staticClass: "row" }, [
+      _vm._m(1),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-12 col-xl-10" }, [
+        _c(
+          "div",
+          { staticClass: "row" },
+          _vm._l(_vm.sermons, function(sermon) {
+            return _c(
+              "div",
+              {
+                staticClass: "col-12 col-md-6",
+                on: {
+                  click: function($event) {
+                    _vm.openSermon(sermon)
+                  }
+                }
+              },
+              [
+                _c("img", {
+                  staticClass: "w-100",
+                  attrs: { src: sermon.image }
+                }),
+                _vm._v(" "),
+                _c("span", { staticClass: "d-block" }, [
+                  _vm._v(_vm._s(sermon.title))
+                ])
+              ]
+            )
+          })
+        )
+      ])
+    ])
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "row justify-content-center" }, [
+      _c("div", { staticClass: "col" }, [
+        _c("h1", { staticClass: "text-center" }, [
+          _vm._v("Each Tuesday we publish a new sermon.")
+        ])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-1 d-none d-xl-block" }, [
+      _c("span", { staticClass: "small text-vertical text-uppercase" }, [
+        _vm._v("\n\t\t\t\t\tToday at 3:00 pm"),
+        _c("br"),
+        _vm._v("is the next broadcast\n\t\t\t\t")
+      ])
+    ])
+  }
+]
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
@@ -47128,16 +47211,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 	},
 	data: function data() {
 		return {
-			sermonId: this.$route.params.sermon_id,
 			sermon: {},
 			showVideo: false
 		};
 	},
 	methods: {
-		fetchSermon: function fetchSermon() {
+		fetchSermon: function fetchSermon(sermonId) {
 			var _this = this;
 
-			axios.get("http://second.test" + '/w/api/sermons/' + this.sermonId).then(function (response) {
+			axios.get("http://second.test" + '/w/api/sermons/' + sermonId).then(function (response) {
 				_this.sermon = response.data.sermon;
 				_this.showVideo = true;
 				console.log(response.data.sermon);
@@ -47153,16 +47235,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 	},
 	created: function created() {
 
-		var sermon = this.$store.getters.getSermonWithId(this.sermonId);
+		this.fetchSermon(this.$route.params.sermon_id);
 
-		if (typeof sermon === 'undefined') {
-			this.fetchSermon();
-			console.log('yes undefined');
-		} else {
-			this.sermon = sermon;
-			this.showVideo = true;
-			console.log('show video');
-		}
+		// let sermon = this.$store.getters.getSermonWithId(this.sermonId);
+
+		// if (typeof sermon === 'undefined') {
+		// 	this.fetchSermon();
+		// 	console.log('yes undefined');
+		// } else {
+		// 	this.sermon = sermon;
+		// 	this.showVideo = true;
+		// 	console.log('show video');
+		// }
 	}
 });
 

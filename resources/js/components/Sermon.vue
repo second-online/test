@@ -18,15 +18,14 @@
 		},
 		data: function() {
 			return {
-				sermonId: this.$route.params.sermon_id,
 				sermon: {},
 				showVideo: false
 			}
 		},
 		methods: {
-			fetchSermon: function() {
+			fetchSermon: function(sermonId) {
 				axios
-					.get(process.env.MIX_APP_URL + '/w/api/sermons/' + this.sermonId)
+					.get(process.env.MIX_APP_URL + '/w/api/sermons/' + sermonId)
 					.then(response => {
 						this.sermon = response.data.sermon;
 						this.showVideo = true;
@@ -43,16 +42,18 @@
 		},
 		created: function() {
 
-			let sermon = this.$store.getters.getSermonWithId(this.sermonId);
+			this.fetchSermon(this.$route.params.sermon_id);
 
-			if (typeof sermon === 'undefined') {
-				this.fetchSermon();
-				console.log('yes undefined');
-			} else {
-				this.sermon = sermon;
-				this.showVideo = true;
-				console.log('show video');
-			}
+			// let sermon = this.$store.getters.getSermonWithId(this.sermonId);
+
+			// if (typeof sermon === 'undefined') {
+			// 	this.fetchSermon();
+			// 	console.log('yes undefined');
+			// } else {
+			// 	this.sermon = sermon;
+			// 	this.showVideo = true;
+			// 	console.log('show video');
+			// }
 		}
 	}
 </script>

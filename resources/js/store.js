@@ -7,12 +7,12 @@ export const store = new Vuex.Store({
 	state : {
 		user: window.AppUser,
 		schedule: [],
-		sermons: []
+		//sermons: []
 	},
 	getters: {
-		getSermonWithId: (state) => (id) => {
-			return state.sermons.find(sermon => sermon.id == id);	
-		},
+		// getSermonWithId: (state) => (id) => {
+		// 	return state.sermons.find(sermon => sermon.id == id);	
+		// },
 		isUserAuthenticated: state => {
 			return state.user !== null; 
 		},

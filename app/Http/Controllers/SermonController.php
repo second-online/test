@@ -14,7 +14,10 @@ class SermonController extends Controller
      */
     public function index()
     {
-        $sermons = Sermon::take(11)->get();
+        $sermons = Sermon::select('id', 'title', 'image', 'publish_on')
+            ->take(10)
+            ->get();
+        
 
         return response()->json([
             'sermons' => $sermons
@@ -29,8 +32,6 @@ class SermonController extends Controller
      */
     public function show(Sermon $sermon)
     {
-        return response()->json([
-            'sermon' => $sermon
-        ]);
+        return response()->json(['sermon' => $sermon]);
     }
 }

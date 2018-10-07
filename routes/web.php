@@ -95,6 +95,13 @@ Route::get('password/reset/{token}', 'SPAController@index')->name('password.rese
 
 
 Route::get('test', function() {
+	$sermon = Sermon::select('id','title')->where('id', 1)->first();
+	//$sermon = Sermon::where('id', 1)->pluck('title');
+
+	return response()->json($sermon);
+});
+
+Route::get('vimeo', function() {
 
 
 	// $sermon = Sermon::find(1);
