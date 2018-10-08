@@ -55,6 +55,16 @@
 				<div class="w-100 h-100 bg-warning">4</div>
 			</div> -->
 		</div>
+		<div class="row">
+			<div class="col-12 my-30 text-center">
+				<span
+					v-if="showLoadMoreButton"
+					v-on:click="loadSermons"
+					class="d-inline-block p-30 text-white bg-black"
+				>Load more</span>
+				<span v-else>That's all the sermons.</span>
+			</div>
+		</div>
 	</div>
 </template>
 
@@ -63,28 +73,36 @@
 		data: function() {
 			return {
 				sermons: [],
-				itemsPerRow: 2
+				firstPage: process.env.MIX_APP_URL + '/w/api/sermons/',
+				nextPage: null,
+				showLoadMoreButton: false
+				//itemsPerRow: 2
 			}
 		},
 		computed: {
-			groupedSermons: function() {
-				return this.sermons.reduce((accumulator, sermon, index) => {
-					if (index % this.itemsPerRow == 0) {
-						accumulator.push([sermon]);
-					} else {
-						accumulator[accumulator.length - 1].push(sermon);
-					} 
+			// groupedSermons: function() {
+			// 	return this.sermons.reduce((accumulator, sermon, index) => {
+			// 		if (index % this.itemsPerRow == 0) {
+			// 			accumulator.push([sermon]);
+			// 		} else {
+			// 			accumulator[accumulator.length - 1].push(sermon);
+			// 		} 
 
-					return accumulator;
-				}, []);
+			// 		return accumulator;
+			// 	}, []);
+			// }
+			endpoint: function() {
+				return this.nextPage === null ? this.firstPage : this.nextPage;
 			}
 		},
 		methods: {
-			fetchSermons() {
+			loadSermons() {
 				axios
-					.get(process.env.MIX_APP_URL + '/w/api/sermons/')
+					.get(this.endpoint)
 					.then(response => {
-						this.sermons = response.data.sermons;
+						this.sermons.push(...response.data.data);
+						this.nextPage = response.data.next_page_url;
+						this.showLoadMoreButton = this.nextPage === null ? false : true;
 					});
 			},
 			openSermon(sermon) {
@@ -95,7 +113,7 @@
 			}
 		},
 		created: function() {
-			this.fetchSermons();
+			this.loadSermons();
 		}
 	}
 </script>

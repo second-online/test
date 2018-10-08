@@ -1,20 +1,30 @@
 <template>
-	<div>
-		<span v-on:click="goBack">close</span>
-		<youtube-player 
-			v-if="showVideo"
-			v-on:video-ended="videoEnded"
-			v-bind:video-id="sermon.youtube_id"
-		/>
+	<div class="d-flex flex-column flex-md-row h-100">
+	 
+		<div class="broadcast-video-wrapper flex-shrink-0 flex-md-shrink-1 flex-md-grow-1 bg-black">
+			<div class="px-40 py-20">
+				<span class="back text-white" v-on:click="goBack">back</span>
+			</div>
+<!-- 			<vimeo-player 
+				v-if="showVideo"
+				v-bind:video-id="sermon.vimeo_id"
+				ref="video"
+				class=""
+			/>  -->
+		</div>
+
+		<div class="broadcast-chat-wrapper pt-60 px-40" v-html="sermon.description">
+
+		</div>
 	</div>
 </template>
 
 <script>
-	import YoutubePlayer from '../components/YoutubePlayer' 
+	import VimeoPlayer from '../components/VimeoPlayer'
 
 	export default {
 		components: {
-			YoutubePlayer
+			VimeoPlayer
 		},
 		data: function() {
 			return {
@@ -22,32 +32,45 @@
 				showVideo: false
 			}
 		},
+		beforeRouteEnter (to, from, next) {
+			axios
+				.get(process.env.MIX_APP_URL + '/w/api/sermons/' + to.params.sermon_id)
+				.then(response => {
+					next(vm => vm.setData(response.data));
+				})
+				.catch(error => {
+					alert('Somethin went wrong. Reload the page.');
+				});
+		},
 		methods: {
-			fetchSermon: function(sermonId) {
-				axios
-					.get(process.env.MIX_APP_URL + '/w/api/sermons/' + sermonId)
-					.then(response => {
-						this.sermon = response.data.sermon;
-						this.showVideo = true;
-						console.log(response.data.sermon);
-					});
+			setData: function(data) {
+				this.sermon = data;
+				this.showVideo = true;
 			},
-	        videoEnded: function() {
-	            this.showVideo = false;
-	            console.log('video ended');
-	        },
+			// loadSermon: function(sermonId) {
+			// 	axios
+			// 		.get(process.env.MIX_APP_URL + '/w/api/sermons/' + sermonId)
+			// 		.then(response => {
+			// 			this.sermon = response.data.sermon;
+			// 			this.showVideo = true;
+			// 			console.log(response.data.sermon);
+			// 		});
+			// },
+	        // videoEnded: function() {
+	        //     this.showVideo = false;
+	        //     console.log('video ended');
+	        // },
 	        goBack: function() {
 	        	this.$router.go(-1);
 	        }
 		},
 		created: function() {
-
-			this.fetchSermon(this.$route.params.sermon_id);
+			//this.loadSermon(this.$route.params.sermon_id);
 
 			// let sermon = this.$store.getters.getSermonWithId(this.sermonId);
 
 			// if (typeof sermon === 'undefined') {
-			// 	this.fetchSermon();
+			// 	this.loadSermon();
 			// 	console.log('yes undefined');
 			// } else {
 			// 	this.sermon = sermon;

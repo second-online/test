@@ -13,15 +13,10 @@ class SermonController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
-        $sermons = Sermon::select('id', 'title', 'image', 'publish_on')
-            ->take(10)
-            ->get();
-        
+    {        
+        $pager = Sermon::simplePaginate(10, ['id', 'title', 'image', 'publish_on']);
 
-        return response()->json([
-            'sermons' => $sermons
-        ]);
+        return response()->json($pager);
     }
 
     /**
@@ -32,6 +27,22 @@ class SermonController extends Controller
      */
     public function show(Sermon $sermon)
     {
-        return response()->json(['sermon' => $sermon]);
+        return response()->json($sermon);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Sermon  $sermon
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, Sermon $sermon)
+    {
+        $description = htmlentities( $request->input('description') );
+
+        $sermon->description = $description;
+
+        $sermon->save();
     }
 }

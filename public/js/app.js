@@ -43327,8 +43327,11 @@ var index_esm = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__components_PasswordReset___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10__components_PasswordReset__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__components_PasswordResetChange__ = __webpack_require__(217);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__components_PasswordResetChange___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_11__components_PasswordResetChange__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__components_404__ = __webpack_require__(222);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__components_404___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_12__components_404__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__components_Admin__ = __webpack_require__(237);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__components_Admin___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_12__components_Admin__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__components_404__ = __webpack_require__(222);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__components_404___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_13__components_404__);
+
 
 
 
@@ -43395,7 +43398,11 @@ var router = new __WEBPACK_IMPORTED_MODULE_1_vue_router__["a" /* default */]({
 	}, {
 		path: '/404',
 		name: '404',
-		component: __WEBPACK_IMPORTED_MODULE_12__components_404___default.a
+		component: __WEBPACK_IMPORTED_MODULE_13__components_404___default.a
+	}, {
+		path: '/admin',
+		name: 'admin',
+		component: __WEBPACK_IMPORTED_MODULE_12__components_Admin___default.a
 	}, {
 		path: '*',
 		redirect: '/404'
@@ -46330,7 +46337,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({
 	props: {
 		videoId: String,
-		timeElapsed: Number
+		timeElapsed: {
+			type: Number,
+			default: 0
+		}
 	},
 	data: function data() {
 		return {
@@ -46952,6 +46962,18 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -47017,30 +47039,38 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 	data: function data() {
 		return {
 			sermons: [],
-			itemsPerRow: 2
+			firstPage: "http://second.test" + '/w/api/sermons/',
+			nextPage: null,
+			showLoadMoreButton: false
+			//itemsPerRow: 2
 		};
 	},
 	computed: {
-		groupedSermons: function groupedSermons() {
-			var _this = this;
+		// groupedSermons: function() {
+		// 	return this.sermons.reduce((accumulator, sermon, index) => {
+		// 		if (index % this.itemsPerRow == 0) {
+		// 			accumulator.push([sermon]);
+		// 		} else {
+		// 			accumulator[accumulator.length - 1].push(sermon);
+		// 		} 
 
-			return this.sermons.reduce(function (accumulator, sermon, index) {
-				if (index % _this.itemsPerRow == 0) {
-					accumulator.push([sermon]);
-				} else {
-					accumulator[accumulator.length - 1].push(sermon);
-				}
-
-				return accumulator;
-			}, []);
+		// 		return accumulator;
+		// 	}, []);
+		// }
+		endpoint: function endpoint() {
+			return this.nextPage === null ? this.firstPage : this.nextPage;
 		}
 	},
 	methods: {
-		fetchSermons: function fetchSermons() {
-			var _this2 = this;
+		loadSermons: function loadSermons() {
+			var _this = this;
 
-			axios.get("http://second.test" + '/w/api/sermons/').then(function (response) {
-				_this2.sermons = response.data.sermons;
+			axios.get(this.endpoint).then(function (response) {
+				var _sermons;
+
+				(_sermons = _this.sermons).push.apply(_sermons, _toConsumableArray(response.data.data));
+				_this.nextPage = response.data.next_page_url;
+				_this.showLoadMoreButton = _this.nextPage === null ? false : true;
 			});
 		},
 		openSermon: function openSermon(sermon) {
@@ -47051,7 +47081,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 		}
 	},
 	created: function created() {
-		this.fetchSermons();
+		this.loadSermons();
 	}
 });
 
@@ -47097,6 +47127,21 @@ var render = function() {
             )
           })
         )
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "col-12 my-30 text-center" }, [
+        _vm.showLoadMoreButton
+          ? _c(
+              "span",
+              {
+                staticClass: "d-inline-block p-30 text-white bg-black",
+                on: { click: _vm.loadSermons }
+              },
+              [_vm._v("Load more")]
+            )
+          : _c("span", [_vm._v("That's all the sermons.")])
       ])
     ])
   ])
@@ -47189,8 +47234,18 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_YoutubePlayer__ = __webpack_require__(193);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_YoutubePlayer___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_YoutubePlayer__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_VimeoPlayer__ = __webpack_require__(138);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_VimeoPlayer___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_VimeoPlayer__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -47207,7 +47262,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /* harmony default export */ __webpack_exports__["default"] = ({
 	components: {
-		YoutubePlayer: __WEBPACK_IMPORTED_MODULE_0__components_YoutubePlayer___default.a
+		VimeoPlayer: __WEBPACK_IMPORTED_MODULE_0__components_VimeoPlayer___default.a
 	},
 	data: function data() {
 		return {
@@ -47215,32 +47270,45 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 			showVideo: false
 		};
 	},
-	methods: {
-		fetchSermon: function fetchSermon(sermonId) {
-			var _this = this;
-
-			axios.get("http://second.test" + '/w/api/sermons/' + sermonId).then(function (response) {
-				_this.sermon = response.data.sermon;
-				_this.showVideo = true;
-				console.log(response.data.sermon);
+	beforeRouteEnter: function beforeRouteEnter(to, from, next) {
+		axios.get("http://second.test" + '/w/api/sermons/' + to.params.sermon_id).then(function (response) {
+			next(function (vm) {
+				return vm.setData(response.data);
 			});
+		}).catch(function (error) {
+			alert('Somethin went wrong. Reload the page.');
+		});
+	},
+
+	methods: {
+		setData: function setData(data) {
+			this.sermon = data;
+			this.showVideo = true;
 		},
-		videoEnded: function videoEnded() {
-			this.showVideo = false;
-			console.log('video ended');
-		},
+		// loadSermon: function(sermonId) {
+		// 	axios
+		// 		.get(process.env.MIX_APP_URL + '/w/api/sermons/' + sermonId)
+		// 		.then(response => {
+		// 			this.sermon = response.data.sermon;
+		// 			this.showVideo = true;
+		// 			console.log(response.data.sermon);
+		// 		});
+		// },
+		// videoEnded: function() {
+		//     this.showVideo = false;
+		//     console.log('video ended');
+		// },
 		goBack: function goBack() {
 			this.$router.go(-1);
 		}
 	},
 	created: function created() {
-
-		this.fetchSermon(this.$route.params.sermon_id);
+		//this.loadSermon(this.$route.params.sermon_id);
 
 		// let sermon = this.$store.getters.getSermonWithId(this.sermonId);
 
 		// if (typeof sermon === 'undefined') {
-		// 	this.fetchSermon();
+		// 	this.loadSermon();
 		// 	console.log('yes undefined');
 		// } else {
 		// 	this.sermon = sermon;
@@ -47251,151 +47319,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 193 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(1)
-/* script */
-var __vue_script__ = __webpack_require__(194)
-/* template */
-var __vue_template__ = __webpack_require__(195)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/js/components/YoutubePlayer.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-2253d4ee", Component.options)
-  } else {
-    hotAPI.reload("data-v-2253d4ee", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 194 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-	props: {
-		videoId: String
-	},
-	data: function data() {
-		return {
-			player: {}
-		};
-	},
-	methods: {
-		loadPlayer: function loadPlayer() {
-			this.player = new YT.Player('youtube-player', {
-				height: '390',
-				width: '640',
-				videoId: this.videoId,
-				playerVars: {
-					autoplay: '0',
-					disablekb: '1',
-					controls: '0',
-					start: '0',
-					modestbranding: '1',
-					origin: 'http://second.test'
-				},
-				events: {
-					'onReady': this.playerReady,
-					'onStateChange': this.playerStateChange,
-					'onError': this.playerError
-				}
-			});
-		},
-		playerReady: function playerReady(event) {
-			event.target.playVideo();
-			this.player.setVolume(100);
-		},
-		playerStateChange: function playerStateChange(event) {
-			if (event.data == YT.PlayerState.ENDED) {
-				this.$emit('video-ended');
-			}
-		},
-		mute: function mute() {
-			this.player.isMuted() ? this.player.unMute() : this.player.mute();
-		}
-	},
-	mounted: function mounted() {
-		var _this = this;
-
-		if (this.$store.state.youtubeApiReady) {
-			this.loadPlayer();
-		} else {
-			var watcher = this.$store.watch(function (state) {
-				return state.youtubeApiReady;
-			}, function (newValue, oldValue) {
-				_this.loadPlayer();
-				watcher.unwatch;
-			});
-		}
-	}
-});
-
-/***/ }),
-/* 195 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _vm._m(0)
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", [_c("div", { attrs: { id: "youtube-player" } })])
-  }
-]
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-2253d4ee", module.exports)
-  }
-}
-
-/***/ }),
+/* 193 */,
+/* 194 */,
+/* 195 */,
 /* 196 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -47403,20 +47329,29 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    [
-      _c("span", { on: { click: _vm.goBack } }, [_vm._v("close")]),
-      _vm._v(" "),
-      _vm.showVideo
-        ? _c("youtube-player", {
-            attrs: { "video-id": _vm.sermon.youtube_id },
-            on: { "video-ended": _vm.videoEnded }
-          })
-        : _vm._e()
-    ],
-    1
-  )
+  return _c("div", { staticClass: "d-flex flex-column flex-md-row h-100" }, [
+    _c(
+      "div",
+      {
+        staticClass:
+          "broadcast-video-wrapper flex-shrink-0 flex-md-shrink-1 flex-md-grow-1 bg-black"
+      },
+      [
+        _c("div", { staticClass: "px-40 py-20" }, [
+          _c(
+            "span",
+            { staticClass: "back text-white", on: { click: _vm.goBack } },
+            [_vm._v("back")]
+          )
+        ])
+      ]
+    ),
+    _vm._v(" "),
+    _c("div", {
+      staticClass: "broadcast-chat-wrapper pt-60 px-40",
+      domProps: { innerHTML: _vm._s(_vm.sermon.description) }
+    })
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -49561,6 +49496,490 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 		});
 	}
 });
+
+/***/ }),
+/* 231 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* unused harmony export bindHandlers */
+/* unused harmony export bindModelHandlers */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return initEditor; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return uuid; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return isTextarea; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return mergePlugins; });
+/**
+ * Copyright (c) 2018-present, Ephox, Inc.
+ *
+ * This source code is licensed under the Apache 2 license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ */
+var validEvents = [
+    'onActivate',
+    'onAddUndo',
+    'onBeforeAddUndo',
+    'onBeforeExecCommand',
+    'onBeforeGetContent',
+    'onBeforeRenderUI',
+    'onBeforeSetContent',
+    'onBeforePaste',
+    'onBlur',
+    'onChange',
+    'onClearUndos',
+    'onClick',
+    'onContextMenu',
+    'onCopy',
+    'onCut',
+    'onDblclick',
+    'onDeactivate',
+    'onDirty',
+    'onDrag',
+    'onDragDrop',
+    'onDragEnd',
+    'onDragGesture',
+    'onDragOver',
+    'onDrop',
+    'onExecCommand',
+    'onFocus',
+    'onFocusIn',
+    'onFocusOut',
+    'onGetContent',
+    'onHide',
+    'onInit',
+    'onKeyDown',
+    'onKeyPress',
+    'onKeyUp',
+    'onLoadContent',
+    'onMouseDown',
+    'onMouseEnter',
+    'onMouseLeave',
+    'onMouseMove',
+    'onMouseOut',
+    'onMouseOver',
+    'onMouseUp',
+    'onNodeChange',
+    'onObjectResizeStart',
+    'onObjectResized',
+    'onObjectSelected',
+    'onPaste',
+    'onPostProcess',
+    'onPostRender',
+    'onPreProcess',
+    'onProgressState',
+    'onRedo',
+    'onRemove',
+    'onReset',
+    'onSaveContent',
+    'onSelectionChange',
+    'onSetAttrib',
+    'onSetContent',
+    'onShow',
+    'onSubmit',
+    'onUndo',
+    'onVisualAid'
+];
+var isValidKey = function (key) { return validEvents.indexOf(key) !== -1; };
+var bindHandlers = function (initEvent, listeners, editor) {
+    Object.keys(listeners)
+        .filter(isValidKey)
+        .forEach(function (key) {
+        var handler = listeners[key];
+        if (typeof handler === 'function') {
+            if (key === 'onInit') {
+                handler(initEvent, editor);
+            }
+            else {
+                editor.on(key.substring(2), function (e) { return handler(e, editor); });
+            }
+        }
+    });
+};
+var bindModelHandlers = function (ctx, editor) {
+    var modelEvents = ctx.$props.modelEvents ? ctx.$props.modelEvents : null;
+    var normalizedEvents = Array.isArray(modelEvents) ? modelEvents.join(' ') : modelEvents;
+    var currentContent;
+    ctx.$watch('value', function (val, prevVal) {
+        if (editor && typeof val === 'string' && val !== currentContent && val !== prevVal) {
+            editor.setContent(val);
+            currentContent = val;
+        }
+    });
+    editor.on(normalizedEvents ? normalizedEvents : 'change keyup undo redo', function () {
+        currentContent = editor.getContent();
+        ctx.$emit('input', currentContent);
+    });
+};
+var initEditor = function (initEvent, ctx, editor) {
+    var value = ctx.$props.value ? ctx.$props.value : '';
+    var initialValue = ctx.$props.initialValue ? ctx.$props.initialValue : '';
+    editor.setContent(value || initialValue);
+    // checks if the v-model shorthand is used (which sets an v-on:input listener) and then binds either
+    // specified the events or defaults to "change keyup" event and emits the editor content on that event
+    if (ctx.$listeners.input) {
+        bindModelHandlers(ctx, editor);
+    }
+    bindHandlers(initEvent, ctx.$listeners, editor);
+};
+var unique = 0;
+var uuid = function (prefix) {
+    var date = new Date();
+    var time = date.getTime();
+    var random = Math.floor(Math.random() * 1000000000);
+    unique++;
+    return prefix + '_' + random + unique + String(time);
+};
+var isTextarea = function (element) {
+    return element !== null && element.tagName.toLowerCase() === 'textarea';
+};
+var normalizePluginArray = function (plugins) {
+    if (typeof plugins === 'undefined' || plugins === '') {
+        return [];
+    }
+    return Array.isArray(plugins) ? plugins : plugins.split(' ');
+};
+var mergePlugins = function (initPlugins, inputPlugins) {
+    return normalizePluginArray(initPlugins).concat(normalizePluginArray(inputPlugins));
+};
+
+
+/***/ }),
+/* 232 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_Editor__ = __webpack_require__(233);
+/**
+ * Copyright (c) 2018-present, Ephox, Inc.
+ *
+ * This source code is licensed under the Apache 2 license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ */
+
+/* harmony default export */ __webpack_exports__["a"] = (__WEBPACK_IMPORTED_MODULE_0__components_Editor__["a" /* Editor */]);
+
+
+/***/ }),
+/* 233 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Editor; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ScriptLoader__ = __webpack_require__(234);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__TinyMCE__ = __webpack_require__(235);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Utils__ = __webpack_require__(231);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__EditorPropTypes__ = __webpack_require__(236);
+/**
+ * Copyright (c) 2018-present, Ephox, Inc.
+ *
+ * This source code is licensed under the Apache 2 license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ */
+var __assign = (this && this.__assign) || Object.assign || function(t) {
+    for (var s, i = 1, n = arguments.length; i < n; i++) {
+        s = arguments[i];
+        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+            t[p] = s[p];
+    }
+    return t;
+};
+
+
+
+
+var scriptState = __WEBPACK_IMPORTED_MODULE_0__ScriptLoader__["a" /* create */]();
+var renderInline = function (h, id, tagName) {
+    return h(tagName ? tagName : 'div', {
+        attrs: { id: id }
+    });
+};
+var renderIframe = function (h, id) {
+    return h('textarea', {
+        attrs: { id: id },
+        style: { visibility: 'hidden' }
+    });
+};
+var initialise = function (ctx) { return function () {
+    var finalInit = __assign({}, ctx.$props.init, { readonly: ctx.$props.disabled, selector: "#" + ctx.elementId, plugins: Object(__WEBPACK_IMPORTED_MODULE_2__Utils__["c" /* mergePlugins */])(ctx.$props.init && ctx.$props.init.plugins, ctx.$props.plugins), toolbar: ctx.$props.toolbar || (ctx.$props.init && ctx.$props.init.toolbar), inline: ctx.inlineEditor, setup: function (editor) {
+            ctx.editor = editor;
+            editor.on('init', function (e) { return Object(__WEBPACK_IMPORTED_MODULE_2__Utils__["a" /* initEditor */])(e, ctx, editor); });
+            if (ctx.$props.init && typeof ctx.$props.init.setup === 'function') {
+                ctx.$props.init.setup(editor);
+            }
+        } });
+    if (Object(__WEBPACK_IMPORTED_MODULE_2__Utils__["b" /* isTextarea */])(ctx.element)) {
+        ctx.element.style.visibility = '';
+    }
+    Object(__WEBPACK_IMPORTED_MODULE_1__TinyMCE__["a" /* getTinymce */])().init(finalInit);
+}; };
+var Editor = {
+    props: __WEBPACK_IMPORTED_MODULE_3__EditorPropTypes__["a" /* editorProps */],
+    created: function () {
+        this.elementId = this.$props.id || Object(__WEBPACK_IMPORTED_MODULE_2__Utils__["d" /* uuid */])('tiny-vue');
+        this.inlineEditor = (this.$props.init && this.$props.init.inline) || this.$props.inline;
+    },
+    watch: {
+        disabled: function () {
+            this.editor.setMode(this.disabled ? 'readonly' : 'design');
+        }
+    },
+    mounted: function () {
+        this.element = this.$el;
+        if (Object(__WEBPACK_IMPORTED_MODULE_1__TinyMCE__["a" /* getTinymce */])() !== null) {
+            initialise(this)();
+        }
+        else if (this.element) {
+            var doc = this.element.ownerDocument;
+            var channel = this.$props.cloudChannel ? this.$props.cloudChannel : 'stable';
+            var apiKey = this.$props.apiKey ? this.$props.apiKey : '';
+            var url = "https://cloud.tinymce.com/" + channel + "/tinymce.min.js?apiKey=" + apiKey;
+            __WEBPACK_IMPORTED_MODULE_0__ScriptLoader__["b" /* load */](scriptState, doc, url, initialise(this));
+        }
+    },
+    beforeDestroy: function () {
+        if (Object(__WEBPACK_IMPORTED_MODULE_1__TinyMCE__["a" /* getTinymce */])() !== null) {
+            Object(__WEBPACK_IMPORTED_MODULE_1__TinyMCE__["a" /* getTinymce */])().remove(this.editor);
+        }
+    },
+    render: function (h) {
+        return this.inlineEditor ? renderInline(h, this.elementId, this.$props.tagName) : renderIframe(h, this.elementId);
+    }
+};
+
+
+/***/ }),
+/* 234 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return create; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return load; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Utils__ = __webpack_require__(231);
+/**
+ * Copyright (c) 2018-present, Ephox, Inc.
+ *
+ * This source code is licensed under the Apache 2 license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ */
+
+var injectScriptTag = function (scriptId, doc, url, callback) {
+    var scriptTag = doc.createElement('script');
+    scriptTag.type = 'application/javascript';
+    scriptTag.id = scriptId;
+    scriptTag.addEventListener('load', callback);
+    scriptTag.src = url;
+    doc.head.appendChild(scriptTag);
+};
+var create = function () {
+    return {
+        listeners: [],
+        scriptId: Object(__WEBPACK_IMPORTED_MODULE_0__Utils__["d" /* uuid */])('tiny-script'),
+        scriptLoaded: false
+    };
+};
+var load = function (state, doc, url, callback) {
+    if (state.scriptLoaded) {
+        callback();
+    }
+    else {
+        state.listeners.push(callback);
+        if (!doc.getElementById(state.scriptId)) {
+            injectScriptTag(state.scriptId, doc, url, function () {
+                state.listeners.forEach(function (fn) { return fn(); });
+                state.scriptLoaded = true;
+            });
+        }
+    }
+};
+
+
+/***/ }),
+/* 235 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(global) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return getTinymce; });
+/**
+ * Copyright (c) 2018-present, Ephox, Inc.
+ *
+ * This source code is licensed under the Apache 2 license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ */
+var getGlobal = function () { return (typeof window !== 'undefined' ? window : global); };
+var getTinymce = function () {
+    var global = getGlobal();
+    return global && global.tinymce ? global.tinymce : null;
+};
+
+
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(3)))
+
+/***/ }),
+/* 236 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return editorProps; });
+/**
+ * Copyright (c) 2018-present, Ephox, Inc.
+ *
+ * This source code is licensed under the Apache 2 license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ */
+var editorProps = {
+    apiKey: String,
+    cloudChannel: String,
+    id: String,
+    init: Object,
+    initialValue: String,
+    inline: Boolean,
+    modelEvents: [String, Array],
+    plugins: [String, Array],
+    tagName: String,
+    toolbar: [String, Array],
+    value: String,
+    disabled: Boolean
+};
+
+
+/***/ }),
+/* 237 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(1)
+/* script */
+var __vue_script__ = __webpack_require__(238)
+/* template */
+var __vue_template__ = __webpack_require__(239)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/components/Admin.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-58b78718", Component.options)
+  } else {
+    hotAPI.reload("data-v-58b78718", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 238 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__tinymce_tinymce_vue__ = __webpack_require__(232);
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+	components: {
+		Editor: __WEBPACK_IMPORTED_MODULE_0__tinymce_tinymce_vue__["a" /* default */]
+	},
+	data: function data() {
+		return {
+			content: '',
+			options: {
+				menubar: false,
+				statusbar: false,
+				plugins: 'lists',
+				toolbar: 'formatselect,bold,italic,underline,removeformat'
+			}
+
+		};
+	},
+	methods: {
+		submit: function submit() {
+			console.log(this.content);
+
+			axios.post("http://second.test" + '/w/api/admin/sermons/1', {
+				_method: 'PUT',
+				description: this.content
+			}).then(function (response) {}).catch(function (error) {});
+		}
+	}
+});
+
+/***/ }),
+/* 239 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "p-30 w-75" },
+    [
+      _c("editor", {
+        attrs: {
+          "api-key": "pqneqwzrqthtizen3374n6dimsmrieuw61j5wjleiugxtsy1",
+          init: _vm.options
+        },
+        model: {
+          value: _vm.content,
+          callback: function($$v) {
+            _vm.content = $$v
+          },
+          expression: "content"
+        }
+      }),
+      _vm._v(" "),
+      _c("button", { on: { click: _vm.submit } }, [_vm._v("Submit")])
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-58b78718", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);

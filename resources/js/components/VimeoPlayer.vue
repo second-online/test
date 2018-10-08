@@ -6,7 +6,10 @@
 	export default {
 		props: {
 			videoId: String,
-			timeElapsed: Number
+			timeElapsed: {
+				type: Number,
+				default: 0
+			}
 		},
 		data: function() {
 			return {

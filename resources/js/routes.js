@@ -11,6 +11,7 @@ import Login from './components/Login'
 import Register from './components/Register'
 import PasswordReset from './components/PasswordReset'
 import PasswordResetChange from './components/PasswordResetChange'
+import Admin from './components/Admin'
 import NotFound from './components/404'
 
 Vue.use(VueRouter)
@@ -77,6 +78,11 @@ export const router = new VueRouter({
 			name: '404',
 			component: NotFound
 		},  
+		{
+			path: '/admin',
+			name: 'admin',
+			component: Admin
+		},
 		{
 			path: '*',
 			redirect: '/404'

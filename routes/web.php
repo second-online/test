@@ -87,6 +87,11 @@ Route::group(['prefix' => 'w/api/host', 'namespace' => 'Host'], function() {
 
 });
 
+Route::group(['prefix' => 'w/api/admin'], function() { 
+
+	Route::put('sermons/{sermon}', 'SermonController@update');
+
+});
 
 Route::fallback('SPAController@index');
 
@@ -95,10 +100,17 @@ Route::get('password/reset/{token}', 'SPAController@index')->name('password.rese
 
 
 Route::get('test', function() {
-	$sermon = Sermon::select('id','title')->where('id', 1)->first();
-	//$sermon = Sermon::where('id', 1)->pluck('title');
 
-	return response()->json($sermon);
+
+	$sermon = Sermon::find(1);
+
+	$sermon->description = '<h1>haha what up</h1><p>story of my life..</p><script>alert("hacked")</script>';
+
+	$sermon->save();
+
+	echo $sermon->description;
+
+
 });
 
 Route::get('vimeo', function() {
@@ -119,13 +131,14 @@ Route::get('vimeo', function() {
 	$context = stream_context_create($opts);
 
 	// Open the file using the HTTP headers set above
-	$response = json_decode(file_get_contents('https://api.vimeo.com/me/videos?per_page=100&page=2', true, $context));
+	$response = json_decode(file_get_contents('https://api.vimeo.com/me/videos?per_page=1&page=1', true, $context));
 
 	$videos = $response->data;
 
 	foreach ($videos as $video) {
 		if ($video->duration < 300)
 			continue;
+
 
 		// echo $video->name . '<br>';
 		// echo str_replace('/videos/', '', $video->uri) . '<br>';
@@ -147,10 +160,9 @@ Route::get('vimeo', function() {
 		$sermon->vimeo_id = str_replace('/videos/', '', $video->uri);
 		$sermon->duration = $video->duration;
 		$sermon->speaker_id = 1;
+		$sermon->description = $video->description;
 
 		foreach($video->pictures->sizes as $picture) {
-			//var_dump(gettype($picture->width));
-			
 			if ($picture->width == 1920) {
 				$img = str_replace('?r=pad', '', $picture->link);
 				$sermon->image = $img;
