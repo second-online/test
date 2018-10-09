@@ -1,55 +1,14 @@
 <template>
 	<div
-		v-bind:class="{ 'overflow-hidden' : showMenu }"
+		v-bind:class="{ 'overflow-hidden' : isMenuActive }"
 		class="d-flex flex-column h-100"
 	>
-		<header
-			v-if="showHeader"
+		<app-header
+			v-on:menu-toggled="menuToggled"
 			class="d-flex px-60 flex-shrink-0 align-items-center"
-		>
-			<div class="flex-grow-1">
-				<span class="logo">Second Online Campus</span>
-			</div>
-			<div class="d-flex flex-grow-1 justify-content-end justify-content-lg-end">
-				<span
-					v-on:click="toggleMenu"
-					v-bind:class="{ activated: showMenu }"
-					class="menu-toggle"
-				></span>
-				<div
-					v-show="showMenu"
-					class="menu"
-				>
-					<ul class="list-unstyled text-center huge">
-						<li><router-link v-bind:to="{ name: 'home' }">Home</router-link></li>
-						<li><router-link v-bind:to="{ name: 'sermons' }">Sermons</router-link></li>
-						<li>Schedule</li>
-						<li>Contact</li>
-					</ul>
-				</div>
-			</div>
-<!-- 			<div class="flex-grow-1 text-center">
-				<ul class="m-0 list-inline font-weight-bold">
-					<li class="d-inline-block px-10"><router-link v-bind:to="{ name: 'home' }">Home</router-link></li>
-					<li class="d-inline-block px-20"><router-link v-bind:to="{ name: 'sermons' }">Sermons</router-link></li>
-					<li class="d-inline-block px-20">Schedule</li>
-					<li class="d-inline-block px-10">Contact</li>
-				</ul>
-			</div> -->
-			<div class="d-none flex-grow-1 text-right">
-				<span
-					v-if="isUserAuthenticated"
-					class="xlarge font-weight-bold"
-				>{{ user.name }}</span>
-				<span
-					v-else
-					v-on:click="login"
-					class="xlarge font-weight-bold"
-				>Login</span>
-			</div>
-		</header>
+		/>
 		<main
-			class="d-flex flex-grow-1 bg-warning mh-0"
+			class="d-flex flex-grow-1 mh-0"
 			role="main"
 			ref="main"
 		>
@@ -58,24 +17,17 @@
 	</div>
 </template>
 <script>
-	import { mapState } from 'vuex'
-	import { mapGetters } from 'vuex'
+	import AppHeader from '../components/AppHeader'
 
 	export default {
+		components: {
+			AppHeader
+		},
 		data: function() {
 			return {
 				showVideo: false,
-				showMenu: false
+				isMenuActive: false
 			}
-		},
-		computed: {
-			...mapState([
-				'user',
-				'showHeader'
-			]),
-			...mapGetters([
-				'isUserAuthenticated'
-			])
 		},
 		methods: {
 		    broadcastOpen: function(broadcast) {
@@ -110,13 +62,9 @@
 		    		console.log('broadcast closed');
 		    	}
 		    },
-		    toggleMenu: function() {
-		    	this.showMenu = this.showMenu ? false : true;
-		    	console.log(this.$refs.main);
-		    },
-			login: function() {
-				this.$router.push({ name: 'login', query: { redirect: this.$route.path } });
-			},
+		    menuToggled: function(menuActive) {
+		    	this.isMenuActive = menuActive
+		    }
 		},
 	    mounted: function() {
 			Echo.channel('main')

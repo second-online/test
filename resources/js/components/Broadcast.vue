@@ -1,10 +1,10 @@
 <template>
 	<div class="d-flex flex-column flex-md-row flex-grow-1 bg-light-grey">
 		<template v-if="showBroadcastPage">
-			<div class="broadcast-video-wrapper flex-shrink-0 flex-md-shrink-1 flex-md-grow-1 bg-black">
-				<div class="px-40 py-20">
+			<div class="d-flex flex-shrink-0 flex-md-shrink-1 flex-md-grow-1 bg-black video-content">
+<!-- 				<div class="px-40 py-20">
 					<span class="back text-white" v-on:click="goBack">back</span>
-				</div>
+				</div> -->
 				<vimeo-player 
 					v-if="showVideo"
 					v-on:broadcast-ended="broadcastEnded"
@@ -17,7 +17,7 @@
 				v-bind:show-chat="showChat"
 				v-bind:broadcast-id="broadcast.id"
 				ref="broadcastChat"
-				class="broadcast-chat-wrapper"
+				class="video-sidebar"
 			/>
 		</template>
 		<template v-else>

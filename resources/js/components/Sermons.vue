@@ -47,7 +47,7 @@
 						class="col-12 col-md-6"
 					>
 						<img v-bind:src="sermon.image" class="w-100">
-						<span class="d-block">{{ sermon.title }}</span>
+						<span class="d-block pt-16 pb-32 font-weight-bold">{{ sermon.title }}</span>
 					</div>
 				</div>
 			</div>
@@ -60,7 +60,7 @@
 				<span
 					v-if="showLoadMoreButton"
 					v-on:click="loadSermons"
-					class="d-inline-block p-30 text-white bg-black"
+					class="d-inline-block px-60 py-20 text-white bg-black"
 				>Load more</span>
 				<span v-else>That's all the sermons.</span>
 			</div>

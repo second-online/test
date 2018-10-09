@@ -42385,9 +42385,8 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuex__ = __webpack_require__(173);
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_AppHeader__ = __webpack_require__(240);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_AppHeader___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_AppHeader__);
 //
 //
 //
@@ -42406,59 +42405,19 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+	components: {
+		AppHeader: __WEBPACK_IMPORTED_MODULE_0__components_AppHeader___default.a
+	},
 	data: function data() {
 		return {
 			showVideo: false,
-			showMenu: false
+			isMenuActive: false
 		};
 	},
-	computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["d" /* mapState */])(['user', 'showHeader']), Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapGetters */])(['isUserAuthenticated'])),
 	methods: {
 		broadcastOpen: function broadcastOpen(broadcast) {
 			if (this.$router.currentRoute.name == 'broadcast' && this.$refs.router.broadcast.id == broadcast.id || this.$router.currentRoute.name == 'host') {
@@ -42486,12 +42445,8 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 				console.log('broadcast closed');
 			}
 		},
-		toggleMenu: function toggleMenu() {
-			this.showMenu = this.showMenu ? false : true;
-			console.log(this.$refs.main);
-		},
-		login: function login() {
-			this.$router.push({ name: 'login', query: { redirect: this.$route.path } });
+		menuToggled: function menuToggled(menuActive) {
+			this.isMenuActive = menuActive;
 		}
 	},
 	mounted: function mounted() {
@@ -42522,122 +42477,29 @@ var render = function() {
     "div",
     {
       staticClass: "d-flex flex-column h-100",
-      class: { "overflow-hidden": _vm.showMenu }
+      class: { "overflow-hidden": _vm.isMenuActive }
     },
     [
-      _vm.showHeader
-        ? _c(
-            "header",
-            { staticClass: "d-flex px-60 flex-shrink-0 align-items-center" },
-            [
-              _vm._m(0),
-              _vm._v(" "),
-              _c(
-                "div",
-                {
-                  staticClass:
-                    "d-flex flex-grow-1 justify-content-end justify-content-lg-end"
-                },
-                [
-                  _c("span", {
-                    staticClass: "menu-toggle",
-                    class: { activated: _vm.showMenu },
-                    on: { click: _vm.toggleMenu }
-                  }),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    {
-                      directives: [
-                        {
-                          name: "show",
-                          rawName: "v-show",
-                          value: _vm.showMenu,
-                          expression: "showMenu"
-                        }
-                      ],
-                      staticClass: "menu"
-                    },
-                    [
-                      _c(
-                        "ul",
-                        { staticClass: "list-unstyled text-center huge" },
-                        [
-                          _c(
-                            "li",
-                            [
-                              _c(
-                                "router-link",
-                                { attrs: { to: { name: "home" } } },
-                                [_vm._v("Home")]
-                              )
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "li",
-                            [
-                              _c(
-                                "router-link",
-                                { attrs: { to: { name: "sermons" } } },
-                                [_vm._v("Sermons")]
-                              )
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c("li", [_vm._v("Schedule")]),
-                          _vm._v(" "),
-                          _c("li", [_vm._v("Contact")])
-                        ]
-                      )
-                    ]
-                  )
-                ]
-              ),
-              _vm._v(" "),
-              _c("div", { staticClass: "d-none flex-grow-1 text-right" }, [
-                _vm.isUserAuthenticated
-                  ? _c("span", { staticClass: "xlarge font-weight-bold" }, [
-                      _vm._v(_vm._s(_vm.user.name))
-                    ])
-                  : _c(
-                      "span",
-                      {
-                        staticClass: "xlarge font-weight-bold",
-                        on: { click: _vm.login }
-                      },
-                      [_vm._v("Login")]
-                    )
-              ])
-            ]
-          )
-        : _vm._e(),
+      _c("app-header", {
+        staticClass: "d-flex px-60 flex-shrink-0 align-items-center",
+        on: { "menu-toggled": _vm.menuToggled }
+      }),
       _vm._v(" "),
       _c(
         "main",
         {
           ref: "main",
-          staticClass: "d-flex flex-grow-1 bg-warning mh-0",
+          staticClass: "d-flex flex-grow-1 mh-0",
           attrs: { role: "main" }
         },
         [_c("router-view", { ref: "router" })],
         1
       )
-    ]
+    ],
+    1
   )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "flex-grow-1" }, [
-      _c("span", { staticClass: "logo" }, [_vm._v("Second Online Campus")])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
@@ -47186,20 +47048,9 @@ var render = function() {
               "div",
               {
                 staticClass:
-                  "broadcast-video-wrapper flex-shrink-0 flex-md-shrink-1 flex-md-grow-1 bg-black"
+                  "d-flex flex-shrink-0 flex-md-shrink-1 flex-md-grow-1 bg-black video-content"
               },
               [
-                _c("div", { staticClass: "px-40 py-20" }, [
-                  _c(
-                    "span",
-                    {
-                      staticClass: "back text-white",
-                      on: { click: _vm.goBack }
-                    },
-                    [_vm._v("back")]
-                  )
-                ]),
-                _vm._v(" "),
                 _vm.showVideo
                   ? _c("vimeo-player", {
                       ref: "video",
@@ -47216,7 +47067,7 @@ var render = function() {
             _vm._v(" "),
             _c("broadcast-chat", {
               ref: "broadcastChat",
-              staticClass: "broadcast-chat-wrapper",
+              staticClass: "video-sidebar",
               attrs: {
                 "show-chat": _vm.showChat,
                 "broadcast-id": _vm.broadcast.id
@@ -47225,9 +47076,9 @@ var render = function() {
           ]
         : [
             _vm._v(
-              "\n\t\tNext broadcast is " +
+              "\n\t\t\tNext broadcast is " +
                 _vm._s(_vm.nextBroadcastTime) +
-                "\n\t"
+                "\n\t\t"
             )
           ]
     ],
@@ -47462,9 +47313,11 @@ var render = function() {
                   attrs: { src: sermon.image }
                 }),
                 _vm._v(" "),
-                _c("span", { staticClass: "d-block" }, [
-                  _vm._v(_vm._s(sermon.title))
-                ])
+                _c(
+                  "span",
+                  { staticClass: "d-block pt-16 pb-32 font-weight-bold" },
+                  [_vm._v(_vm._s(sermon.title))]
+                )
               ]
             )
           })
@@ -47478,7 +47331,7 @@ var render = function() {
           ? _c(
               "span",
               {
-                staticClass: "d-inline-block p-30 text-white bg-black",
+                staticClass: "d-inline-block px-60 py-20 text-white bg-black",
                 on: { click: _vm.loadSermons }
               },
               [_vm._v("Load more")]
@@ -47601,6 +47454,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 //
 //
+//
 
 
 
@@ -47682,37 +47536,33 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "d-flex flex-column flex-md-row h-100" }, [
-    _c(
-      "div",
-      {
-        staticClass:
-          "broadcast-video-wrapper flex-shrink-0 flex-md-shrink-1 flex-md-grow-1 bg-black"
-      },
-      [
-        _c("div", { staticClass: "px-40 py-20" }, [
-          _c(
-            "span",
-            { staticClass: "back text-white", on: { click: _vm.goBack } },
-            [_vm._v("back")]
-          )
-        ]),
-        _vm._v(" "),
-        _vm.showVideo
-          ? _c("vimeo-player", {
-              ref: "video",
-              attrs: { "video-id": _vm.sermon.vimeo_id }
-            })
-          : _vm._e()
-      ],
-      1
-    ),
-    _vm._v(" "),
-    _c("div", {
-      staticClass: "broadcast-chat-wrapper py-40 px-40 overflow-y",
-      domProps: { innerHTML: _vm._s(_vm.sermon.description) }
-    })
-  ])
+  return _c(
+    "div",
+    { staticClass: "d-flex flex-column flex-md-row flex-grow-1" },
+    [
+      _c(
+        "div",
+        {
+          staticClass:
+            "d-flex flex-shrink-0 flex-md-shrink-1 flex-md-grow-1 bg-black video-content"
+        },
+        [
+          _vm.showVideo
+            ? _c("vimeo-player", {
+                ref: "video",
+                attrs: { "video-id": _vm.sermon.vimeo_id }
+              })
+            : _vm._e()
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c("div", {
+        staticClass: "py-40 px-40 overflow-y bg-light-grey video-sidebar",
+        domProps: { innerHTML: _vm._s(_vm.sermon.description) }
+      })
+    ]
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -50190,6 +50040,234 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 234 */,
+/* 235 */,
+/* 236 */,
+/* 237 */,
+/* 238 */,
+/* 239 */,
+/* 240 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(1)
+/* script */
+var __vue_script__ = __webpack_require__(241)
+/* template */
+var __vue_template__ = __webpack_require__(242)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/components/AppHeader.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-0851419a", Component.options)
+  } else {
+    hotAPI.reload("data-v-0851419a", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 241 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuex__ = __webpack_require__(173);
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+	data: function data() {
+		return {
+			showMenu: false
+		};
+	},
+	computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["d" /* mapState */])(['user', 'showHeader']), Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapGetters */])(['isUserAuthenticated'])),
+	methods: {
+		toggleMenu: function toggleMenu() {
+			console.log('click');
+			this.showMenu = !this.showMenu;
+			this.$emit('menu-toggled', this.showMenu);
+		},
+		login: function login() {
+			this.$router.push({ name: 'login', query: { redirect: this.$route.path } });
+		}
+	}
+});
+
+/***/ }),
+/* 242 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _vm.showHeader
+    ? _c("header", [
+        _c("div", { staticClass: "flex-grow-1" }, [
+          _c(
+            "span",
+            { staticClass: "logo" },
+            [
+              _c("router-link", { attrs: { to: { name: "home" } } }, [
+                _vm._v("Second Online Campus")
+              ])
+            ],
+            1
+          )
+        ]),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass:
+              "d-flex flex-grow-1 justify-content-end justify-content-lg-center"
+          },
+          [
+            _c("span", {
+              staticClass: "menu-toggle",
+              class: { activated: _vm.showMenu },
+              on: { click: _vm.toggleMenu }
+            }),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass: "menu overflow-hidden",
+                class: { activated: _vm.showMenu }
+              },
+              [
+                _c("ul", { staticClass: "list-unstyled text-center huge" }, [
+                  _c(
+                    "li",
+                    { on: { click: _vm.toggleMenu } },
+                    [
+                      _c("router-link", { attrs: { to: { name: "home" } } }, [
+                        _vm._v("Home")
+                      ])
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "li",
+                    { on: { click: _vm.toggleMenu } },
+                    [
+                      _c(
+                        "router-link",
+                        { attrs: { to: { name: "sermons" } } },
+                        [_vm._v("Sermons")]
+                      )
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c("li", [_vm._v("Schedule")]),
+                  _vm._v(" "),
+                  _c("li", [_vm._v("Contact")])
+                ])
+              ]
+            )
+          ]
+        ),
+        _vm._v(" "),
+        _c("div", { staticClass: "d-none d-lg-block flex-grow-1 text-right" }, [
+          _vm.isUserAuthenticated
+            ? _c("span", { staticClass: "xlarge font-weight-bold" }, [
+                _vm._v(_vm._s(_vm.user.name))
+              ])
+            : _c(
+                "span",
+                {
+                  staticClass: "xlarge font-weight-bold",
+                  on: { click: _vm.login }
+                },
+                [_vm._v("Login")]
+              )
+        ])
+      ])
+    : _vm._e()
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-0851419a", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);

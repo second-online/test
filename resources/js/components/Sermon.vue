@@ -1,10 +1,10 @@
 <template>
-	<div class="d-flex flex-column flex-md-row h-100">
+	<div class="d-flex flex-column flex-md-row flex-grow-1">
 	 
-		<div class="broadcast-video-wrapper flex-shrink-0 flex-md-shrink-1 flex-md-grow-1 bg-black">
-			<div class="px-40 py-20">
+		<div class="d-flex flex-shrink-0 flex-md-shrink-1 flex-md-grow-1 bg-black video-content">
+<!-- 			<div class="px-40 py-20">
 				<span class="back text-white" v-on:click="goBack">back</span>
-			</div>
+			</div> -->
 			<vimeo-player 
 				v-if="showVideo"
 				v-bind:video-id="sermon.vimeo_id"
@@ -12,9 +12,10 @@
 			/> 
 		</div>
 
-		<div class="broadcast-chat-wrapper py-40 px-40 overflow-y" v-html="sermon.description">
-
-		</div>
+		<div
+			v-html="sermon.description"
+			class="py-40 px-40 overflow-y bg-light-grey video-sidebar"
+		></div>
 	</div>
 </template>
 

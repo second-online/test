@@ -135,7 +135,7 @@ small,
 	border-radius: 50%;
 }
 
-.broadcast-video-wrapper {
+.video-content {
 	width: 100%;
 }
 
@@ -144,15 +144,11 @@ small,
 }
 
 @include media-breakpoint-up(md) {
-	.broadcast-video-wrapper {
+	.video-content {
 		width: 55%;
 	}
 
-	.broadcast-video {
-		// padding: 0 ($spacer * 2.5);
-	}
-
-	.broadcast-chat-wrapper {
+	.video-sidebar {
 		width: 45%;
 		max-width: $spacer * 28;
 	}
@@ -187,7 +183,7 @@ small,
 }
 
 header {
-	height: 5rem;
+	height: $header-height;
 }
 
 header div {
@@ -200,22 +196,13 @@ header div {
 	z-index: 102;
 }
 
-.menu {
-	position: absolute;
-	top: 0;
-	right: 0;
-	bottom: 0;
-	left: 0;
-	background: red;
-	z-index: 100;
-}
 
 .menu-toggle {
 	position: relative;
 	display: block;
 	width: 30px;
 	height: 32px;
-	z-index: 101;
+	z-index: 110;
 }
 
 .menu-toggle:hover {
@@ -248,5 +235,22 @@ header div {
 
 .menu-toggle.activated::after {
 	bottom: 15px;
-	transform: rotate(225deg);
+	transform: rotate(45deg);
+}
+
+.menu {
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	height: 0;
+	background: red;
+	z-index: 100;
+    -webkit-transition: height .35s; /* Safari */
+    transition: height .35s;
+}
+
+.menu.activated {
+	height: 100vh;
 }
