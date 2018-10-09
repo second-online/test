@@ -1,7 +1,6 @@
 <template>
-	<div class="p-30 w-75">
-		<editor api-key="pqneqwzrqthtizen3374n6dimsmrieuw61j5wjleiugxtsy1" :init="options" v-model="content"></editor>
-		
+	<div class="p-30">
+		<editor v-bind:api-key="tinyMCEKey" v-bind:init="options" v-model="content"></editor>
 		<button v-on:click="submit">Submit</button>
 	</div>
 </template>
@@ -16,11 +15,13 @@
 		data: function() {
 			return {
 				content: '',
+				tinyMCEKey: process.env.MIX_TINY_MCE_KEY,
 				options: {
 				    menubar:false,
     				statusbar: false,
 					plugins: 'lists',
-					toolbar: 'formatselect,bold,italic,underline,removeformat'
+					toolbar: 'undo redo formatselect | bold italic underline strikethrough | bullist numlist',
+					height: 600
 				}
 
 			}
@@ -30,7 +31,7 @@
 				console.log(this.content);
 
 				axios
-					.post(process.env.MIX_APP_URL + '/w/api/admin/sermons/1', {
+					.post(process.env.MIX_APP_URL + '/w/api/admin/sermons/1/edit', {
 						_method: 'PUT',
 						description: this.content
 					})

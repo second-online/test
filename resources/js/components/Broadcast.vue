@@ -1,5 +1,5 @@
 <template>
-	<div class="d-flex flex-column flex-md-row h-100">
+	<div class="d-flex flex-column flex-md-row flex-grow-1 bg-light-grey">
 		<template v-if="showBroadcastPage">
 			<div class="broadcast-video-wrapper flex-shrink-0 flex-md-shrink-1 flex-md-grow-1 bg-black">
 				<div class="px-40 py-20">
@@ -27,6 +27,7 @@
 </template>
 
 <script>
+	import { mapMutations } from 'vuex'
 	import VimeoPlayer from '../components/VimeoPlayer'
 	import BroadcastChat from '../components/BroadcastChat'
 
@@ -73,6 +74,9 @@
 				});
 		},
 		methods: {
+			...mapMutations([
+				'shouldShowHeader'
+			]),
 			setData: function(from, data) {
 				this.previousPage = from;
 				this.broadcast = data.broadcast;
@@ -115,6 +119,9 @@
 		    		this.$router.go(-1);
 		    	}
 		    }
+		},
+		created: function() {
+			this.shouldShowHeader(true);
 		}
 	}
 </script>

@@ -89,7 +89,7 @@ Route::group(['prefix' => 'w/api/host', 'namespace' => 'Host'], function() {
 
 Route::group(['prefix' => 'w/api/admin'], function() { 
 
-	Route::put('sermons/{sermon}', 'SermonController@update');
+	Route::put('sermons/{sermon}/edit', 'SermonController@update');
 
 });
 
@@ -131,7 +131,7 @@ Route::get('vimeo', function() {
 	$context = stream_context_create($opts);
 
 	// Open the file using the HTTP headers set above
-	$response = json_decode(file_get_contents('https://api.vimeo.com/me/videos?per_page=1&page=1', true, $context));
+	$response = json_decode(file_get_contents('https://api.vimeo.com/me/videos?per_page=100&page=1', true, $context));
 
 	$videos = $response->data;
 

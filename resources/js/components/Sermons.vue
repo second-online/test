@@ -2,7 +2,7 @@
 	<div class="container-fluid px-30 px-xl-60">
 		<div class="row justify-content-center">
 			<div class="col">
-				<h1 class="text-center">Each Tuesday we publish a new sermon.</h1>
+				<h1 class="pt-60 huge text-center">Each Tuesday we publish a new sermon.</h1>
 			</div>
 		</div>
 <!-- 		<div
@@ -114,6 +114,13 @@
 		},
 		created: function() {
 			this.loadSermons();
+			console.log('created');
+		},
+		mounted: function() {
+			console.log('mounted');
+		},
+		destroyed: function() {
+			console.log('destroyed');
 		}
 	}
 </script>

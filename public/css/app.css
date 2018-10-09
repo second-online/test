@@ -1926,7 +1926,7 @@ select.form-control:focus::-ms-value {
 .col-form-label-lg {
   padding-top: calc(0.5rem + 1px);
   padding-bottom: calc(0.5rem + 1px);
-  font-size: 1.09375rem;
+  font-size: 0.9375rem;
   line-height: 1.5;
 }
 
@@ -1964,9 +1964,9 @@ select.form-control:focus::-ms-value {
 }
 
 .form-control-lg {
-  height: calc(2.640625rem + 2px);
+  height: calc(2.40625rem + 2px);
   padding: 0.5rem 1rem;
-  font-size: 1.09375rem;
+  font-size: 0.9375rem;
   line-height: 1.5;
 }
 
@@ -8949,6 +8949,10 @@ select:-webkit-autofill:focus {
   transition: background-color 5000s ease-in-out 0s;
 }
 
+.overflow-hidden {
+  overflow: hidden;
+}
+
 .overflow-y {
   overflow-y: auto;
 }
@@ -8986,6 +8990,10 @@ small,
 
 .large {
   font-size: 0.9375rem;
+}
+
+.xlarge {
+  font-size: 1rem;
 }
 
 .huge {
@@ -9061,15 +9069,79 @@ small,
   text-transform: uppercase;
 }
 
-.flex-grow-3 {
-  -webkit-box-flex: 3 !important;
-  -ms-flex-positive: 3 !important;
-  flex-grow: 3 !important;
-}
-
 .text-vertical {
   -webkit-writing-mode: tb-rl;
       -ms-writing-mode: tb-rl;
           writing-mode: tb-rl;
+}
+
+header {
+  height: 5rem;
+}
+
+header div {
+  -ms-flex-preferred-size: 0;
+      flex-basis: 0;
+}
+
+.logo {
+  font-size: 1rem;
+  font-weight: bold;
+  z-index: 102;
+}
+
+.menu {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: red;
+  z-index: 100;
+}
+
+.menu-toggle {
+  position: relative;
+  display: block;
+  width: 30px;
+  height: 32px;
+  z-index: 101;
+}
+
+.menu-toggle:hover {
+  -webkit-transition: all 2s;
+  /* Safari */
+  transition: all 2s;
+}
+
+.menu-toggle::before,
+.menu-toggle::after {
+  position: absolute;
+  top: 12px;
+  right: 0;
+  left: 0;
+  height: 2px;
+  background: #121111;
+  content: ' ';
+  -webkit-transition: all .25s;
+  /* Safari */
+  transition: all .25s;
+}
+
+.menu-toggle::after {
+  top: auto;
+  bottom: 12px;
+}
+
+.menu-toggle.activated::before {
+  top: 15px;
+  -webkit-transform: rotate(135deg);
+          transform: rotate(135deg);
+}
+
+.menu-toggle.activated::after {
+  bottom: 15px;
+  -webkit-transform: rotate(225deg);
+          transform: rotate(225deg);
 }
 
