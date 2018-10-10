@@ -1718,7 +1718,7 @@ h6,
 .h6 {
   margin-bottom: 3rem;
   font-family: inherit;
-  font-weight: 600;
+  font-weight: 700;
   line-height: 1.2;
   color: inherit;
 }
@@ -9173,6 +9173,10 @@ textarea {
   font-feature-settings: inherit;
 }
 
+a:hover {
+  text-decoration: none;
+}
+
 button:focus {
   outline: none;
 }
@@ -9245,6 +9249,10 @@ small,
   line-height: 1;
 }
 
+.clickable {
+  cursor: pointer;
+}
+
 .form-control {
   height: auto;
   color: #121111;
@@ -9267,11 +9275,15 @@ small,
   width: 100%;
 }
 
-.broadcast-chat {
-  width: 100%;
-}
-
 @media (min-width: 768px) {
+  .video-header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+  }
+
   .video-content {
     width: 55%;
   }
@@ -9315,13 +9327,21 @@ small,
           writing-mode: tb-rl;
 }
 
-header {
-  height: 80px;
+header,
+.header {
+  height: 5rem;
 }
 
 header div {
   -ms-flex-preferred-size: 0;
       flex-basis: 0;
+}
+
+@media (min-width: 768px) {
+  header,
+  .header {
+    height: 7.5rem;
+  }
 }
 
 .logo {
@@ -9336,6 +9356,7 @@ header div {
   width: 30px;
   height: 32px;
   z-index: 110;
+  cursor: pointer;
 }
 
 .menu-toggle:hover {
@@ -9347,12 +9368,12 @@ header div {
 .menu-toggle::before,
 .menu-toggle::after {
   position: absolute;
-  top: 12px;
+  top: 11px;
   right: 0;
   left: 0;
   height: 2px;
   background: #121111;
-  content: ' ';
+  content: '';
   -webkit-transition: all .25s;
   /* Safari */
   transition: all .25s;
@@ -9360,7 +9381,7 @@ header div {
 
 .menu-toggle::after {
   top: auto;
-  bottom: 12px;
+  bottom: 11px;
 }
 
 .menu-toggle.activated::before {
@@ -9382,11 +9403,32 @@ header div {
   bottom: 0;
   left: 0;
   height: 0;
-  background: red;
+  background: #eee;
   z-index: 100;
-  -webkit-transition: height .35s;
+  -webkit-transition: height .3s;
   /* Safari */
-  transition: height .35s;
+  transition: height .3s;
+}
+
+.menu ul {
+  padding-top: 5rem;
+  padding-left: 0;
+  list-style: none;
+}
+
+.menu li {
+  font-size: 5.625rem;
+  font-weight: 800;
+  text-align: center;
+  -webkit-transition: margin .3s;
+  /* Safari */
+  transition: margin .3s;
+}
+
+@media (min-width: 768px) {
+  .menu ul {
+    padding-top: 7.5rem;
+  }
 }
 
 .menu.activated {

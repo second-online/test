@@ -38,7 +38,11 @@
 				>Sign in to chat</span>
 			</div>
 		</template>
-		<template v-else>Chat closed.</template>
+		<template v-else>	
+			<div class="d-flex flex-grow-1 align-items-center justify-content-center">
+				<span class="text-muted">The chat is closed.</span>
+			</div>
+		</template>
 	</div>
 </template>
 

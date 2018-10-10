@@ -34,6 +34,6 @@ class BroadcastController extends Controller
     {
         $broadcast->configure();
 
-        return response()->json(['broadcast' => $broadcast]);
+        return response()->json($broadcast);
     }
 }

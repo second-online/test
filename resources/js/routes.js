@@ -27,7 +27,8 @@ export const router = new VueRouter({
 		{
 			path: '/broadcasts/:broadcast_id',
 			name: 'broadcast',
-			component: Broadcast
+			component: Broadcast,
+			meta: { layout: 'no-header-layout' }
 		},
 		{
 			path: '/sermons',
@@ -37,7 +38,8 @@ export const router = new VueRouter({
 		{ 
 			path: '/sermons/:sermon_id',
 			name: 'sermon',
-			component: Sermon
+			component: Sermon,
+			meta: { layout: 'no-header-layout' }
 		},
 		{
 			path: '/schedule',

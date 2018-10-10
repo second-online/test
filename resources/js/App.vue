@@ -1,5 +1,5 @@
 <template>
-	<div
+<!-- 	<div
 		v-bind:class="{ 'overflow-hidden' : isMenuActive }"
 		class="d-flex flex-column h-100"
 	>
@@ -12,21 +12,33 @@
 			role="main"
 			ref="main"
 		>
+			<component v-bind:is="layout"></component>
 			<router-view ref="router"></router-view>
 		</main>
-	</div>
+	</div> -->
+
+		<component v-bind:is="layout">
+			<router-view ref="router"></router-view>
+		</component>
 </template>
 <script>
-	import AppHeader from '../components/AppHeader'
+	import DefaultLayout from './layouts/DefaultLayout'
+	import NoHeaderLayout from './layouts/NoheaderLayout'
 
 	export default {
 		components: {
-			AppHeader
+			DefaultLayout,
+			NoHeaderLayout
 		},
 		data: function() {
 			return {
+				defaultLayout: 'default-layout',
 				showVideo: false,
-				isMenuActive: false
+			}
+		},
+		computed: {
+			layout: function() {
+				return this.$route.meta.layout || this.defaultLayout;
 			}
 		},
 		methods: {
@@ -61,9 +73,6 @@
 		    		
 		    		console.log('broadcast closed');
 		    	}
-		    },
-		    menuToggled: function(menuActive) {
-		    	this.isMenuActive = menuActive
 		    }
 		},
 	    mounted: function() {

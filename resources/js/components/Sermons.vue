@@ -1,53 +1,28 @@
 <template>
-	<div class="container-fluid px-30 px-xl-60">
+	<div class="container-fluid px-30 px-lg-60">
 		<div class="row justify-content-center">
 			<div class="col">
 				<h1 class="pt-60 huge text-center">Each Tuesday we publish a new sermon.</h1>
 			</div>
 		</div>
-<!-- 		<div
-			v-for="group in groupedSermons"
-			class="row"
-		>
-			<div
-				v-for="sermon in group"
-				class="col-6"
-			>
-				<img v-bind:src="sermon.image" class="w-100">
-			</div>
-		</div> -->
-<!-- 		<div class="row">
-			<div class="col-1">
-				<div class="row bg-warning">sidebar</div>
-			</div>
-			<div class="col-10">
-				<div class="row">
-					<div v-for="sermon in sermons" class="col-6">
-						<img v-bind:src="sermon.image" class="w-100">
-						<span class="d-block">{{ sermon.title }}</span>
-					</div>
-				</div>
-			</div>
-			<div class="col-1">
-				<div class="row bg-warning">sidebar</div>
-			</div>
-		</div> -->
-
 		<div class="row">
 			<div class="col-1 d-none d-xl-block">
-				<span class="small text-vertical text-uppercase">
-					Today at 3:00 pm<br>is the next broadcast
+				<span class="small line-height-1 text-vertical text-uppercase">
+					<span class="d-block">Today at 3:00 pm</span>
+					<span class="d-block pr-4">is the next broadcast</span>
 				</span>
 			</div>
 			<div class="col-12 col-xl-10">
 				<div class="row">
 					<div
 						v-for="sermon in sermons"
-						v-on:click="openSermon(sermon)"
+						v-on:click="openSermon(sermon.id)"
 						class="col-12 col-md-6"
 					>
-						<img v-bind:src="sermon.image" class="w-100">
-						<span class="d-block pt-16 pb-32 font-weight-bold">{{ sermon.title }}</span>
+						<div class="mb-32 clickable">
+							<img v-bind:src="sermon.image" class="w-100">
+							<span class="d-block pt-16">{{ sermon.title }}</span>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -60,7 +35,7 @@
 				<span
 					v-if="showLoadMoreButton"
 					v-on:click="loadSermons"
-					class="d-inline-block px-60 py-20 text-white bg-black"
+					class="d-inline-block px-48 py-20 text-white bg-black"
 				>Load more</span>
 				<span v-else>That's all the sermons.</span>
 			</div>
@@ -76,21 +51,9 @@
 				firstPage: process.env.MIX_APP_URL + '/w/api/sermons/',
 				nextPage: null,
 				showLoadMoreButton: false
-				//itemsPerRow: 2
 			}
 		},
 		computed: {
-			// groupedSermons: function() {
-			// 	return this.sermons.reduce((accumulator, sermon, index) => {
-			// 		if (index % this.itemsPerRow == 0) {
-			// 			accumulator.push([sermon]);
-			// 		} else {
-			// 			accumulator[accumulator.length - 1].push(sermon);
-			// 		} 
-
-			// 		return accumulator;
-			// 	}, []);
-			// }
 			endpoint: function() {
 				return this.nextPage === null ? this.firstPage : this.nextPage;
 			}
@@ -105,22 +68,15 @@
 						this.showLoadMoreButton = this.nextPage === null ? false : true;
 					});
 			},
-			openSermon(sermon) {
+			openSermon(sermonId) {
 				this.$router.push({
 					name: 'sermon',
-					params: { sermon_id: sermon.id }
+					params: { sermon_id: sermonId }
 				});
 			}
 		},
 		created: function() {
 			this.loadSermons();
-			console.log('created');
-		},
-		mounted: function() {
-			console.log('mounted');
-		},
-		destroyed: function() {
-			console.log('destroyed');
 		}
 	}
 </script>

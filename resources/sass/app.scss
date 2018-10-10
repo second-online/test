@@ -43,6 +43,10 @@ textarea {
 	font-feature-settings: inherit;
 }
 
+a:hover {
+	text-decoration: none;
+}
+
 button:focus {
   outline: none;
 }
@@ -117,6 +121,10 @@ small,
 	line-height: 1;
 }
 
+.clickable {
+	cursor: pointer;
+}
+
 .form-control {
 	height: auto;
 	color: theme-color("black");
@@ -139,11 +147,19 @@ small,
 	width: 100%;
 }
 
-.broadcast-chat {
-	width: 100%;
-}
+// .broadcast-chat {
+// 	width: 100%;
+// }
 
 @include media-breakpoint-up(md) {
+	.video-header {
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		z-index: 100;
+	}
+
 	.video-content {
 		width: 55%;
 	}
@@ -182,12 +198,20 @@ small,
 	writing-mode: tb-rl;
 }
 
-header {
+header,
+.header {
 	height: $header-height;
 }
 
 header div {
 	 flex-basis: 0;
+}
+
+@include media-breakpoint-up(md) {
+	header,
+	.header {
+		height: $header-height-md-up;
+	}
 }
 
 .logo {
@@ -196,13 +220,13 @@ header div {
 	z-index: 102;
 }
 
-
 .menu-toggle {
 	position: relative;
 	display: block;
 	width: 30px;
 	height: 32px;
 	z-index: 110;
+	cursor: pointer;
 }
 
 .menu-toggle:hover {
@@ -213,19 +237,19 @@ header div {
 .menu-toggle::before,
 .menu-toggle::after {
 	position: absolute;
-	top: 12px;
+	top: 11px;
 	right: 0;
 	left: 0;
 	height: 2px;
 	background: $black;
-	content: ' ';
+	content: '';
     -webkit-transition: all .25s; /* Safari */
     transition: all .25s;
 }
 
 .menu-toggle::after {
 	top: auto;
-	bottom: 12px;
+	bottom: 11px;
 }
 
 .menu-toggle.activated::before {
@@ -245,10 +269,32 @@ header div {
 	bottom: 0;
 	left: 0;
 	height: 0;
-	background: red;
+	background: theme-color("light-grey");;
 	z-index: 100;
-    -webkit-transition: height .35s; /* Safari */
-    transition: height .35s;
+    -webkit-transition: height .3s; /* Safari */
+    transition: height .3s;
+
+    ul {
+    	padding-top: $header-height;
+    	padding-left: 0;
+		list-style: none;
+    }
+
+    li {
+    	font-size: $font-size-huge;
+    	font-weight: $font-weight-extra-bold;
+		text-align: center;
+	    -webkit-transition: margin .3s; /* Safari */
+	    transition: margin .3s;
+    }
+}
+
+@include media-breakpoint-up(md) {
+	.menu {
+		ul {
+			padding-top: $header-height-md-up; 
+		}
+	}
 }
 
 .menu.activated {

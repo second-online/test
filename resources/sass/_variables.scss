@@ -38,10 +38,13 @@ $font-size-lg: 0.9375rem;
 $font-size-x-lg: 1rem; 
 $font-size-huge: 5.625rem;
 
+$font-weight-bold: 700;
+$font-weight-extra-bold: 800;
+
 $line-height-base: 1.5;
 
 $headings-margin-bottom: ($spacer * 3);
-$headings-font-weight: 600;
+$headings-font-weight: $font-weight-bold;
 
 $h1-font-size: 1.875rem;
 
@@ -83,4 +86,5 @@ $input-btn-focus-width: 0;
 
 
 // Header
-$header-height: 80px;
+$header-height: 5rem;
+$header-height-md-up: 7.5rem;

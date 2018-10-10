@@ -161,6 +161,7 @@ Route::get('vimeo', function() {
 		$sermon->duration = $video->duration;
 		$sermon->speaker_id = 1;
 		$sermon->description = $video->description;
+		$sermon->publish_on = '2018-10-10 04:00:00';
 
 		foreach($video->pictures->sizes as $picture) {
 			if ($picture->width == 1920) {

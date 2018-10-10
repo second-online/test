@@ -1,5 +1,5 @@
 <template>
-	<header v-if="showHeader">
+	<header>
 		<div class="flex-grow-1">
 			<span class="logo">
 				<router-link v-bind:to="{ name: 'home' }">Second Online Campus</router-link>
@@ -14,13 +14,15 @@
 			<div
 				v-bind:class="{ activated: showMenu }"
 				class="menu overflow-hidden"
-			>
-				<ul class="list-unstyled text-center huge">
-					<li v-on:click="toggleMenu"><router-link v-bind:to="{ name: 'home' }">Home</router-link></li>
-					<li v-on:click="toggleMenu"><router-link v-bind:to="{ name: 'sermons' }">Sermons</router-link></li>
-					<li>Schedule</li>
-					<li>Contact</li>
-				</ul>
+			>	
+				<div class="h-100 overflow-y">
+					<ul>
+						<li v-on:click="toggleMenu"><router-link v-bind:to="{ name: 'home' }">Home</router-link></li>
+						<li v-on:click="toggleMenu"><router-link v-bind:to="{ name: 'sermons' }">Sermons</router-link></li>
+						<li>Schedule</li>
+						<li>Contact</li>
+					</ul>
+				</div>
 			</div>
 		</div>
 		<div class="d-none d-lg-block flex-grow-1 text-right">
@@ -28,11 +30,13 @@
 				v-if="isUserAuthenticated"
 				class="xlarge font-weight-bold"
 			>{{ user.name }}</span>
-			<span
+			<router-link
 				v-else
-				v-on:click="login"
+				v-bind:to="{ name: 'sermons', query: { redirect: $route.path } }"
 				class="xlarge font-weight-bold"
-			>Login</span>
+			>
+				Login
+			</router-link>
 		</div>
 	</header>
 </template>
@@ -50,7 +54,6 @@
 		computed: {
 			...mapState([
 				'user',
-				'showHeader'
 			]),
 			...mapGetters([
 				'isUserAuthenticated'
@@ -58,13 +61,15 @@
 		},
 		methods: {
 		    toggleMenu: function() {
-		    	console.log('click');
 		    	this.showMenu = !this.showMenu;
 		    	this.$emit('menu-toggled', this.showMenu);
 		    },
 			login: function() {
 				this.$router.push({ name: 'login', query: { redirect: this.$route.path } });
 			}
+		},
+		destroyed: function() {
+			console.log('header destroyed')
 		}
 	}
 </script>

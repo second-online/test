@@ -5,8 +5,7 @@ Vue.use(Vuex);
 
 export const store = new Vuex.Store({
 	state : {
-		user: window.AppUser,
-		showHeader: true
+		user: window.AppUser
 	},
 	getters: {
 		isUserAuthenticated: state => {
@@ -17,8 +16,6 @@ export const store = new Vuex.Store({
 		}
 	},
 	mutations: {
-		shouldShowHeader(state, show) {
-			state.showHeader = show;
-		}
+
 	}
 });
