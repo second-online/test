@@ -131,7 +131,7 @@ Route::get('vimeo', function() {
 	$context = stream_context_create($opts);
 
 	// Open the file using the HTTP headers set above
-	$response = json_decode(file_get_contents('https://api.vimeo.com/me/videos?per_page=100&page=1', true, $context));
+	$response = json_decode(file_get_contents('https://api.vimeo.com/me/videos?per_page=10&page=1', true, $context));
 
 	$videos = $response->data;
 
@@ -160,7 +160,8 @@ Route::get('vimeo', function() {
 		$sermon->vimeo_id = str_replace('/videos/', '', $video->uri);
 		$sermon->duration = $video->duration;
 		$sermon->speaker_id = 1;
-		$sermon->description = $video->description;
+		$sermon->description = 'In the Sermon on the Mount, Jesus puts down a grid for living the Christian life. In the Beatitudes which introduce the sermon, we see a sketch of the Kingdom individual and his attitude toward himself, God, and others. In this message Dr. Young continues a study of the Beatitudes and gives us a clear picture of the character of the Kingdom man or woman and the blessings that derive from Kingdom living.';
+		$sermon->notes = $video->description;
 		$sermon->publish_on = '2018-10-10 04:00:00';
 
 		foreach($video->pictures->sizes as $picture) {

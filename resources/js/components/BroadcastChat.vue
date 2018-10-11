@@ -1,16 +1,16 @@
 <template>
-	<div class="d-flex flex-column flex-grow-1 mh-0 bg-light-grey ">
+	<div class="d-flex flex-column flex-grow-1 mh-0 bg-light-grey">
 		<template v-if="showChat">
-			<div id="broadcast-comments" class="d-flex flex-column flex-grow-1 overflow-y">
+			<div id="broadcast-comments" class="d-flex py-15 flex-column flex-grow-1 overflow-y">
 				<div
 					v-for="(comment, key) in comments"
-					class="d-flex px-40 py-16 flex-shrink-0"
-					v-bind:class="{ 'pt-40': key == 0 }"
+					class="d-flex px-30 py-15 flex-shrink-0"
 				>	
-					<img src="https://cdn.dribbble.com/users/1166392/avatars/normal/7765da9b241339c9885a24bb0c48a363.jpg?1499245430" class="mr-20 flex-shrink-0 image-faker"></span>
+					<img v-if="key % 2 == 0" src="https://cdn.dribbble.com/users/30951/avatars/normal/2c9b1e586726f41499c2d90fdef9b33a.png?1513185803" class="mr-20 flex-shrink-0 image-faker">
+					<img v-else src="https://cdn.dribbble.com/users/1166392/avatars/normal/7765da9b241339c9885a24bb0c48a363.jpg?1499245430" class="mr-20 flex-shrink-0 image-faker">
 					<div class="flex-grow-1">
 						<div>
-							<span class="large font-weight-bold">{{ comment.user.name }}</span>
+							<span class="font-weight-bold">{{ comment.user.name }}</span>
 							<span v-if="comment.user.is_host" class="d-none pl-8 text-muted">Host</span>
 						</div>
 						<div class="mt-4">
@@ -19,7 +19,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="d-flex chat-comment-box px-40 bg-white overflow-y">
+			<div class="d-flex chat-comment-box px-30 bg-white overflow-y">
 				<form
 					v-if="isUserAuthenticated"
 					class="w-100 m-auto"
@@ -75,7 +75,7 @@
 			},
 			isHost: function() {
 				return this.$store.getters.isUserHost;
-			}
+			},
 		},
 		watch: {
 			showChat: function(value) {

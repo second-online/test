@@ -113,8 +113,14 @@ small,
 }
 
 .huge {
-	font-size: $font-size-huge;
+	font-size: 10.5vw;
 	font-weight: 800;
+}
+
+@include media-breakpoint-up(md) {
+	.huge {
+		font-size: $font-size-huge; 
+	}
 }
 
 .line-height-1 {
@@ -166,7 +172,7 @@ small,
 
 	.video-sidebar {
 		width: 45%;
-		max-width: $spacer * 28;
+		max-width: $spacer * 26;
 	}
 }
 
@@ -299,4 +305,29 @@ header div {
 
 .menu.activated {
 	height: 100vh;
+}
+
+.close {
+	position: relative;
+	display: block;
+	width: 18px;
+	height: 18px;
+	z-index: 110;
+	cursor: pointer;
+}
+
+.close::before,
+.close::after {
+	position: absolute;
+	top: 8px;
+	left: -2px;
+	height: 2px;
+	width: 22px;
+	content: '';
+	background: $white;
+	transform: rotate(-45deg);
+}
+
+.close::after {
+	transform: rotate(45deg);
 }

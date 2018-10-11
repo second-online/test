@@ -29,9 +29,6 @@
 		    menuToggled: function(menuActive) {
 		    	this.isMenuActive = menuActive
 		    }
-		},
-		destroyed: function() {
-			console.log('default layout destroyed');
 		}
 	}
 </script>

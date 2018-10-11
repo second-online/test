@@ -22,7 +22,7 @@ class Sermon extends Model
         return $this->belongsTo('App\Series');
     }
 
-    public function getDescriptionAttribute($value) {
-        return html_entity_decode($value);
+    public function getNotesAttribute($value) {
+        return nl2br($value);
     }
 }

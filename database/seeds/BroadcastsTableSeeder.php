@@ -45,7 +45,7 @@ class BroadcastsTableSeeder extends Seeder
     // 		];
 
             $broadcasts = [ 
-                ['name' => 'Tuesday 4:20am', 'day' => 'wednesday', 'time' => '06:00:00'],
+                ['name' => 'Wednesday 11:45pm', 'day' => 'thursday', 'time' => '00:45:00'],
                 ['name' => 'Friday 4:03am', 'day' => 'friday', 'time' => '04:05:00'],
                 ['name' => 'Friday 6:00am', 'day' => 'friday', 'time' => '06:00:00'],
                 ['name' => 'Saturday 2:35am', 'day' => 'saturday', 'time' => '04:50:00'],

@@ -20,17 +20,17 @@ class SermonsTableSeeder extends Seeder
    		$speaker = Speaker::find(1);
 		$series = Series::find(1);
 
-        $sermon = new Sermon;
-        $sermon->title = 'You of Little Faith';
-        $sermon->description = 'Short description of this video';
-        $sermon->notes = 'Notes for this video';
-        $sermon->youtube_id = 'x6HmpEG7OKM';
-        $sermon->vimeo_id = '291790268';
-        $sermon->speaker()->associate($speaker);
-        $sermon->series()->associate($series);
-        $sermon->duration = 2600;
-        $sermon->publish_on = '2018-09-26 12:00:00';
-        $sermon->save();
+        // $sermon = new Sermon;
+        // $sermon->title = 'You of Little Faith';
+        // $sermon->description = 'Short description of this video';
+        // $sermon->notes = 'Notes for this video';
+        // $sermon->youtube_id = 'x6HmpEG7OKM';
+        // $sermon->vimeo_id = '291790268';
+        // $sermon->speaker()->associate($speaker);
+        // $sermon->series()->associate($series);
+        // $sermon->duration = 2600;
+        // $sermon->publish_on = '2018-09-26 12:00:00';
+        // $sermon->save();
 
         // $sermon2 = new Sermon;
         // $sermon2->title = 'The Secret of Success';

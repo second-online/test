@@ -18,18 +18,17 @@
 		},
 		watch: {
 			videoId: function() {
-				console.log('video id changed');
 				this.loadNewVideo();
 			}
 		},
 		methods: {
 			loadVideo: function() {
 			    var options = {
-			        id: this.videoId,
+			        id: this.videoId
 			    };
 
 			    this.player = new Vimeo('vimeo-player', options);
-				this.player.setVolume(0);	
+				this.player.setVolume(100);	
 				this.player.setCurrentTime(this.timeElapsed);
 				// this.player.ready().then(() => {
 				// 	this.play();
@@ -47,7 +46,7 @@
 				this.player.play().then(() => {
 					console.log('video played'); 
 
-					this.player.setCurrentTime(this.timeElapsed*2);
+					this.player.setCurrentTime(this.timeElapsed);
 				}).catch(function(error) {
 					alert('Something went wrong. Reload the page.');
 				});

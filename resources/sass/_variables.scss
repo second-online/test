@@ -12,6 +12,7 @@ $spacers: map-merge(
     8: ($spacer * .5),
     10: ($spacer * .625),
     12: ($spacer * .75),
+    15: ($spacer * .9375),
     16: $spacer,
     20: ($spacer * 1.25),
     24: ($spacer * 1.5),
@@ -43,7 +44,8 @@ $font-weight-extra-bold: 800;
 
 $line-height-base: 1.5;
 
-$headings-margin-bottom: ($spacer * 3);
+$headings-margin-bottom: ($spacer * 2);
+$headings-line-height: 1.5;
 $headings-font-weight: $font-weight-bold;
 
 $h1-font-size: 1.875rem;
@@ -52,7 +54,7 @@ $h1-font-size: 1.875rem;
 // Colors
 $white: #fff;
 $black: #121111;
-$light-grey: #eee;
+$light-grey: #f4f4f4;
 $red: #ef5858;
 
 $theme-colors: (

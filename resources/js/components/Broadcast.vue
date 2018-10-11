@@ -2,14 +2,19 @@
 	<div class="d-flex flex-column flex-md-row flex-grow-1 bg-light-grey">
 		<template v-if="showBroadcastPage">
 			<div class="position-relative d-flex flex-column flex-shrink-0 flex-md-shrink-1 flex-md-grow-1 bg-black justify-content-center video-content">
-				<div class="px-40 d-flex align-items-center header video-header">
-					<span class="text-white clickable" v-on:click="goBack">Close</span>
+				<div class="d-flex px-30 px-md-60 align-items-center header justify-content-between video-header">
+					<span
+						v-on:click="goBack"
+						class="close"
+					></span>
+					<span class="text-white clickable">Show notes</span>
 				</div>
 				<vimeo-player 
 					v-if="showVideo"
 					v-on:broadcast-ended="broadcastEnded"
 					v-bind:video-id="videoId"
 					v-bind:time-elapsed="timeElapsed"
+					class="px-0 px-lg-60"
 					ref="video"
 				/> 
 			</div>
@@ -26,7 +31,10 @@
 				class="d-flex px-40 flex-column flex-grow-1"
 			>
 				<div class="position-absolute py-30">
-					<span class="back font-weight-bold" v-on:click="goBack">Close</span>
+					<span
+						v-on:click="goBack"
+						class="close"
+					></span>
 				</div>
 				<div class="d-flex flex-grow-1 align-items-center justify-content-center">
 					<div class="text-center">				
@@ -41,11 +49,13 @@
 
 <script>
 	import VimeoPlayer from '../components/VimeoPlayer'
+	import VideoSidebar from '../components/VideoSidebar'
 	import BroadcastChat from '../components/BroadcastChat'
 
 	export default {
 		components: {
 			VimeoPlayer,
+			VideoSidebar,
 			BroadcastChat
 		},
 		data: function() {

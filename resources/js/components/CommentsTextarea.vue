@@ -3,8 +3,8 @@
 		v-bind:value="value"
 		v-on:input="input"
 		v-on:keydown.enter="submit"
-		class="d-block py-20 px-0 w-100 form-control border-0 large"
-		placeholder="Write a comment.."
+		class="d-block py-20 px-0 w-100 form-control border-0"
+		placeholder="Write a comment and press enter.."
 		rows="1"
 	></textarea>
 </template>

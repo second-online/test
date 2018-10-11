@@ -32,11 +32,9 @@
 			>{{ user.name }}</span>
 			<router-link
 				v-else
-				v-bind:to="{ name: 'sermons', query: { redirect: $route.path } }"
+				v-bind:to="{ name: 'login', query: { redirect: $route.path } }"
 				class="xlarge font-weight-bold"
-			>
-				Login
-			</router-link>
+			>Login</router-link>
 		</div>
 	</header>
 </template>
@@ -63,13 +61,7 @@
 		    toggleMenu: function() {
 		    	this.showMenu = !this.showMenu;
 		    	this.$emit('menu-toggled', this.showMenu);
-		    },
-			login: function() {
-				this.$router.push({ name: 'login', query: { redirect: this.$route.path } });
-			}
-		},
-		destroyed: function() {
-			console.log('header destroyed')
+		    }
 		}
 	}
 </script>

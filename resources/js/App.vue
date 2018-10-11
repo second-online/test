@@ -1,26 +1,9 @@
 <template>
-<!-- 	<div
-		v-bind:class="{ 'overflow-hidden' : isMenuActive }"
-		class="d-flex flex-column h-100"
-	>
-		<app-header
-			v-on:menu-toggled="menuToggled"
-			class="d-flex px-60 flex-shrink-0 align-items-center"
-		/>
-		<main
-			class="d-flex flex-grow-1 mh-0"
-			role="main"
-			ref="main"
-		>
-			<component v-bind:is="layout"></component>
-			<router-view ref="router"></router-view>
-		</main>
-	</div> -->
-
-		<component v-bind:is="layout">
-			<router-view ref="router"></router-view>
-		</component>
+	<component v-bind:is="layout">
+		<router-view ref="router"></router-view>
+	</component>
 </template>
+
 <script>
 	import DefaultLayout from './layouts/DefaultLayout'
 	import NoHeaderLayout from './layouts/NoheaderLayout'
