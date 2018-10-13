@@ -56,6 +56,10 @@ class SendBroadcastNotifications
             $closesAt = $broadcast->closesAt($durationInSeconds);
 
             if ($now == $opensAt) {
+                if (! $broadcast->live) { 
+                    $broadcast->sermon = $sermon;
+                }
+                
                 $broadcast->trailer = $broadcast->loadTrailer();
 
                 broadcast(new BroadcastOpen($broadcast->toArray()));

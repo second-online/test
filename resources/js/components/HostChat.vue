@@ -1,46 +1,54 @@
 <template>
-	<div class="d-flex flex-column h-100">
-		<!-- <span>{{ hosts.length }} hosts in here</span> -->
-		<div class="flex-grow-1 overflow-y" style="background: #e8e8e8">
-			<div
-				style="padding: 10px 40px; word-break: break-all"
-				v-for="comment in comments"
-			>
-				<span class="d-block"><b>{{ comment.user.name }}</b></span>
-				<span class="d-block">{{ comment.text }}</span>
-			</div>
-		</div> 
-
-<!-- 		<div
-			class="d-flex align-items-center flex-shrink-0 comment-form"
+	<div class="d-flex flex-column flex-grow-1">
+		<div
+			:id="scrollContainerId"
+			class="d-flex flex-column flex-grow-1 overflow-y"
 		>
-			<input-editable
-				v-bind:value="newComment"
-				v-on:input="newComment = $event"
-				v-on:key-down-enter="submitComment"
-			/>
-		</div> -->
-		
-		<form class="d-flex align-items-center flex-shrink-0 comment-form">	
-			<textarea
-				id="comment-textarea"
-				class="d-block w-100 p-0 border-0"
-				placeholder="Write a comment.."
-				v-on:input="resizeTextarea"
-				v-model="newComment"
-				v-on:keydown.enter="submitComment"
-				rows="1"
-			></textarea>
-		</form>
+			<div class="mx-30 mx-md-40 mt-30">
+				<div
+					v-for="comment in comments"
+					:key="comment.id"
+					:id="'comment-' + comment.id"
+					class="d-flex mb-40 flex-shrink-0"
+				>	
+					<img
+						:src="comment.user.profile_picture"
+						class="image-faker mt-3 mr-20 flex-shrink-0"
+					>
+					<div class="flex-grow-1">
+						<div class="mb-4">
+							<span class="font-weight-bold">{{ comment.user.name }}</span>
+						</div>
+						<div>
+							<span style="color: #555">{{ comment.text }}</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<comment-form
+			:value="newComment"
+			@input="newComment = $event"
+			@submit="submitComment"
+			class="border-top"
+		/>
 	</div>
 </template>
 
 <script>
+	import CommentForm from '../components/CommentForm'
+	import chatMixin from '../mixins/chatMixin'
+	import { mapState } from 'vuex'
 
 	export default {
 		props: {
+			scrollContainerId: String,
 			previousComments: Array
 		},
+		components: {
+			CommentForm
+		},
+		mixins: [chatMixin],
 		data: function() {
 			return {
 				comments: [],
@@ -52,72 +60,50 @@
 			}
 		},
 		computed: {
-			isUserAuthenticated: function() {
-				return this.$store.getters.isUserAuthenticated;
-			}
+			...mapState([
+				'user',
+			])
 		},
 		methods: {
-			resizeTextarea: function() {
-				// document.getElementById("comment-textarea").setAttribute('rows', '5');
-				// return;
-				const scrollHeight = document.getElementById("comment-textarea").scrollHeight;
-				document.getElementById("comment-textarea").style.height = scrollHeight + 'px';
-				console.log(document.getElementById("comment-textarea").scrollHeight)
-			},
 			submitComment: function(e) {
-
-				if (this.isLoading) { return; }
-
-				if (! this.isUserAuthenticated) { return; }
-
-				const localCommentId = this.newCommentId++;
+				if (this.isLoading) return;
 
 				axios
 					.post(process.env.MIX_APP_URL + '/w/api/host/comments', {
-						commentId: localCommentId,
-						text: this.newComment,
+						commentId: this.newCommentId,
+						text: this.newComment
 					})
 					.then(response => {
+						// Flip the array to start at the end would be better?
 						const index = this.comments.findIndex(comment => {
 							return comment.localCommentId == response.data.local_id;
 						});
-						// flip the array to start at the end would be better.
+
 						this.comments[index] = response.data;
 					})
 					.catch(error => {
-						//console.log('catch');
-						this.newComment = this.cachedComment;
+						// Do something if comment fails
+						// this.newComment = this.cachedComment;
 					})
 					.then(() => {
 						this.isLoading = false;
 					});
 
 				const comment = {
-					localCommentId: localCommentId,
+					localCommentId: this.newCommentId,
 					text: this.newComment,
-					user: this.$store.state.user
+					user: this.user
 				};
 
-				this.comments.push(comment);
+				this.$_chatMixin_publishComment(comment);
+
 				this.cachedComment = this.newComment;
 				this.newComment = '';
+				this.newCommentId++;
 				this.isLoading = true;
-
-				e.preventDefault();
 			}
 		},
 		created: function() {
-			this.comments.push(...this.previousComments);
-
-			// for (let i = 0; i < 10000; i++) {
-			// 	const comment = {
-			// 		text: 'this.newComment',
-			// 		user: this.$store.state.user
-			// 	};
-			// 	this.comments.push(comment)
-			// }
-		},
-		mounted: function() {
 			// I need to finish the code to pull XSRF cookie. 
 			Echo.connector.pusher.config.auth.headers['X-XSRF-TOKEN'] = decodeURIComponent(document.cookie.split('=')[1]);
 
@@ -134,8 +120,11 @@
 			        console.log(user.name + ' has left.');
 			    })
 			    .listen('HostCommentCreated', (comment) => {
-			        this.comments.push(comment);
+			        this.$_chatMixin_publishComment(comment);
 			    });
+		},
+		mounted: function() {
+			this.$_chatMixin_publishComments(this.previousComments);
 		},
 		beforeDestroy: function() {
 			Echo.leave('host.chat');

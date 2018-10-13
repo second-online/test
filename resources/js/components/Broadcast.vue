@@ -1,29 +1,57 @@
 <template>
-	<div class="d-flex flex-column flex-md-row flex-grow-1 bg-light-grey">
+	<div class="d-flex flex-column flex-md-row flex-grow-1">
 		<template v-if="showBroadcastPage">
-			<div class="position-relative d-flex flex-column flex-shrink-0 flex-md-shrink-1 flex-md-grow-1 bg-black justify-content-center video-content">
-				<div class="d-flex px-30 px-md-60 align-items-center header justify-content-between video-header">
+			<div class="position-relative d-flex flex-column flex-shrink-0 flex-md-shrink-1 flex-md-grow-1 justify-content-center bg-black">
+				<div class="d-flex mx-30 mx-md-60 align-items-center header justify-content-between video-header">
 					<span
 						v-on:click="goBack"
 						class="close"
 					></span>
-					<span class="text-white clickable">Show notes</span>
 				</div>
 				<vimeo-player 
 					v-if="showVideo"
 					v-on:broadcast-ended="broadcastEnded"
-					v-bind:video-id="videoId"
-					v-bind:time-elapsed="timeElapsed"
+					:video-id="videoId"
+					:time-elapsed="timeElapsed"
 					class="px-0 px-lg-60"
 					ref="video"
 				/> 
 			</div>
 			<broadcast-chat
-				v-bind:show-chat="showChat"
-				v-bind:broadcast-id="broadcast.id"
+				:show-chat="showChat"
+				:broadcast-id="broadcast.id"
+				scroll-container-id="broadcast-comments"
 				ref="broadcastChat"
 				class="video-sidebar"
-			/>
+			>	
+				<div class="bg-white">
+					<div
+						v-if="broadcast.live"
+						class="mx-30 mx-md-40 my-40"
+					>
+						<h1>{{ broadcast.name }}</h1>
+						<p>Join us this morning as we're live from Woodway campus</p>
+					</div>
+					<div
+						v-else
+						class="mx-30 mx-md-40 my-40"
+					>
+						<h1>{{ broadcast.sermon.title }}</h1>
+						<p>{{ broadcast.sermon.description }}</p>
+						<p
+							v-if="broadcast.sermon.notes"
+							v-on:click="toggleNotes"
+							class="font-weight-bold clickable"
+						>
+							{{ showNotes ? 'Hide notes' : 'See notes' }}
+						</p>
+						<div
+							v-show="showNotes"
+							v-html="broadcast.sermon.notes"
+						></div>
+					</div>
+				</div>
+			</broadcast-chat>
 		</template>
 		<template v-else>
 			<div
@@ -49,22 +77,25 @@
 
 <script>
 	import VimeoPlayer from '../components/VimeoPlayer'
-	import VideoSidebar from '../components/VideoSidebar'
 	import BroadcastChat from '../components/BroadcastChat'
 
 	export default {
 		components: {
 			VimeoPlayer,
-			VideoSidebar,
 			BroadcastChat
 		},
 		data: function() {
 			return {
+				notes: null,
 				broadcast: {},
 				showVideo: false,
 				showChat: false,
+				showNotes: false,
 				previousPage: {}
 			}
+		},
+		beforeRouteEnter (to, from, next) {
+			next(vm => vm.setData(from));
 		},
 		computed: {
 			videoId: function() {
@@ -88,9 +119,6 @@
 					.format('dddd [at] h:mm a');
 			}
 		},
-		beforeRouteEnter (to, from, next) {
-			next(vm => vm.setData(from));
-		},
 		methods: {
 			setData: function(from) {
 				this.previousPage = from;
@@ -111,6 +139,9 @@
 	            this.showVideo = false;
 	            this.showChat = true;
 	        },
+	        toggleNotes: function() {
+	        	this.showNotes = !this.showNotes;
+	        },
 		    goBack () {
 		    	if (this.previousPage.name === null) {
 		    		this.$router.push({name: 'home'});
@@ -118,7 +149,7 @@
 		    		this.$router.go(-1);
 		    	}
 		    }
-		},
+		},	
 		created: function() {
 			axios
 				.get(process.env.MIX_APP_URL + '/w/api/broadcasts/' + this.$route.params.broadcast_id)

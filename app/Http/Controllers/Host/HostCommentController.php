@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Events\HostCommentCreated;
 use App\HostComment;
 
-class CommentController extends Controller
+class HostCommentController extends Controller
 {
     /**
      * Instantiate a new controller instance.
@@ -44,13 +44,12 @@ class CommentController extends Controller
 
         // change to try catch /// return something
         if ($comment->save()) {
-            $data = $comment->toArray();
 
-            broadcast(new HostCommentCreated($data))->toOthers();
+            broadcast(new HostCommentCreated($comment->toArray()))->toOthers();
 
-            $data = array_add($data, 'local_id', $request->input('commentId'));
+            $comment->local_id = $request->input('commentId');
             
-            return response()->json($data);
+            return response()->json($comment);
         } else {
             return response()->json(['message' => 'Something happened. Try again.'], 500);
         }

@@ -1,11 +1,11 @@
 <template>
 	<div class="d-flex flex-column flex-md-row flex-grow-1">	 	 
 		<div class="position-relative d-flex flex-column flex-shrink-0 flex-md-shrink-1 flex-md-grow-1 bg-black justify-content-center video-content">
-			<div class="d-flex px-30 px-md-60 align-items-center justify-content-center justify-content-md-start header video-header">
+			<div class="d-flex mx-30 mx-md-60 align-items-center header video-header">
 				<span
 					v-on:click="goBack"
 					class="close"
-				>Close</span>
+				></span>
 			</div>
 			<vimeo-player
 				v-if="videoLoaded"
@@ -14,23 +14,26 @@
 				ref="video"
 			/> 
 		</div>
-		<video-sidebar>
-			<div class="px-30 py-60">
-				<h1>{{ sermon.title }}</h1>
-				<div v-html="sermon.notes"></div>
+
+		<div class="d-flex flex-column flex-grow-1 mh-0 video-sidebar">
+			<div class="d-flex flex-column flex-grow-1 overflow-y">
+				<div class="mx-30 mx-md-40 my-40">
+					<h1>{{ sermon.title }}</h1>
+					<p>{{ sermon.description }}</p>
+					<div v-html="sermon.notes"></div>
+				</div>
 			</div>
-		</video-sidebar>
+		</div>
+
 	</div>
 </template>
 
 <script>
 	import VimeoPlayer from '../components/VimeoPlayer'
-	import VideoSidebar from '../components/VideoSidebar'
 
 	export default {
 		components: {
-			VimeoPlayer,
-			VideoSidebar
+			VimeoPlayer
 		},
 		data: function() {
 			return {

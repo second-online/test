@@ -14,6 +14,14 @@ import { store } from './store'
 import { router } from './routes'
 
 router.beforeEach((to, from, next) => {
+	const layoutRecord = to.matched.find(record => record.meta.layout);
+
+	if (layoutRecord !== undefined) {
+		store.commit('setLayout', layoutRecord.meta.layout);
+	} else {
+		store.commit('setLayout');
+	}
+
 	if (to.matched.some(record => record.meta.guest)) {
 		if (store.getters.isUserAuthenticated) {
 			next('/');

@@ -1,27 +1,29 @@
 <template>
-	<div class="d-flex no-gutters h-100 bg-warning">
-		<div class="col">
-			<router-link v-bind:to="{ name: 'home' }">Home</router-link>
+	<div class="d-flex no-gutters flex-grow-1 bg-white">
+		<div class="col-4">
 			<vimeo-player 
 				v-if="showVideo"
-				v-on:broadcast-ended="broadcastEnded"
-				v-bind:video-id="videoId"
-				v-bind:time-elapsed="timeElapsed"
+				@broadcast-ended="broadcastEnded"
+				:video-id="videoId"
+				:time-elapsed="timeElapsed"
 				ref="video"
 			/> 
 		</div>
-		<div class="col bg-white">
-			
-<!-- 				<host-chat
-				v-bind:previousComments="hostComments"
-			/> -->
-		</div>
-		<div class="d-flex col">
-			<broadcast-chat
-				v-bind:show-chat="showChat"
-				v-bind:broadcast-id="broadcast.id"
-				ref="broadcastChat"
+		<div class="d-flex col-4 bg-white border-right">
+			<host-chat
+				v-if="hostComments.length > 0"
+				:previousComments="hostComments"
+				scroll-container-id="host-chat"
 			/>
+		</div>
+		<div class="d-flex col-4">
+			<broadcast-chat
+				:show-chat="showChat"
+				:broadcast-id="broadcast.id"
+				scroll-container-id="broadcast-comments"
+				ref="broadcastChat"
+			>
+			</broadcast-chat>
 		</div>
 	</div>
 </template>
@@ -52,7 +54,11 @@
 					next(vm => vm.setData(response.data));
 				})
 				.catch(error => {
-					(error.response.status === 401) ? next('login') : next('/');
+					if (error.response.status === 401) { 
+						next('login');
+					} else {
+						next('/');
+					}
 				});
 		},
 		computed: {

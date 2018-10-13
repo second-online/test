@@ -1,28 +1,37 @@
 <template>
-	<component v-bind:is="layout">
+	<component :is="layout">
 		<router-view ref="router"></router-view>
+		<broadcast-popup
+			v-if="showBroadcastPopup"
+			:broadcast="broadcast"
+		/>
 	</component>
 </template>
 
 <script>
 	import DefaultLayout from './layouts/DefaultLayout'
 	import NoHeaderLayout from './layouts/NoheaderLayout'
+	import HostLayout from './layouts/HostLayout'
+	import BroadcastPopup from './components/BroadcastPopup'
+	import { mapState } from 'vuex'
 
 	export default {
 		components: {
 			DefaultLayout,
-			NoHeaderLayout
+			NoHeaderLayout,
+			HostLayout,
+			BroadcastPopup
 		},
 		data: function() {
 			return {
-				defaultLayout: 'default-layout',
-				showVideo: false,
+				showBroadcastPopup: false,
+				broadcast: null
 			}
 		},
 		computed: {
-			layout: function() {
-				return this.$route.meta.layout || this.defaultLayout;
-			}
+			...mapState([
+				'layout',
+			]),
 		},
 		methods: {
 		    broadcastOpen: function(broadcast) {
@@ -32,8 +41,9 @@
 
 		    		this.$refs.router.broadcast = broadcast;
 		    		this.$refs.router.broadcastOpen();
-
-		    		console.log('broadcast open');
+		    	} else {
+		    		this.broadcast = broadcast;
+		    		this.showBroadcastPopup = true;
 		    	}
 		    },
 		    broadcastStarting: function(broadcast) {
@@ -43,8 +53,9 @@
 
 		    		this.$refs.router.broadcast = broadcast;
 		    		this.$refs.router.broadcastInProgress();
-		    		
-		    		console.log('broadcast starting');
+		    	} else {
+		    		this.broadcast = broadcast;
+		    		this.showBroadcastPopup = true;
 		    	}
 		    },
 		    broadcastClosed: function(broadcast) {
@@ -53,12 +64,13 @@
 		    		|| this.$router.currentRoute.name == 'host') {
 
 		    		this.$refs.router.broadcastClosed();
-		    		
-		    		console.log('broadcast closed');
 		    	}
+
+		    	this.showBroadcastPopup = false;
+		    	this.broadcast = null;
 		    }
 		},
-	    mounted: function() {
+	    created: function() {
 			Echo.channel('main')
 				.listen('BroadcastOpen', data => {
 					this.broadcastOpen(data);

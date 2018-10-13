@@ -1,13 +1,13 @@
 <template>
-	<header>
+	<header class="d-flex mx-30 mx-md-60 flex-shrink-0 align-items-center">
 		<div class="flex-grow-1">
 			<span class="logo">
 				<router-link v-bind:to="{ name: 'home' }">Second Online Campus</router-link>
 			</span>
 		</div>
-		<div class="d-flex flex-grow-1 justify-content-end justify-content-lg-center">
+		<div class="d-flex flex-md-grow-1 justify-content-end justify-content-lg-center">
 			<span
-				v-on:click="toggleMenu"
+				@click="toggleMenu"
 				v-bind:class="{ activated: showMenu }"
 				class="menu-toggle"
 			></span>
@@ -17,8 +17,8 @@
 			>	
 				<div class="h-100 overflow-y">
 					<ul>
-						<li v-on:click="toggleMenu"><router-link v-bind:to="{ name: 'home' }">Home</router-link></li>
-						<li v-on:click="toggleMenu"><router-link v-bind:to="{ name: 'sermons' }">Sermons</router-link></li>
+						<li @click="toggleMenu"><router-link v-bind:to="{ name: 'home' }">Home</router-link></li>
+						<li @click="toggleMenu"><router-link v-bind:to="{ name: 'sermons' }">Sermons</router-link></li>
 						<li>Schedule</li>
 						<li>Contact</li>
 					</ul>

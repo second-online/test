@@ -8,7 +8,7 @@ use Carbon\Carbon;
 use App\Broadcast;
 use App\HostComment;
 
-class DashboardController extends Controller
+class HostDashboardController extends Controller
 {
     /**
      * Instantiate a new controller instance.

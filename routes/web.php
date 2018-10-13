@@ -79,11 +79,9 @@ Route::group(['prefix' => 'w/api'], function() {
 
 Route::group(['prefix' => 'w/api/host', 'namespace' => 'Host'], function() { 
  	
- 	// Route::get('authorize', 'AuthorizeController@check');
+	Route::get('dashboard', 'HostDashboardController@index');
 
-	Route::get('dashboard', 'DashboardController@index');
-
-	Route::post('comments', 'CommentController@store');
+	Route::post('comments', 'HostCommentController@store');
 
 });
 

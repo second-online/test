@@ -136,26 +136,18 @@ small,
 	color: theme-color("black");
 }
 
-.chat-comment-box {
-	min-height: $spacer * 5;
+.comment-box {
+	min-height: $header-height;
 	max-height: 40%;
 }
 
 .image-faker {
 	display: block;
-	width: $spacer * 2.875;
-	height: $spacer * 2.875;
+	width: $spacer * 2.5;
+	height: $spacer * 2.5;
 	background: #aaa;
 	border-radius: 50%;
 }
-
-.video-content {
-	width: 100%;
-}
-
-// .broadcast-chat {
-// 	width: 100%;
-// }
 
 @include media-breakpoint-up(md) {
 	.video-header {
@@ -164,10 +156,6 @@ small,
 		left: 0;
 		right: 0;
 		z-index: 100;
-	}
-
-	.video-content {
-		width: 55%;
 	}
 
 	.video-sidebar {
@@ -205,7 +193,7 @@ small,
 }
 
 header,
-.header {
+.bar {
 	height: $header-height;
 }
 
@@ -214,10 +202,7 @@ header div {
 }
 
 @include media-breakpoint-up(md) {
-	header,
-	.header {
-		height: $header-height-md-up;
-	}
+
 }
 
 .logo {
@@ -243,7 +228,7 @@ header div {
 .menu-toggle::before,
 .menu-toggle::after {
 	position: absolute;
-	top: 11px;
+	top: 12px;
 	right: 0;
 	left: 0;
 	height: 2px;
@@ -255,7 +240,7 @@ header div {
 
 .menu-toggle::after {
 	top: auto;
-	bottom: 11px;
+	bottom: 12px;
 }
 
 .menu-toggle.activated::before {
@@ -330,4 +315,29 @@ header div {
 
 .close::after {
 	transform: rotate(45deg);
+}
+
+.close-small {
+	width: 10px;
+	height: 10px;
+}
+
+.close-small:before,
+.close-small:after {
+	top: 4px;
+	left: -1px;
+	width: 12px;
+}
+
+.close-dark::before,
+.close-dark::after {
+	background: $black;
+}
+
+.broadcast-popup {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	width: 18rem;
+	overflow: hidden;
 }

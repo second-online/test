@@ -2,7 +2,7 @@
 	<div class="container-fluid px-30 px-lg-60">
 		<div class="row justify-content-center">
 			<div class="col">
-				<h1 class="pt-60 huge text-center">Each Tuesday we publish a new sermon.</h1>
+				<h1 class="py-60 huge text-md-center">Each Tuesday we<br class="d-none d-md-block"><span class="d-md-none">&nbsp;</span>publish a new sermon.</h1>
 			</div>
 		</div>
 		<div class="row">
@@ -16,12 +16,13 @@
 				<div class="row">
 					<div
 						v-for="sermon in sermons"
+						v-bind:key="sermon.id"
 						v-on:click="openSermon(sermon.id)"
 						class="col-12 col-md-6"
 					>
-						<div class="mb-32 clickable">
+						<div class="mb-40 clickable">
 							<img v-bind:src="sermon.image" class="w-100">
-							<span class="d-block pt-16">{{ sermon.title }}</span>
+							<span class="d-block pt-40 text-center">{{ sermon.title }}</span>
 						</div>
 					</div>
 				</div>
@@ -35,7 +36,7 @@
 				<span
 					v-if="showLoadMoreButton"
 					v-on:click="loadSermons"
-					class="d-inline-block px-48 py-20 text-white bg-black"
+					class="d-inline-block px-48 py-20 font-weight-bold text-white bg-black"
 				>Load more</span>
 				<span v-else>That's all the sermons.</span>
 			</div>

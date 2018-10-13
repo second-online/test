@@ -1,34 +1,60 @@
 <template>
-	<div>
+	<div class="d-flex flex-column flex-grow-1 align-items-center justify-content-center">
 	 	<h1>Register</h1>
-		<ul>
-			<li v-for="alert in alerts">{{ alert }}</li>
-		</ul>
-
-		<form v-on:submit.prevent="register">
-			<input
-				v-bind:class="{ error: alerts.name }"
-				v-model="name"
-				type="text"
-				placeholder="Full name"
+		<form
+			v-on:submit.prevent="register"
+			class="form-narrow"
+		>
+			<ul
+				v-if="Object.keys(alerts).length"
+				class="mb-10 list-unstyled text-left"
 			>
-			<input
-				v-bind:class="{ error: alerts.email }"
-				v-model="email"
-				type="text"
-				placeholder="Email"
-			>
-			<input
-				v-bind:class="{ error: alerts.password }"
-				v-model="password"
-				type="password"
-				placeholder="Password"
-			>
-			<button type="submit">Register</button>
+				<li
+					class="mb-0 py-0 text-danger"
+					v-for="alert in alerts">{{ alert }}
+				</li>
+			</ul>
+			<div class="form-group mb-10">
+				<label for="name" class="sr-only font-weight-bold">Name</label>
+				<input
+					id="name"
+					class="form-control p-24 w-100 bg-light-grey"
+					v-bind:class="[ alerts.name ? 'border border-1 border-danger' : 'border-0' ]"
+					v-model="name"
+					type="text"
+					placeholder="Name"
+				>
+			</div>
+			<div class="form-group mb-10">
+				<label for="email" class="sr-only font-weight-bold">Email</label>
+				<input
+					id="email"
+					class="form-control p-24 w-100 bg-light-grey"
+					v-bind:class="[ alerts.email ? 'border border-1 border-danger' : 'border-0' ]"
+					v-model="email"
+					type="email"
+					placeholder="Email"
+				>
+			</div>
+			<div class="form-group mb-10">
+				<label for="password" class="sr-only font-weight-bold">Password</label>
+				<input
+					id="password"
+					class="form-control p-24 w-100 bg-light-grey"
+					v-bind:class="[ alerts.password ? 'border border-1 border-danger' : 'border-0' ]"
+					v-model="password"
+					type="password"
+					placeholder="Password"
+				>
+			</div>
+			<button
+				class="mb-32 py-24 w-100 border-0 text-white bg-black font-weight-bold" 
+				type="submit"
+			>Register</button>
 		</form>
 		<!-- <router-link :to="{ name: 'login', query: { redirect: redirectPath } }"> -->
 		<router-link v-bind:to="loginURL">
-			I already have an account. Login
+			I already have an account. <span class="ml-4 font-weight-bold">Login</span>
 		</router-link>
 	</div>
 </template>

@@ -1,31 +1,39 @@
 <template>
-	<div class="d-flex flex-column h-100 align-items-center justify-content-center">
-		<h1 class="mb-48 text-center">Sign in.</h1>
-		<form class="form-narrow" v-on:submit.prevent="login">
-			<ul class="mb-0 list-unstyled text-left">
+	<div class="d-flex flex-column flex-grow-1 align-items-center justify-content-center">
+		<h1>Login.</h1>
+		<form
+			v-on:submit.prevent="login"
+			class="form-narrow"
+		>
+			<ul
+				v-if="Object.keys(alerts).length"
+				class="mb-10 list-unstyled text-left"
+			>
 				<li
 					class="mb-0 py-0 text-danger"
 					v-for="alert in alerts">{{ alert }}
 				</li>
 			</ul>
-			<div class="form-group mb-12">
+			<div class="form-group mb-10">
 				<label for="email" class="sr-only font-weight-bold">Email</label>
 				<input
 					id="email"
 					class="form-control p-24 w-100 bg-light-grey"
-					v-bind:class="[ alerts.email ? 'border border-top-0 border-right-0 border-bottom-0 border-danger border-3' : 'border-0' ]"
+					v-bind:class="[ alerts.email ? 'border border-1 border-danger' : 'border-0' ]"
 					v-model="email"
 					type="email"
 					placeholder="Email"
 				>
 			</div>
-			<div class="form-group mb-12"> 
+			<div class="form-group mb-10"> 
 				<label for="password" class="sr-only font-weight-bold">Password</label>
-				<div class="d-flex align-items-center bg-light-grey">
+				<div
+					v-bind:class="[ alerts.password ? 'border border-1 border-danger' : 'border-0' ]"
+					class="d-flex align-items-center bg-light-grey"
+				>
 					<input
 						id="password"
-						class="form-control p-24 flex-grow-1 bg-light-grey"
-						v-bind:class="[ alerts.password ? 'border border-top-0 border-right-0 border-bottom-0 border-danger border-3' : 'border-0' ]"
+						class="form-control p-24 flex-grow-1 bg-light-grey border-0"
 						v-model="password"
 						type="password"
 						placeholder="Password"
@@ -38,24 +46,14 @@
 				</div>
 			</div>
 			<button
-				class="mb-48 py-24 w-100 border-0 text-white bg-black font-weight-bold" 
+				class="mb-32 py-24 w-100 border-0 text-white bg-black font-weight-bold" 
 				type="submit"
-			>Sign in</button>
-
-<!-- 				<div class="d-flex justify-content-center font-weight-bold">
-				<span class="pr-20">Sign up</span>
-				<span class="pl-20">Forgot password</span>
-			</div> -->
-
-			<span class="d-block text-center">
-				<span>Dont have an account?</span>
-				<router-link
-					class="ml-4 font-weight-bold"
-					v-bind:to="registerURL">
-					Sign up
-				</router-link>
-			</span>
+			>Login</button>
 		</form>
+		<router-link v-bind:to="registerURL">
+			Dont have an account?
+			<span class="ml-4 font-weight-bold">Sign up</span>
+		</router-link>
 	</div>
 </template>
 

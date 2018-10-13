@@ -23,7 +23,7 @@ class CreateSermonsTable extends Migration
             $table->integer('speaker_id')->unsigned()->nullable();;
             $table->integer('series_id')->unsigned()->nullable();
             $table->integer('duration')->default(0);
-            $table->text('image')->nullable();
+            $table->string('image')->nullable();
             $table->timestamp('publish_on')->nullable();
             $table->timestamps();
 

@@ -3,7 +3,7 @@
 		v-bind:class="{ 'overflow-hidden' : isMenuActive }"
 		class="d-flex flex-column h-100"
 	>
-		<the-header v-on:menu-toggled="isMenuActive = $event"/>
+		<the-host-header @menu-toggled="isMenuActive = $event"/>
 		<main class="d-flex flex-grow-1 mh-0" role="main">
 			<slot/>
 		</main>
@@ -11,11 +11,11 @@
 </template>
 
 <script>
-	import TheHeader from '../components/TheHeader'
+	import TheHostHeader from '../components/TheHostHeader'
 
 	export default {
 		components: {
-			TheHeader
+			TheHostHeader
 		},
 		data: function() {
 			return {

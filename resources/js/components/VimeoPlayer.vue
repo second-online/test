@@ -28,7 +28,7 @@
 			    };
 
 			    this.player = new Vimeo('vimeo-player', options);
-				this.player.setVolume(100);	
+				this.player.setVolume(0);	
 				this.player.setCurrentTime(this.timeElapsed);
 				// this.player.ready().then(() => {
 				// 	this.play();

@@ -4,8 +4,9 @@ import Vuex from 'vuex';
 Vue.use(Vuex);
 
 export const store = new Vuex.Store({
-	state : {
-		user: window.AppUser
+	state: {
+		user: window.AppUser,
+		layout: null
 	},
 	getters: {
 		isUserAuthenticated: state => {
@@ -16,6 +17,8 @@ export const store = new Vuex.Store({
 		}
 	},
 	mutations: {
-
+		setLayout: function(state, layout = 'default-layout') {
+			state.layout = layout;
+		}
 	}
 });

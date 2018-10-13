@@ -50,30 +50,43 @@ export const router = new VueRouter({
 			path:'/host',
 			name: 'host',
 			component: HostDashboard,
+			meta: { layout: 'host-layout' }
 		},
 		{
 			path:'/login',
 			name: 'login',
 			component: Login,
-			meta: { guest: true }
+			meta: {
+				guest: true,
+				layout: 'no-header-layout'
+			}
 		},
 		{
 			path:'/register',
 			name: 'register',
 			component: Register,
-			meta: { guest: true }
+			meta: {
+				guest: true,
+				layout: 'no-header-layout'
+			}
 		},
 		{
 			path:'/password/reset',
 			name: 'password.reset',
 			component: PasswordReset,
-			meta: { guest: true }
+			meta: {
+				guest: true,
+				layout: 'no-header-layout'
+			}
 		},
 		{
 			path:'/password/reset/:token',
 			name: 'password.reset.change',
 			component: PasswordResetChange,
-			meta: { guest: true }
+			meta: {
+				guest: true,
+				layout: 'no-header-layout'
+			}
 		},
 		{
 			path: '/404',
