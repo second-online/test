@@ -36,4 +36,30 @@ class BroadcastController extends Controller
 
         return response()->json($broadcast);
     }
+
+    /**
+     * Get the next broadcast.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function upNext()
+    {
+        $broadcast = Broadcast::where('enabled', 1)
+            ->oldest('starts_at')
+            ->first();
+
+        // remove notes
+            
+        $broadcast->configure();
+
+        if (! isset($broadcast->sermon)) {
+            $broadcast->loadSermon();
+        }
+
+        if (! isset($broadcast->trailer)) {
+            $broadcast->loadTrailer();
+        }
+
+        return response()->json($broadcast);
+    }
 }

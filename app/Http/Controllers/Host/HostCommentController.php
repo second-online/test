@@ -23,11 +23,25 @@ class HostCommentController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        
+    public function index(Request $request)
+    {   
+        if ($request->has('maxid')) {
+            $maxId = $request->input('maxid');
+            $limit = 10;
+            
+            $comments = HostComment::with('user')
+                ->where('id', '<', $maxId)
+                ->orderBy('id', 'desc')
+                ->take($limit)
+                ->get()
+                ->reverse()
+                ->values();
+
+            return response()->json(['comments' => $comments, 'limit' => $limit]);
+        }       
     }
 
     /**

@@ -42,8 +42,8 @@
 		    		this.$refs.router.broadcast = broadcast;
 		    		this.$refs.router.broadcastOpen();
 		    	} else {
-		    		this.broadcast = broadcast;
-		    		this.showBroadcastPopup = true;
+		    		// this.broadcast = broadcast;
+		    		// this.showBroadcastPopup = true;
 		    	}
 		    },
 		    broadcastStarting: function(broadcast) {
@@ -54,8 +54,8 @@
 		    		this.$refs.router.broadcast = broadcast;
 		    		this.$refs.router.broadcastInProgress();
 		    	} else {
-		    		this.broadcast = broadcast;
-		    		this.showBroadcastPopup = true;
+		    		// this.broadcast = broadcast;
+		    		// this.showBroadcastPopup = true;
 		    	}
 		    },
 		    broadcastClosed: function(broadcast) {

@@ -71,5 +71,21 @@ window.Moment.updateLocale('en', {
         lastWeek : '[Last] dddd, MMM D',
         nextWeek : 'dddd, MMM D',
         sameElse : 'dddd, MMM D'
+    },
+    relativeTime : {
+        future: "in %s",
+        past:   "%s",
+        s  : "%ds",
+        ss : "%ds",
+        m:  "%dm",
+        mm: "%dm",
+        h:  "%dh",
+        hh: "%dh",
+        d:  "%dd",
+        dd: "%dd",
+        M:  "%dm",
+        MM: "%dm",
+        y:  "%dy",
+        yy: "%dy"
     }
 });

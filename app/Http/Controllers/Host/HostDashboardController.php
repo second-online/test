@@ -22,6 +22,7 @@ class HostDashboardController extends Controller
         $this->middleware('role:host');
     }
 
+    // Add specifics
     public function index(Request $reqest)
     {
         $broadcast = Broadcast::where('enabled', 1)
@@ -29,6 +30,14 @@ class HostDashboardController extends Controller
             ->first();
 
         $broadcast->configure();
+
+        if (! isset($broadcast->sermon)) {
+            $broadcast->loadSermon();
+        }
+
+        if (! isset($broadcast->trailer)) {
+            $broadcast->loadTrailer();
+        }
 
         $hostComments = HostComment::with('user')
             ->orderBy('id', 'desc')

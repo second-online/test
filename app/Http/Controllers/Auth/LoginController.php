@@ -49,6 +49,7 @@ class LoginController extends Controller
     protected function authenticated(Request $request, $user)
     {
         if ($user->isHost()) {
+            // $user->is_host = true?
             $user = array_add($user->toArray(), 'is_host', true); 
         }
 

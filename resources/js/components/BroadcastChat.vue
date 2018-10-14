@@ -2,30 +2,27 @@
 	<div class="d-flex flex-column flex-grow-1">
 		<div
 			:id="scrollContainerId"
-			class="d-flex flex-column flex-grow-1 bg-light-grey overflow-y"
+			class="d-flex flex-column flex-grow-1 border-bottom overflow-y"
 		>
 			<slot/>
 
 			<div
 				v-if="showChat"
-				class="mx-30 mx-md-40 mt-30 mt-md-40"
+				class="px-30 px-md-40 pt-40"
 			>
 				<div
-					v-for="(comment, key) in comments"
+					v-for="comment in comments"
 					:key="comment.id"
-					class="d-flex mb-30 flex-shrink-0"
+					:id="'comment-' + comment.id"
+					class="d-flex mb-40 flex-shrink-0"
 				>	
 					<img
 						:src="comment.user.profile_picture"
-						class="mr-20 flex-shrink-0 image-faker"
+						class="profile-picture mt-5 mr-24 flex-shrink-0"
 					>
 					<div class="flex-grow-1">
 						<div class="mb-4">
 							<span class="font-weight-bold">{{ comment.user.name }}</span>
-							<span
-								v-if="comment.user.is_host"
-								class="d-none pl-8 text-muted"
-							>Host</span>
 						</div>
 						<div>
 							<span>{{ comment.text }}</span>
@@ -33,7 +30,6 @@
 					</div>
 				</div>
 			</div>
-		 
 			<div
 				v-else
 				class="d-flex flex-grow-1 align-items-center justify-content-center"
@@ -41,21 +37,16 @@
 				<span class="text-muted">The chat is closed.</span>
 			</div>
 		</div>
-
 		<div 
 			v-if="showChat"
-			class="d-flex chat-comment-box px-30 px-md-40 bg-white overflow-y"
 		>
-			<form
+			<comment-form
 				v-if="isUserAuthenticated"
-				class="w-100 m-auto"
-			>	
-				<comment-form
-					:value="newComment"
-					@input="newComment = $event"
-					@submit="submitComment"
-				/>
-			</form>
+				:value="newComment"
+				@input="newComment = $event"
+				@submit="submitComment"
+				class="bg-white"
+			/>
 			<span
 				v-else
 				@click="login"

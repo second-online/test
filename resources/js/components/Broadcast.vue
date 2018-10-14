@@ -4,17 +4,16 @@
 			<div class="position-relative d-flex flex-column flex-shrink-0 flex-md-shrink-1 flex-md-grow-1 justify-content-center bg-black">
 				<div class="d-flex mx-30 mx-md-60 align-items-center header justify-content-between video-header">
 					<span
-						v-on:click="goBack"
+						@click="goBack"
 						class="close"
 					></span>
 				</div>
 				<vimeo-player 
 					v-if="showVideo"
-					v-on:broadcast-ended="broadcastEnded"
 					:video-id="videoId"
 					:time-elapsed="timeElapsed"
+					@broadcast-ended="broadcastEnded"
 					class="px-0 px-lg-60"
-					ref="video"
 				/> 
 			</div>
 			<broadcast-chat
@@ -22,7 +21,7 @@
 				:broadcast-id="broadcast.id"
 				scroll-container-id="broadcast-comments"
 				ref="broadcastChat"
-				class="video-sidebar"
+				class="video-sidebar bg-light-grey"
 			>	
 				<div class="bg-white">
 					<div
@@ -40,7 +39,7 @@
 						<p>{{ broadcast.sermon.description }}</p>
 						<p
 							v-if="broadcast.sermon.notes"
-							v-on:click="toggleNotes"
+							@click="toggleNotes"
 							class="font-weight-bold clickable"
 						>
 							{{ showNotes ? 'Hide notes' : 'See notes' }}
@@ -60,7 +59,7 @@
 			>
 				<div class="position-absolute py-30">
 					<span
-						v-on:click="goBack"
+						@click="goBack"
 						class="close"
 					></span>
 				</div>

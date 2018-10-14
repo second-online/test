@@ -1,5 +1,5 @@
 <template>
-	<div id="vimeo-player" class="embed-responsive embed-responsive-16by9 broadcast-video"></div>
+	<div id="vimeo-player" class="embed-responsive embed-responsive-16by9"></div>
 </template>
 
 <script>
@@ -9,6 +9,10 @@
 			timeElapsed: {
 				type: Number,
 				default: 0
+			},
+			autoplay: {
+				type: Boolean,
+				default: true
 			}
 		},
 		data: function() {
@@ -24,12 +28,22 @@
 		methods: {
 			loadVideo: function() {
 			    var options = {
-			        id: this.videoId
+			        id: this.videoId,
+			        autoplay: this.autoplay
 			    };
 
 			    this.player = new Vimeo('vimeo-player', options);
-				this.player.setVolume(0);	
-				this.player.setCurrentTime(this.timeElapsed);
+
+			    if (this.timeElapsed > 0) {
+					this.player.setCurrentTime(this.timeElapsed);
+			    }
+
+			    if (this.autoplay == true) {
+			    	this.player.setVolume(0);
+			    } else {
+			    	this.player.setVolume(1);
+			    }
+
 				// this.player.ready().then(() => {
 				// 	this.play();
 				// });

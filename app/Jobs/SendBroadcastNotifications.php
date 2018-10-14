@@ -60,7 +60,8 @@ class SendBroadcastNotifications
                     $broadcast->sermon = $sermon;
                 }
                 
-                $broadcast->trailer = $broadcast->loadTrailer();
+                $broadcast->loadTrailer();
+                $broadcast->status = Broadcast::BROADCAST_OPEN;
 
                 broadcast(new BroadcastOpen($broadcast->toArray()));
 
@@ -69,12 +70,16 @@ class SendBroadcastNotifications
                     $broadcast->sermon = $sermon;
                 }
 
+                $broadcast->status = Broadcast::BROADCAST_IN_PROGRESS;
+
                 broadcast(new BroadcastStarting($broadcast->toArray()));
 
             } else if ($closesAt->isPast()) {
                 // Save broadcast so our listener can update
                 // the new starts_at timestamp
                 $broadcast->save();
+                $broadcast->loadTrailer();
+                $broadcast->status = Broadcast::BROADCAST_CLOSED;
 
                 broadcast(new BroadcastClosed($broadcast->toArray()));
             }

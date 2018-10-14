@@ -160,7 +160,7 @@ class Broadcast extends Model
      */
     public function loadTrailer()
     {
-        return ['link' => 'https://vimeo.com/218845426/1d582e7485'];
+        $this->trailer = ['link' => 'https://vimeo.com/218845426/1d582e7485'];
     }
 
     /**
@@ -170,7 +170,7 @@ class Broadcast extends Model
      */
     public function loadSermon() 
     {
-        return Sermon::where('publish_on', '<=', $this->starts_at)
+        $this->sermon = Sermon::where('publish_on', '<=', $this->starts_at)
             ->latest('publish_on')
             ->first();
     }
@@ -191,10 +191,10 @@ class Broadcast extends Model
             return;
         }
 
-        $this->sermon = $this->loadSermon();
+        $this->loadSermon();
 
         if ($startsAt->isFuture()) {
-            $this->trailer = $this->loadTrailer();
+            $this->loadTrailer();
             $this->status = self::BROADCAST_OPEN;
 
             return;

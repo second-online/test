@@ -16,6 +16,7 @@ use App\Broadcast;
 use App\Sermon;
 use App\User;
 use App\Role;
+use App\HostComment;
 
 // Route::get('{any}', function() {
 // 	echo 'test.....';
@@ -58,6 +59,8 @@ Route::group(['prefix' => 'w/api'], function() {
 
 	Route::get('schedule', 'BroadcastController@index');
 
+	Route::get('broadcasts/next', 'BroadcastController@upNext');
+
 	Route::get('broadcasts/{broadcast}', 'BroadcastController@show');
 
 	Route::get('broadcasts/{broadcast}/comments', 'BroadcastCommentController@index');
@@ -81,6 +84,8 @@ Route::group(['prefix' => 'w/api/host', 'namespace' => 'Host'], function() {
  	
 	Route::get('dashboard', 'HostDashboardController@index');
 
+	Route::get('comments', 'HostCommentController@index');
+
 	Route::post('comments', 'HostCommentController@store');
 
 });
@@ -98,17 +103,28 @@ Route::get('password/reset/{token}', 'SPAController@index')->name('password.rese
 
 
 Route::get('test', function() {
+    $broadcast = Broadcast::where('enabled', 1)
+        ->oldest('starts_at')
+        ->first();
+
+    $broadcast->configure();
 
 
-	$sermon = Sermon::find(1);
+    if (! isset($broadcast->sermon)) {
+    	$sermon = $broadcast->loadSermon();
 
-	$sermon->description = '<h1>haha what up</h1><p>story of my life..</p><script>alert("hacked")</script>';
+    	$notes = $sermon->notes;
 
-	$sermon->save();
+    	echo $notes;
+    }
 
-	echo $sermon->description;
+	// $sermon = Sermon::find(1);
 
+	// $sermon->description = '<h1>haha what up</h1><p>story of my life..</p><script>alert("hacked")</script>';
 
+	// $sermon->save();
+
+	// echo $sermon->description;
 });
 
 Route::get('vimeo', function() {
