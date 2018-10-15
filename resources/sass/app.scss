@@ -138,6 +138,7 @@ small,
 .huge {
 	font-size: 10.5vw;
 	font-weight: 800;
+	line-height: 1.1;
 }
 
 @include media-breakpoint-up(md) {
@@ -240,11 +241,6 @@ header div {
 	cursor: pointer;
 }
 
-.menu-toggle:hover {
-    -webkit-transition: all 2s; /* Safari */
-    transition: all 2s;
-}
-
 .menu-toggle::before,
 .menu-toggle::after {
 	position: absolute;
@@ -254,8 +250,8 @@ header div {
 	height: 2px;
 	background: $black;
 	content: '';
-    -webkit-transition: all .25s; /* Safari */
-    transition: all .25s;
+    -webkit-transition: all .2s; /* Safari */
+    transition: all .2s;
 }
 
 .menu-toggle::after {
@@ -270,7 +266,7 @@ header div {
 
 .menu-toggle.activated::after {
 	bottom: 15px;
-	transform: rotate(45deg);
+	transform: rotate(-135deg);
 }
 
 .menu {
@@ -282,8 +278,8 @@ header div {
 	height: 0;
 	background: theme-color("light-grey");;
 	z-index: 100;
-    -webkit-transition: height .3s; /* Safari */
-    transition: height .3s;
+    -webkit-transition: height .2s; /* Safari */
+    transition: height .2s;
 
     ul {
     	padding-top: $header-height;
@@ -374,4 +370,30 @@ header div {
 	height: 6px;
 	background: #3ebe4d;
 	border-radius: 5px;
+}
+
+.latest-sermon {
+	position: relative;
+	height:	calc(100vh - 5rem);
+	background: $black;
+	overflow: hidden;
+}
+
+.sermon-image-container {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	overflow: hidden;
+	z-index: 0;
+
+	img {
+		margin-left: 50%;
+		height: 100%;
+		width: auto;
+		transform: translateX(-60%);
+	}
+}
+
+.move-up {
+	z-index: 10;
 }
