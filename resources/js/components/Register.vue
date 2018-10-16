@@ -52,7 +52,6 @@
 				type="submit"
 			>Register</button>
 		</form>
-		<!-- <router-link :to="{ name: 'login', query: { redirect: redirectPath } }"> -->
 		<router-link v-bind:to="loginURL">
 			I already have an account. <span class="ml-4 font-weight-bold">Login</span>
 		</router-link>
@@ -60,6 +59,8 @@
 </template>
 
 <script>
+	import { mapMutations } from 'vuex'
+
 	export default {
 		data: function() {
 			return {
@@ -84,6 +85,9 @@
 			}
 		},
 		methods: {
+			...mapMutations([
+				'setUser',
+			]),
 			register: function() {
 				if (this.isLoading) { return; }
 
@@ -96,11 +100,12 @@
 						password: this.password,
 					})
 					.then(response => {
-						this.$store.state.user = response.data
+						this.setUser(response.data);
+
 						this.$router.push(this.redirectPath);
 					})
 					.catch(error => {
-						if (error.response.data.errors != undefined) {
+						if (typeof error.response.data.errors !== undefined) {
 							this.setAlerts(error.response.data.errors);
 						} else {
 							this.setAlerts({error: 'Something went wrong. Try again.'});
@@ -151,7 +156,3 @@
 		}
 	}
 </script>
-
-<style>
-	.error {border: 1px solid red;}
-</style>

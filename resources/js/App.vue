@@ -1,5 +1,8 @@
 <template>
-	<component :is="layout">
+	<component
+		:is="layout"
+		:class="pageName"
+	>
 		<router-view ref="router"></router-view>
 		<broadcast-popup
 			v-if="showBroadcastPopup"
@@ -32,6 +35,9 @@
 			...mapState([
 				'layout',
 			]),
+			pageName: function() {
+				return this.$route.name;
+			}
 		},
 		methods: {
 		    broadcastOpen: function(broadcast) {

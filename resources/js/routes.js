@@ -6,6 +6,7 @@ import Broadcast from './components/Broadcast'
 import Sermons from './components/Sermons'
 import Sermon from './components/Sermon'
 import Schedule from './components/Schedule'
+import ContactUs from './components/ContactUs'
 import HostDashboard from './components/HostDashboard'
 import Login from './components/Login'
 import Register from './components/Register'
@@ -47,13 +48,18 @@ export const router = new VueRouter({
 			component: Schedule 
 		},
 		{
-			path:'/host',
+			path: '/contact',
+			name: 'contact',
+			component: ContactUs
+		},
+		{
+			path: '/host',
 			name: 'host',
 			component: HostDashboard,
 			meta: { layout: 'host-layout' }
 		},
 		{
-			path:'/login',
+			path: '/login',
 			name: 'login',
 			component: Login,
 			meta: {
@@ -62,7 +68,7 @@ export const router = new VueRouter({
 			}
 		},
 		{
-			path:'/register',
+			path: '/register',
 			name: 'register',
 			component: Register,
 			meta: {
@@ -71,7 +77,7 @@ export const router = new VueRouter({
 			}
 		},
 		{
-			path:'/password/reset',
+			path: '/password/reset',
 			name: 'password.reset',
 			component: PasswordReset,
 			meta: {
@@ -80,7 +86,7 @@ export const router = new VueRouter({
 			}
 		},
 		{
-			path:'/password/reset/:token',
+			path: '/password/reset/:token',
 			name: 'password.reset.change',
 			component: PasswordResetChange,
 			meta: {

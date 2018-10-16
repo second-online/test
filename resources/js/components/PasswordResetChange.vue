@@ -55,6 +55,8 @@
 	</div>
 </template>
 <script>
+	import { mapMutations } from 'vuex'
+
 	export default {
 		data: function() {
 			return {
@@ -67,6 +69,9 @@
 			}
 		},
 		methods: {
+			...mapMutations([
+				'setUser',
+			]),
 			resetPassword: function() {
 				if (this.isLoading) { return; }
 
@@ -80,11 +85,12 @@
 						token: this.token
 					})
 					.then(response => {
-						this.$store.state.user = response.data;
+						this.setUser(response.data);
+
 						this.$router.push('/');
 					})
 					.catch(error => {
-						if (error.response.data.errors != undefined) {
+						if (typeof error.response.data.errors !== undefined) {
 							this.setAlerts(error.response.data.errors);
 						} else {
 							this.setAlerts({error: 'Something went wrong. Try again.'});
@@ -134,7 +140,3 @@
 		}
 	}
 </script>
-
-<style>
-	.error {border: 1px solid red;}
-</style>

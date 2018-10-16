@@ -49,8 +49,7 @@ class LoginController extends Controller
     protected function authenticated(Request $request, $user)
     {
         if ($user->isHost()) {
-            // $user->is_host = true?
-            $user = array_add($user->toArray(), 'is_host', true); 
+            $user->is_host = true;
         }
 
         return response()->json($user);
@@ -63,7 +62,9 @@ class LoginController extends Controller
      * @return mixed
      */
     protected function loggedOut(Request $request)
-    {
-        //
+    {   
+        $request->session()->regenerate();
+
+        return response()->json(['message' => 'User logged out. Have a nice day.']);
     }
 }

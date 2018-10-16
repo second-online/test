@@ -10564,6 +10564,25 @@ header div {
       flex-basis: 0;
 }
 
+.home header {
+  background: #080808;
+}
+
+.home header > div > a,
+.home header .user {
+  color: #fff;
+}
+
+.home header .menu-toggle::before,
+.home header .menu-toggle::after {
+  background: #fff;
+}
+
+.home header .menu-toggle.activated::before,
+.home header .menu-toggle.activated::after {
+  background: #080808;
+}
+
 .logo {
   font-size: 1rem;
   font-weight: bold;
@@ -10740,5 +10759,9 @@ header div {
 
 .move-up {
   z-index: 10;
+}
+
+.error {
+  border: 1px solid red;
 }
 

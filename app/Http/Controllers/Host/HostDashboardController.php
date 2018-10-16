@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use App\Broadcast;
 use App\HostComment;
+use Cookie;
 
 class HostDashboardController extends Controller
 {

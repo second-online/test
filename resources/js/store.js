@@ -17,8 +17,17 @@ export const store = new Vuex.Store({
 		}
 	},
 	mutations: {
-		setLayout: function(state, layout = 'default-layout') {
+		setUser (state, user) {
+			state.user = user;
+		},
+		setLayout (state, layout = 'default-layout') {
 			state.layout = layout;
+		}
+	},
+	actions: {
+		logUserOut (context) {
+			context.commit('setUser', null);
+			window.AppUser = null;
 		}
 	}
 });

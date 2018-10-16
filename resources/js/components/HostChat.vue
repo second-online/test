@@ -38,6 +38,7 @@
 <script>
 	import CommentForm from '../components/CommentForm'
 	import chatMixin from '../mixins/chatMixin'
+	import helperMixin from '../mixins/helperMixin'
 	import { mapState } from 'vuex'
 
 	export default {
@@ -45,7 +46,8 @@
 			CommentForm
 		},
 		mixins: [
-			chatMixin
+			chatMixin,
+			helperMixin
 		],
 		props: {
 			scrollContainerId: String,
@@ -178,8 +180,10 @@
 			}
 		},
 		created: function() {
-			// I need to finish the code to pull XSRF cookie. 
-			Echo.connector.pusher.config.auth.headers['X-XSRF-TOKEN'] = decodeURIComponent(document.cookie.split('=')[1]);
+			
+			console.log(this.$_helperMixin_getCookie('the-cookie'));
+
+			Echo.connector.pusher.config.auth.headers['X-XSRF-TOKEN'] = this.$_helperMixin_getXSRFCookie();
 
 			Echo.join('host.chat')
 			    .here((users) => {

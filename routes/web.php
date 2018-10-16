@@ -30,15 +30,15 @@ use App\HostComment;
 // });
 
 
-Route::get('jeff', function() {
+// Route::get('jeff', function() {
 
-	Auth::loginUsingId(10001, true);
-});
+// 	Auth::loginUsingId(10001, true);
+// });
 
-Route::get('logout', function() {
+// Route::get('logout', function() {
 
-	Auth::logout();
-});
+// 	Auth::logout();
+// });
 
 Route::get('role', function() {
 	
@@ -103,6 +103,19 @@ Route::get('password/reset/{token}', 'SPAController@index')->name('password.rese
 
 
 Route::get('test', function() {
+
+	$date = Carbon::createFromFormat('Y-m-d H:i:s', '2018-10-10 00:00:00');
+	$date->tz('America/Chicago');
+
+	var_dump($date);
+
+	$date->subWeek();
+
+	var_dump($date);
+
+	die;
+
+
     $broadcast = Broadcast::where('enabled', 1)
         ->oldest('starts_at')
         ->first();
@@ -149,6 +162,8 @@ Route::get('vimeo', function() {
 
 	$videos = $response->data;
 
+	$date = Carbon::createFromFormat('Y-m-d H:i:s', '2018-10-10 00:00:00');
+
 	foreach ($videos as $video) {
 		if ($video->duration < 300)
 			continue;
@@ -176,7 +191,7 @@ Route::get('vimeo', function() {
 		$sermon->speaker_id = 1;
 		$sermon->description = 'In the Sermon on the Mount, Jesus puts down a grid for living the Christian life. In the Beatitudes which introduce the sermon, we see a sketch of the Kingdom individual and his attitude toward himself, God, and others. In this message Dr. Young continues a study of the Beatitudes and gives us a clear picture of the character of the Kingdom man or woman and the blessings that derive from Kingdom living.';
 		$sermon->notes = $video->description;
-		$sermon->publish_on = '2018-10-10 04:00:00';
+		$sermon->publish_on = $date;
 
 		foreach($video->pictures->sizes as $picture) {
 			if ($picture->width == 1920) {
@@ -184,8 +199,10 @@ Route::get('vimeo', function() {
 				$sermon->image = $img;
 			}
 		}
-		$sermon->publish_on = new Carbon();
+		
 		$sermon->save();
+
+		$date->subWeek();
 	}
 
 	//return response()->json($videos);

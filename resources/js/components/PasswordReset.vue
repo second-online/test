@@ -72,11 +72,10 @@
 						email: this.email,
 					})
 					.then(response => {
-						console.log(response.data);
 						this.setAlerts(response.data);
 					})
 					.catch(error => {
-						if (error.response.data.errors != undefined) {
+						if (typeof error.response.data.errors !== undefined) {
 							this.setAlerts(error.response.data.errors);
 						} else {
 							this.setAlerts({error: 'Something went wrong. Try again.'});
@@ -117,7 +116,3 @@
 		}
 	}
 </script>
-
-<style>
-	.error {border: 1px solid red;}
-</style>

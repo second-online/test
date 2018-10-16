@@ -4,7 +4,7 @@
 		<router-link v-bind:to="{ name: 'broadcast', params: { broadcast_id: 3} }">Broadcast</router-link>
 		<router-link v-bind:to="{ name: 'sermons' }">Sermons</router-link>
 		<router-link v-bind:to="{ name: 'host' }">Host</router-link> -->
-		<div class="latest-sermon d-flex flex-grow-1">
+<!-- 		<div class="latest-sermon d-flex flex-grow-1">
 			<div class="row no-gutters">
 				<div class="col-6 d-flex mb-60 flex-column move-up">
 					<div class="d-flex ml-30 ml-md-60 flex-column justify-content-center flex-grow-1">
@@ -13,7 +13,7 @@
 					</div>
 					<span class="ml-30 ml-md-60 text-white font-weight-bold text-uppercase line-height-1">View Schedule</span>
 				</div>
-				<div class="col-7 col-lg-5 offset-5 offset-lg-3 sermon-image-container mb-60">
+				<div class="col-7 col-lg-5 offset-5 offset-lg-3 sermon-image-container mb-lg-60">
 					<img :src="broadcast.sermon.image">
 				</div>
 	 			<div class="col-3 offset-3 d-none d-lg-flex flex-column py-60 pr-30 pr-md-60 move-up">
@@ -26,7 +26,7 @@
 					<p class="mb-0 text-muted">{{ broadcast.sermon.description }}</p>
 				</div>				
 			</div>
-		</div>
+		</div> -->
 		<!-- <p class="py-60">something elsesomething elsesomething elsesomething elsesomething elsesomething elsesomething elsesomething elsesomething elsesomething else</p> -->
 	</div>
 </template>
@@ -55,7 +55,7 @@
 					});
 			},
 			broadcastDates: function() {
-				const moment = Moment.utc(this.broadcast.starts_at).local()
+				const moment = Moment.utc(this.broadcast.sermon.publish_on).local()
 				const starts = moment.format('MMM D');
 				const ends = moment.add(1, 'weeks').format('MMM D');
 

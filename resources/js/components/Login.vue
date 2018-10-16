@@ -58,6 +58,8 @@
 </template>
 
 <script>
+	import { mapMutations } from 'vuex'
+
 	export default {
 		data: function() {
 			return {
@@ -84,6 +86,9 @@
 			}
 		},
 		methods: {
+			...mapMutations([
+				'setUser',
+			]),
 			login: function() {
 				if (this.isLoading) { return; }
 
@@ -92,15 +97,15 @@
 				axios
 					.post(process.env.MIX_APP_URL + '/w/api/login', {
 						email: this.email,
-						password: this.password,
+						password: this.password
 					})
 					.then(response => {
-						console.log(response.data);
-						this.$store.state.user = response.data
+						this.setUser(response.data);
+
 						this.$router.push(this.redirectPath);
 					})
 					.catch(error => {
-						if (error.response.data.errors != undefined) {
+						if (typeof error.response.data.errors !== undefined) {
 							this.setAlerts(error.response.data.errors);
 						} else {
 							this.setAlerts({error: 'Something went wrong. Try again.'});

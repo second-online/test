@@ -3,13 +3,14 @@
 		<div class="position-relative d-flex flex-column flex-shrink-0 flex-md-shrink-1 flex-md-grow-1 bg-black justify-content-center video-content">
 			<div class="d-flex mx-30 mx-md-60 align-items-center header video-header">
 				<span
-					v-on:click="goBack"
+					@click="goBack"
 					class="close"
 				></span>
 			</div>
 			<vimeo-player
 				v-if="videoLoaded"
-				v-bind:video-id="sermon.vimeo_id"
+				:video-id="sermon.vimeo_id"
+				:autoplay="false"
 				class="px-0 px-lg-60"
 				ref="video"
 			/> 

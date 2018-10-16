@@ -226,6 +226,25 @@ header div {
 	 flex-basis: 0;
 }
 
+.home header {
+	background: $black;
+
+	> div > a,
+	.user {
+		color: $white;
+	}
+
+	.menu-toggle::before,
+	.menu-toggle::after {
+		background: $white;
+	}
+
+	.menu-toggle.activated::before,
+	.menu-toggle.activated::after {
+		background: $black;
+	}
+}
+
 .logo {
 	font-size: $font-size-x-lg;
 	font-weight: bold;
@@ -396,4 +415,9 @@ header div {
 
 .move-up {
 	z-index: 10;
+}
+
+// Fix this: Login/Register..
+.error {
+	border: 1px solid red;
 }
