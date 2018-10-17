@@ -20,6 +20,8 @@ class SPAController extends Controller
 	    	$user->is_host = true; 
     	}
 
+        // Attach next broadcasdt too...
+
         return view('layouts.app')->with('user', $user);
     }
 }

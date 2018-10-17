@@ -45,6 +45,7 @@ class BroadcastController extends Controller
     public function upNext()
     {
         $broadcast = Broadcast::where('enabled', 1)
+            ->where('live', 0)
             ->oldest('starts_at')
             ->first();
 

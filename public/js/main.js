@@ -43410,6 +43410,8 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 //
 //
+//
+//
 
 
 
@@ -43467,113 +43469,97 @@ var render = function() {
         1
       ),
       _vm._v(" "),
-      _c(
-        "div",
-        {
-          staticClass:
-            "d-flex flex-md-grow-1 justify-content-end justify-content-lg-center"
-        },
-        [
-          _c("span", {
-            staticClass: "menu-toggle",
-            class: { activated: _vm.showMenu },
-            on: { click: _vm.toggleMenu }
-          }),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              staticClass: "menu overflow-hidden",
-              class: { activated: _vm.showMenu }
-            },
-            [
-              _c("div", { staticClass: "h-100 overflow-y" }, [
-                _c("ul", [
-                  _c(
-                    "li",
-                    { on: { click: _vm.toggleMenu } },
-                    [
-                      _c("router-link", { attrs: { to: { name: "home" } } }, [
-                        _vm._v("Home")
-                      ])
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "li",
-                    { on: { click: _vm.toggleMenu } },
-                    [
+      _c("div", { staticClass: "d-flex flex-md-grow-1 justify-content-end" }, [
+        _c("span", {
+          staticClass: "menu-toggle",
+          class: { activated: _vm.showMenu },
+          on: { click: _vm.toggleMenu }
+        }),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "menu overflow-hidden",
+            class: { activated: _vm.showMenu }
+          },
+          [
+            _c("div", { staticClass: "h-100 overflow-y" }, [
+              _c("ul", [
+                _c(
+                  "li",
+                  { on: { click: _vm.toggleMenu } },
+                  [
+                    _c("router-link", { attrs: { to: { name: "home" } } }, [
+                      _vm._v("Home")
+                    ])
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "li",
+                  { on: { click: _vm.toggleMenu } },
+                  [
+                    _c("router-link", { attrs: { to: { name: "sermons" } } }, [
+                      _vm._v("Sermons")
+                    ])
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "li",
+                  { on: { click: _vm.toggleMenu } },
+                  [
+                    _c("router-link", { attrs: { to: { name: "schedule" } } }, [
+                      _vm._v("Schedule")
+                    ])
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _vm._m(0),
+                _vm._v(" "),
+                _c(
+                  "li",
+                  { on: { click: _vm.toggleMenu } },
+                  [
+                    _c("router-link", { attrs: { to: { name: "contact" } } }, [
+                      _vm._v("Contact")
+                    ])
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _vm.isUserAuthenticated
+                  ? _c("li", { on: { click: _vm.toggleMenu } }, [
                       _c(
-                        "router-link",
-                        { attrs: { to: { name: "sermons" } } },
-                        [_vm._v("Sermons")]
+                        "span",
+                        { staticClass: "clickable", on: { click: _vm.logOut } },
+                        [_vm._v("Logout")]
                       )
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "li",
-                    { on: { click: _vm.toggleMenu } },
-                    [
-                      _c(
-                        "router-link",
-                        { attrs: { to: { name: "schedule" } } },
-                        [_vm._v("Schedule")]
-                      )
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _vm._m(0),
-                  _vm._v(" "),
-                  _c(
-                    "li",
-                    { on: { click: _vm.toggleMenu } },
-                    [
-                      _c(
-                        "router-link",
-                        { attrs: { to: { name: "contact" } } },
-                        [_vm._v("Contact")]
-                      )
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _vm.isUserAuthenticated
-                    ? _c("li", { on: { click: _vm.toggleMenu } }, [
-                        _c(
-                          "span",
-                          {
-                            staticClass: "clickable",
-                            on: { click: _vm.logOut }
-                          },
-                          [_vm._v("Logout")]
-                        )
-                      ])
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _c(
-                    "li",
-                    { on: { click: _vm.toggleMenu } },
-                    [
-                      _c("router-link", { attrs: { to: { name: "host" } } }, [
-                        _vm._v("Host")
-                      ])
-                    ],
-                    1
-                  )
-                ])
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                _c(
+                  "li",
+                  { on: { click: _vm.toggleMenu } },
+                  [
+                    _c("router-link", { attrs: { to: { name: "host" } } }, [
+                      _vm._v("Host")
+                    ])
+                  ],
+                  1
+                )
               ])
-            ]
-          )
-        ]
-      ),
+            ])
+          ]
+        )
+      ]),
       _vm._v(" "),
       _c(
         "div",
-        { staticClass: "d-none d-lg-block flex-grow-1 text-right" },
+        { staticClass: "d-none flex-grow-1 text-right" },
         [
           _vm.isUserAuthenticated
             ? _c("span", { staticClass: "user xlarge font-weight-bold" }, [
@@ -46964,6 +46950,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
 	data: function data() {
@@ -46984,6 +46984,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 				lastWeek: '[Last] dddd',
 				sameElse: 'DD/MM/YYYY'
 			});
+		},
+		hasBroadcastSermonLoaded: function hasBroadcastSermonLoaded() {
+			return typeof this.broadcast.sermon === 'undefined' ? false : true;
 		},
 		broadcastDates: function broadcastDates() {
 			var moment = Moment.utc(this.broadcast.sermon.publish_on).local();
@@ -47010,9 +47013,114 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "container-fluid p-0 bg-light-grey" })
+  return _c("div", { staticClass: "container-fluid p-0 bg-light-grey" }, [
+    _c("div", { staticClass: "latest-sermon d-flex flex-grow-1" }, [
+      _c("div", { staticClass: "row no-gutters" }, [
+        _c("div", { staticClass: "col-6 d-flex mb-60 flex-column move-up" }, [
+          _c(
+            "div",
+            {
+              staticClass:
+                "d-flex ml-30 ml-md-60 flex-column justify-content-center flex-grow-1"
+            },
+            [
+              _vm.hasBroadcastSermonLoaded
+                ? _c("h1", { staticClass: "huge text-white" }, [
+                    _vm._v(_vm._s(_vm.broadcast.sermon.title))
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
+              _vm._m(0)
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "span",
+            {
+              staticClass:
+                "d-inline-block ml-30 ml-md-60 pb-4 align-self-start text-white font-weight-bold text-uppercase border-bottom-heavy"
+            },
+            [_vm._v("View Schedule")]
+          )
+        ]),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass:
+              "col-7 offset-5 col-lg-4 offset-lg-4 sermon-image-container mb-lg-60"
+          },
+          [
+            _vm.hasBroadcastSermonLoaded
+              ? _c("img", { attrs: { src: _vm.broadcast.sermon.image } })
+              : _vm._e()
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass:
+              "col-3 offset-3 d-none d-lg-flex flex-column py-60 pr-30 pr-md-60 move-up"
+          },
+          [
+            _c("div", { staticClass: "flex-grow-1" }, [
+              _c(
+                "span",
+                { staticClass: "d-block text-white font-weight-bold" },
+                [_vm._v("Speaker")]
+              ),
+              _vm._v(" "),
+              _c("span", { staticClass: "d-block mb-48 text-muted" }, [
+                _vm._v("Pontius Pilate")
+              ]),
+              _vm._v(" "),
+              _c(
+                "span",
+                { staticClass: "d-block text-white font-weight-bold" },
+                [_vm._v("Series")]
+              ),
+              _vm._v(" "),
+              _c("span", { staticClass: "d-block mb-48 text-muted" }, [
+                _vm._v("Beatitudes")
+              ]),
+              _vm._v(" "),
+              _c(
+                "span",
+                { staticClass: "d-block text-white font-weight-bold" },
+                [_vm._v("Broadcasts")]
+              ),
+              _vm._v(" "),
+              _vm.hasBroadcastSermonLoaded
+                ? _c("span", { staticClass: "d-block text-muted" }, [
+                    _vm._v(_vm._s(_vm.broadcastDates) + "\n\t \t\t\t\t\t")
+                  ])
+                : _vm._e()
+            ]),
+            _vm._v(" "),
+            _vm.hasBroadcastSermonLoaded
+              ? _c("p", { staticClass: "mb-0 text-muted" }, [
+                  _vm._v(_vm._s(_vm.broadcast.sermon.description))
+                ])
+              : _vm._e()
+          ]
+        )
+      ])
+    ])
+  ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("span", { staticClass: "text-muted" }, [
+      _vm._v("Today at 3:00 pm"),
+      _c("br"),
+      _vm._v("is our next broadcast")
+    ])
+  }
+]
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {

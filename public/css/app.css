@@ -10475,7 +10475,7 @@ small,
 
 @media (min-width: 768px) {
   .huge {
-    font-size: 5rem;
+    font-size: 5.5rem;
   }
 }
 
@@ -10636,11 +10636,8 @@ header div {
   bottom: 0;
   left: 0;
   height: 0;
-  background: #f2f2f2;
+  background: #fff;
   z-index: 100;
-  -webkit-transition: height .2s;
-  /* Safari */
-  transition: height .2s;
 }
 
 .menu ul {
@@ -10652,9 +10649,6 @@ header div {
 .menu li {
   font-size: 1.875rem;
   font-weight: 700;
-  -webkit-transition: margin .3s;
-  /* Safari */
-  transition: margin .3s;
 }
 
 @media (min-width: 768px) {
@@ -10763,5 +10757,9 @@ header div {
 
 .error {
   border: 1px solid red;
+}
+
+.border-bottom-heavy {
+  border-bottom: 2px solid #fff;
 }
 

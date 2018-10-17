@@ -6,7 +6,8 @@
 				class="logo"
 			>Second Online Campus</router-link>
 		</div>
-		<div class="d-flex flex-md-grow-1 justify-content-end justify-content-lg-center">
+		<!-- justify-content-lg-center -->
+		<div class="d-flex flex-md-grow-1 justify-content-end">
 			<span
 				@click="toggleMenu"
 				v-bind:class="{ activated: showMenu }"
@@ -35,7 +36,8 @@
 				</div>
 			</div>
 		</div>
-		<div class="d-none d-lg-block flex-grow-1 text-right">
+		<!-- dg-lg-none -->
+		<div class="d-none flex-grow-1 text-right">
 			<span
 				v-if="isUserAuthenticated"
 				class="user xlarge font-weight-bold"
