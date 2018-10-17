@@ -41,7 +41,6 @@
 				</div>				
 			</div>
 		</div>
-		<!-- <p class="py-60">something elsesomething elsesomething elsesomething elsesomething elsesomething elsesomething elsesomething elsesomething elsesomething else</p> -->
 	</div>
 </template>
 
