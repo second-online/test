@@ -113,46 +113,46 @@ Route::get('test', function() {
 	// echo $date->dayOfWeekIso;
 
 
-    $broadcasts = Broadcast::where('enabled', 1)
-        ->oldest('starts_at')
-        ->get();
+    // $broadcasts = Broadcast::where('enabled', 1)
+    //     ->oldest('starts_at')
+    //     ->get();
 
-    $firstDate = $broadcasts->first()->starts_at;
-    // Subtract a week so that the sermon's publish_on date is in range.
-    $firstDate->subWeek();
+    // $firstDate = $broadcasts->first()->starts_at;
+    // // Subtract a week so that the sermon's publish_on date is in range.
+    // $firstDate->subWeek();
 
-    $lastDate = $broadcasts->last()->starts_at;
+    // $lastDate = $broadcasts->last()->starts_at;
 
-    $sermons = Sermon::select('title', 'publish_on')
-    	->where('publish_on', '>', $firstDate)
-    	->where('publish_on', '<=', $lastDate)
-    	->oldest('publish_on')
-    	->get();
+    // $sermons = Sermon::select('title', 'publish_on')
+    // 	->where('publish_on', '>', $firstDate)
+    // 	->where('publish_on', '<=', $lastDate)
+    // 	->oldest('publish_on')
+    // 	->get();
 
-    $sermons = $sermons->reverse()->values();
+    // $sermons = $sermons->reverse()->values();
 
 
-    $broadcasts = $broadcasts->map(function($broadcast, $key) use ($sermons) {
-    	if ($broadcast->live) {
-    		return $broadcast;
-    	}
+    // $broadcasts = $broadcasts->map(function($broadcast, $key) use ($sermons) {
+    // 	if ($broadcast->live) {
+    // 		return $broadcast;
+    // 	}
 
-    	//sermon publish_on <= broadcast start_at
-    	$sermon = $sermons->first(function($sermon, $key) use ($broadcast) {
-    		$broadcastStartsAt = $broadcast->starts_at;
-    		$sermonStartDate = $sermon->publish_on;
-    		$sermonEndDate = $sermonStartDate->copy()->addWeek();
+    // 	//sermon publish_on <= broadcast start_at
+    // 	$sermon = $sermons->first(function($sermon, $key) use ($broadcast) {
+    // 		$broadcastStartsAt = $broadcast->starts_at;
+    // 		$sermonStartDate = $sermon->publish_on;
+    // 		$sermonEndDate = $sermonStartDate->copy()->addWeek();
 
-    		return $broadcastStartsAt >= $sermonStartDate
-    			&& $broadcastStartsAt < $sermonEndDate;
-    	});
+    // 		return $broadcastStartsAt >= $sermonStartDate
+    // 			&& $broadcastStartsAt < $sermonEndDate;
+    // 	});
 
-    	$broadcast->name = is_null($sermon) ? 'TBA' : $sermon->title;
+    // 	$broadcast->name = is_null($sermon) ? 'TBA' : $sermon->title;
 
-    	return $broadcast;
-    });
+    // 	return $broadcast;
+    // });
 
-    return response()->json($broadcasts);
+    // return response()->json($broadcasts);
 
 
 	// $date = Carbon::createFromFormat('Y-m-d H:i:s', '2018-10-10 00:00:00');
@@ -160,18 +160,11 @@ Route::get('test', function() {
 
 });
 
-Route::get('vimeo', function() {
-
-
-	// $sermon = Sermon::find(1);
-
-	// echo $sermon->duration;
-
-	// die;
+Route::get('vimeo/{id}', function($id) {
 
 	$opts = array(
 	  'http'=>array(
-	    'header'=> 'Authorization: Bearer 1145ef4001404718357f5bf704dcc536'
+	    'header'=> 'Authorization: Bearer ' . $id
 	  )
 	);
 
@@ -226,49 +219,47 @@ Route::get('vimeo', function() {
 	}
 
 	//return response()->json($videos);
-
-//1145ef4001404718357f5bf704dcc536
 });
 
 
 Route::get('/scheduled', function () {
 
-	$format = 'Y-m-d H:i';
-	$now = new Carbon();
-	$sermon = Sermon::orderBy('id', 'desc')->first();
+	// $format = 'Y-m-d H:i';
+	// $now = new Carbon();
+	// $sermon = Sermon::orderBy('id', 'desc')->first();
 
-	$broadcasts = Broadcast::where('enabled', 1)->get();
+	// $broadcasts = Broadcast::where('enabled', 1)->get();
 
-	foreach ($broadcasts as $broadcast) {
-		// if time is opens_at == starts_at - 10 min
-		// if time is = starts_at
-		// if closes_at is in the past
+	// foreach ($broadcasts as $broadcast) {
+	// 	// if time is opens_at == starts_at - 10 min
+	// 	// if time is = starts_at
+	// 	// if closes_at is in the past
 
-		$startsAt = Carbon::createFromFormat('Y-m-d H:i:s', $broadcast->starts_at);
-		$opensAt = clone $startsAt;
-		$opensAt->subMinutes(10);
-		$closesAt = clone $startsAt;
-        $closesAt->addSeconds($sermon->duration);
-        $closesAt->addMinutes(10);
-        $closesAt->second = 0;
+	// 	$startsAt = Carbon::createFromFormat('Y-m-d H:i:s', $broadcast->starts_at);
+	// 	$opensAt = clone $startsAt;
+	// 	$opensAt->subMinutes(10);
+	// 	$closesAt = clone $startsAt;
+ //        $closesAt->addSeconds($sermon->duration);
+ //        $closesAt->addMinutes(10);
+ //        $closesAt->second = 0;
 		
-		echo $opensAt . '<br>' . $startsAt . '<br>' . $closesAt;
+	// 	echo $opensAt . '<br>' . $startsAt . '<br>' . $closesAt;
 
-		die;
+	// 	die;
 
-		if ($opensAt->format($format) == $now->format($format)) {
-			// fire open event
-			//echo "open at right now" . '<br>';
-		} else if ($startsAt->format($format) == $now->format($format)) {
-			// fire broadcast starting event
-			//echo "broadcast starts now" . '<br>';
-		} else if ($closesAt->isPast()) {
-			// save broadcast so our listener can update the new timestamp
-			$broadcast->save();
+	// 	if ($opensAt->format($format) == $now->format($format)) {
+	// 		// fire open event
+	// 		//echo "open at right now" . '<br>';
+	// 	} else if ($startsAt->format($format) == $now->format($format)) {
+	// 		// fire broadcast starting event
+	// 		//echo "broadcast starts now" . '<br>';
+	// 	} else if ($closesAt->isPast()) {
+	// 		// save broadcast so our listener can update the new timestamp
+	// 		$broadcast->save();
 
-			// fire broadcast updated event?
-		}
-	}
+	// 		// fire broadcast updated event?
+	// 	}
+	// }
 
 die;
 
