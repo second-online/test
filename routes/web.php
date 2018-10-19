@@ -112,7 +112,7 @@ Route::get('test', function() {
 
 	// echo $date->dayOfWeekIso;
 
-
+die;
     $broadcasts = Broadcast::where('enabled', 1)
         ->oldest('starts_at')
         ->get();
@@ -160,18 +160,11 @@ Route::get('test', function() {
 
 });
 
-Route::get('vimeo', function() {
-
-
-	// $sermon = Sermon::find(1);
-
-	// echo $sermon->duration;
-
-	// die;
+Route::get('vimeo/{id}', function($id) {
 
 	$opts = array(
 	  'http'=>array(
-	    'header'=> 'Authorization: Bearer 1145ef4001404718357f5bf704dcc536'
+	    'header'=> 'Authorization: Bearer ' . $id;
 	  )
 	);
 
@@ -226,13 +219,11 @@ Route::get('vimeo', function() {
 	}
 
 	//return response()->json($videos);
-
-//1145ef4001404718357f5bf704dcc536
 });
 
 
 Route::get('/scheduled', function () {
-
+die;
 	$format = 'Y-m-d H:i';
 	$now = new Carbon();
 	$sermon = Sermon::orderBy('id', 'desc')->first();

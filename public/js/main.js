@@ -43416,13 +43416,6 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
 
 
 
@@ -43443,7 +43436,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 		logOut: function logOut() {
 			var _this = this;
 
-			axios.post("http://second.test" + '/w/api/logout').then(function (response) {
+			axios.post('/w/api/logout').then(function (response) {
 				console.log(response.data);
 			}).catch(function (error) {
 				console.log(error.response.status);
@@ -43557,18 +43550,33 @@ var render = function() {
                   _vm._v(" "),
                   _vm._m(0),
                   _vm._v(" "),
-                  _vm.isUserAuthenticated
-                    ? _c("li", { on: { click: _vm.toggleMenu } }, [
-                        _c(
-                          "span",
-                          {
-                            staticClass: "clickable",
-                            on: { click: _vm.logOut }
-                          },
-                          [_vm._v("Logout")]
-                        )
-                      ])
-                    : _vm._e(),
+                  _c(
+                    "li",
+                    [
+                      _vm.isUserAuthenticated
+                        ? _c(
+                            "span",
+                            {
+                              staticClass: "clickable",
+                              on: { click: _vm.logOut }
+                            },
+                            [_vm._v("Logout")]
+                          )
+                        : _c(
+                            "router-link",
+                            {
+                              attrs: {
+                                to: {
+                                  name: "login",
+                                  query: { redirect: _vm.$route.path }
+                                }
+                              }
+                            },
+                            [_vm._v("Login")]
+                          )
+                    ],
+                    1
+                  ),
                   _vm._v(" "),
                   _vm.isUserHost
                     ? _c(
