@@ -112,7 +112,6 @@ Route::get('test', function() {
 
 	// echo $date->dayOfWeekIso;
 
-
     // $broadcasts = Broadcast::where('enabled', 1)
     //     ->oldest('starts_at')
     //     ->get();
