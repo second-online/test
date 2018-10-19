@@ -261,42 +261,42 @@ Route::get('/scheduled', function () {
 	// 	}
 	// }
 
-die;
+	die;
 
-	$broadcasts = Broadcast::all();
-	$schedule = collect();
+		$broadcasts = Broadcast::all();
+		$schedule = collect();
 
-	foreach ($broadcasts as $broadcast) {
+		foreach ($broadcasts as $broadcast) {
 
-		$format = 'l H:i:s';
-		$time = $broadcast->day . ' ' . $broadcast->time;
-		$timezone = 'America/Chicago';
-		$date = Carbon::createFromFormat($format, $time, $timezone);
+			$format = 'l H:i:s';
+			$time = $broadcast->day . ' ' . $broadcast->time;
+			$timezone = 'America/Chicago';
+			$date = Carbon::createFromFormat($format, $time, $timezone);
 
-		if ($date->isPast()) {
-			$date->addWeek();
+			if ($date->isPast()) {
+				$date->addWeek();
+			}
+			
+			$newDate = clone $date;
+			echo $newDate->addHour()->toDateTimeString();
+			echo "<br>";
+			echo $date->toDateTimeString();
+	die;
+			// $date->timezone('utc');
+
+			$schedule->push([
+				'name' => $broadcast->name,
+				'time' => $date->toDateTimeString(),
+				'time utc' => $date->timezone('UTC')->toDateTimeString()
+			]);
 		}
+
+		// var_dump($schedule);
+		$sorted = $schedule->sortBy('time');
+		var_dump($sorted);
 		
-		$newDate = clone $date;
-		echo $newDate->addHour()->toDateTimeString();
-		echo "<br>";
-		echo $date->toDateTimeString();
-die;
-		// $date->timezone('utc');
 
-		$schedule->push([
-			'name' => $broadcast->name,
-			'time' => $date->toDateTimeString(),
-			'time utc' => $date->timezone('UTC')->toDateTimeString()
-		]);
-	}
-
-	// var_dump($schedule);
-	$sorted = $schedule->sortBy('time');
-	var_dump($sorted);
-	
-
-return;
+	return;
 
 });
 
