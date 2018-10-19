@@ -2,7 +2,7 @@
 	<div class="d-flex flex-column flex-md-row flex-grow-1">
 		<template v-if="showBroadcastPage">
 			<div class="position-relative d-flex flex-column flex-shrink-0 flex-md-shrink-1 flex-md-grow-1 justify-content-center bg-black">
-				<div class="d-flex mx-30 mx-md-60 align-items-center header justify-content-between video-header">
+				<div class="d-flex mx-30 mx-md-60 align-items-center flex-shrink-0 justify-content-between bar video-header">
 					<span
 						@click="goBack"
 						class="close"
@@ -151,7 +151,7 @@
 		},	
 		created: function() {
 			axios
-				.get(process.env.MIX_APP_URL + '/w/api/broadcasts/' + this.$route.params.broadcast_id)
+				.get('/w/api/broadcasts/' + this.$route.params.broadcast_id)
 				.then(response => {
 					this.broadcast = response.data;
 

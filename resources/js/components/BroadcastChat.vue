@@ -8,21 +8,25 @@
 
 			<div
 				v-if="showChat"
-				class="px-30 px-md-40 pt-40"
+				class="px-30 px-md-40 pt-36"
 			>
 				<div
 					v-for="comment in comments"
 					:key="comment.id"
 					:id="'comment-' + comment.id"
-					class="d-flex mb-40 flex-shrink-0"
+					class="d-flex mb-36 flex-shrink-0"
 				>	
 					<img
 						:src="comment.user.profile_picture"
-						class="profile-picture mt-5 mr-24 flex-shrink-0"
+						class="profile-picture mt-2 mr-24 flex-shrink-0"
 					>
 					<div class="flex-grow-1">
 						<div class="mb-4">
 							<span class="font-weight-bold">{{ comment.user.name }}</span>
+							<span
+								v-if="comment.user.is_host"
+								class="ml-4 text-muted"
+							>Host</span>
 						</div>
 						<div>
 							<span>{{ comment.text }}</span>
@@ -50,7 +54,7 @@
 			<span
 				v-else
 				@click="login"
-				class="d-block p-30 font-weight-bold text-center"
+				class="d-block p-30 font-weight-bold text-center bg-white"
 			>Sign in to chat</span>
 		</div>
 	</div>
@@ -106,7 +110,7 @@
 				if (! this.isUserAuthenticated) { return; }
 
 				axios
-					.post(process.env.MIX_APP_URL + '/w/api/broadcasts/' + this.broadcastId + '/comments', {
+					.post('/w/api/broadcasts/' + this.broadcastId + '/comments', {
 						commentId: this.newCommentId,
 						text: this.newComment,
 						isHost: this.isUserHost

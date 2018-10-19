@@ -1,5 +1,5 @@
 <template>
-	<div class="d-flex flex-column flex-grow-1 align-items-center justify-content-center">
+	<div class="d-flex px-30 flex-column flex-grow-1 align-items-center justify-content-center">
 		<h1>Reset Password</h1>
 		<form
 			v-on:submit.prevent="resetPassword"
@@ -78,7 +78,7 @@
 				if (! this.isFormValid()) { return; }
 
 				axios
-					.post(process.env.MIX_APP_URL + '/w/api/password/reset', {
+					.post('/w/api/password/reset', {
 						email: this.email,
 						password: this.password,
 						password_confirmation: this.confirmPassword,

@@ -1,42 +1,43 @@
 <template>
-	<div class="container-fluid px-30 px-lg-60">
-		<div class="row justify-content-center">
-			<div class="col">
-				<h1 class="py-60 huge text-md-center">Each Tuesday we<br class="d-none d-md-block"><span class="d-md-none">&nbsp;</span>publish a new sermon.</h1>
+	<div class="container-fluid px-0 px-md-15 px-lg-45">
+		<div class="row no-gutters">
+			<div class="col col-xl-10 offset-xl-1 px-30 px-md-15">
+				<h1 class="py-45 huge text-center">Each Tuesday we<br class="d-none d-md-block"><span class="d-md-none">&nbsp;</span>publish a new<br>sermon.</h1>
 			</div>
 		</div>
-		<div class="row">
-			<div class="col-1 d-none d-xl-block">
-				<span class="small line-height-1 text-vertical text-uppercase">
-					<span class="d-block">Today at 3:00 pm</span>
+		<div class="row no-gutters">
+<!-- 			<div class="col-1 d-none d-xl-block">
+				<span class="small line-height-1 text-vertical font-weight-bold">
+					<span class="mb-32">Facebook</span>
+					<span class="mb-32">Instagram</span>
 					<span class="d-block pr-4">is the next broadcast</span>
 				</span>
-			</div>
-			<div class="col-12 col-xl-10">
-				<div class="row">
+			</div> -->
+			<div class="col col-xl-10 offset-xl-1">
+				<div class="row no-gutters">
 					<div
 						v-for="sermon in sermons"
-						v-bind:key="sermon.id"
-						v-on:click="openSermon(sermon.id)"
-						class="col-12 col-md-6"
+						:key="sermon.id"
+						@click="openSermon(sermon.id)"
+						class="col-12 col-md-6 px-md-15"
 					>
-						<div class="mb-40 clickable">
+						<div class="mb-60 clickable">
 							<img v-bind:src="sermon.image" class="w-100">
-							<span class="d-block pt-40 text-center">{{ sermon.title }}</span>
+							<div class="ml-30 ml-md-0">
+								<span class="d-block pt-20 xlarge font-weight-bold">{{ sermon.title }}</span>
+								<span class="small text-muted">September 14, 2018</span>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-<!-- 			<div class="col-1 d-none d-xl-block">
-				<div class="w-100 h-100 bg-warning">4</div>
-			</div> -->
 		</div>
-		<div class="row">
+		<div class="row no-gutters">
 			<div class="col-12 my-30 text-center">
 				<span
 					v-if="showLoadMoreButton"
 					v-on:click="loadSermons"
-					class="d-inline-block px-48 py-20 font-weight-bold text-white bg-black"
+					class="d-inline-block px-48 py-20 font-weight-bold text-white bg-black clickable"
 				>Load more</span>
 				<span v-else>That's all the sermons.</span>
 			</div>
@@ -49,7 +50,7 @@
 		data: function() {
 			return {
 				sermons: [],
-				firstPage: process.env.MIX_APP_URL + '/w/api/sermons/',
+				firstPage: '/w/api/sermons/',
 				nextPage: null,
 				showLoadMoreButton: false
 			}

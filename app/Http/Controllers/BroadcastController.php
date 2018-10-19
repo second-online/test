@@ -4,22 +4,53 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Broadcast;
-use Auth;
+use App\Sermon;
 
 class BroadcastController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Return the broadcast schedule.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        // show broadcast schedule
-        //latest('starts_at')
         $broadcasts = Broadcast::where('enabled', 1)
-            ->orderBy('starts_at')
+            ->oldest('starts_at')
             ->get();
+
+        $firstDate = $broadcasts->first()->starts_at;
+        // Subtract a week so that the sermon's publish_on date is in range.
+        $firstDate->subWeek();
+
+        $lastDate = $broadcasts->last()->starts_at;
+
+        $sermons = Sermon::select('title', 'publish_on')
+            ->where('publish_on', '>', $firstDate)
+            ->where('publish_on', '<=', $lastDate)
+            ->oldest('publish_on')
+            ->get();
+
+        //$sermons = $sermons->reverse()->values();
+
+        $broadcasts = $broadcasts->map(function($broadcast, $key) use ($sermons) {
+            if ($broadcast->live) {
+                return $broadcast;
+            }
+
+            $sermon = $sermons->first(function($sermon, $key) use ($broadcast) {
+                $broadcastStartsAt = $broadcast->starts_at;
+                $sermonStartDate = $sermon->publish_on;
+                $sermonEndDate = $sermonStartDate->copy()->addWeek();
+
+                return $broadcastStartsAt >= $sermonStartDate
+                    && $broadcastStartsAt < $sermonEndDate;
+            });
+
+            $broadcast->name = is_null($sermon) ? 'TBA' : $sermon->title;
+
+            return $broadcast;
+        });
 
         return response()->json($broadcasts);
     }

@@ -41,11 +41,7 @@ textarea {
 	-webkit-font-feature-settings: inherit;
 	font-feature-settings: inherit;
 	border: 1px solid red;
-	background: none;
-}
-
-textarea:focus {
-	background: none;
+	background: green;
 }
 
 a:hover {
@@ -92,7 +88,8 @@ textarea::placeholder {
 }
 
 .overflow-y {
-	overflow-y: auto;
+	overflow-y: scroll;
+	-webkit-overflow-scrolling: touch;
 }
 
 .mh-0 {
@@ -139,6 +136,7 @@ small,
 	font-size: 10.5vw;
 	font-weight: 800;
 	line-height: 1.1;
+	letter-spacing: -.1rem;
 }
 
 @include media-breakpoint-up(md) {
@@ -161,6 +159,10 @@ small,
 	background: none;
 }
 
+.form-control:focus {
+	background: none;
+}
+
 .comment-box {
 	min-height: $header-height;
 	max-height: 40%;
@@ -168,8 +170,8 @@ small,
 
 .profile-picture {
 	display: block;
-	width: $spacer * 2.25;
-	height: $spacer * 2.25;
+	width: $spacer * 2.625;
+	height: $spacer * 2.625;
 	background: #aaa;
 	border-radius: 50%;
 }
@@ -222,6 +224,10 @@ header,
 	height: $header-height;
 }
 
+header {
+	height: 7.5rem;
+}
+
 header div {
 	 flex-basis: 0;
 }
@@ -246,8 +252,9 @@ header div {
 }
 
 .logo {
-	font-size: $font-size-x-lg;
-	font-weight: bold;
+	font-size: $font-size-lg;
+	font-weight: $font-weight-bold;
+	letter-spacing: -.025rem;
 	z-index: 102;
 }
 
@@ -263,7 +270,7 @@ header div {
 .menu-toggle::before,
 .menu-toggle::after {
 	position: absolute;
-	top: 12px;
+	top: 11px;
 	right: 0;
 	left: 0;
 	height: 2px;
@@ -275,7 +282,7 @@ header div {
 
 .menu-toggle::after {
 	top: auto;
-	bottom: 12px;
+	bottom: 11px;
 }
 
 .menu-toggle.activated::before {
@@ -389,7 +396,7 @@ header div {
 
 .latest-sermon {
 	position: relative;
-	height:	calc(100vh - 5rem);
+	height:	calc(100vh - 7.5rem);
 	background: $black;
 	overflow: hidden;
 }

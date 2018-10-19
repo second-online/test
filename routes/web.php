@@ -53,6 +53,8 @@ Route::get('role', function() {
 
 Route::group(['prefix' => 'w/api'], function() { 
 
+	Route::get('home', 'HomeController@index');
+
 	Route::resource('sermons', 'SermonController')->only([
 	    'index', 'show'
 	]);
@@ -104,40 +106,58 @@ Route::get('password/reset/{token}', 'SPAController@index')->name('password.rese
 
 Route::get('test', function() {
 
-	$date = Carbon::createFromFormat('Y-m-d H:i:s', '2018-10-10 00:00:00');
-	$date->tz('America/Chicago');
+	// $date = Carbon::now();
 
-	var_dump($date);
+	// $date = Carbon::createFromFormat('Y-m-d H:i:s', '2018-10-10 00:00:00');
 
-	$date->subWeek();
-
-	var_dump($date);
-
-	die;
+	// echo $date->dayOfWeekIso;
 
 
-    $broadcast = Broadcast::where('enabled', 1)
+    $broadcasts = Broadcast::where('enabled', 1)
         ->oldest('starts_at')
-        ->first();
+        ->get();
 
-    $broadcast->configure();
+    $firstDate = $broadcasts->first()->starts_at;
+    // Subtract a week so that the sermon's publish_on date is in range.
+    $firstDate->subWeek();
+
+    $lastDate = $broadcasts->last()->starts_at;
+
+    $sermons = Sermon::select('title', 'publish_on')
+    	->where('publish_on', '>', $firstDate)
+    	->where('publish_on', '<=', $lastDate)
+    	->oldest('publish_on')
+    	->get();
+
+    $sermons = $sermons->reverse()->values();
 
 
-    if (! isset($broadcast->sermon)) {
-    	$sermon = $broadcast->loadSermon();
+    $broadcasts = $broadcasts->map(function($broadcast, $key) use ($sermons) {
+    	if ($broadcast->live) {
+    		return $broadcast;
+    	}
 
-    	$notes = $sermon->notes;
+    	//sermon publish_on <= broadcast start_at
+    	$sermon = $sermons->first(function($sermon, $key) use ($broadcast) {
+    		$broadcastStartsAt = $broadcast->starts_at;
+    		$sermonStartDate = $sermon->publish_on;
+    		$sermonEndDate = $sermonStartDate->copy()->addWeek();
 
-    	echo $notes;
-    }
+    		return $broadcastStartsAt >= $sermonStartDate
+    			&& $broadcastStartsAt < $sermonEndDate;
+    	});
 
-	// $sermon = Sermon::find(1);
+    	$broadcast->name = is_null($sermon) ? 'TBA' : $sermon->title;
 
-	// $sermon->description = '<h1>haha what up</h1><p>story of my life..</p><script>alert("hacked")</script>';
+    	return $broadcast;
+    });
 
-	// $sermon->save();
+    return response()->json($broadcasts);
 
-	// echo $sermon->description;
+
+	// $date = Carbon::createFromFormat('Y-m-d H:i:s', '2018-10-10 00:00:00');
+	// $date->tz('America/Chicago');
+
 });
 
 Route::get('vimeo', function() {
@@ -158,11 +178,11 @@ Route::get('vimeo', function() {
 	$context = stream_context_create($opts);
 
 	// Open the file using the HTTP headers set above
-	$response = json_decode(file_get_contents('https://api.vimeo.com/me/videos?per_page=10&page=1', true, $context));
+	$response = json_decode(file_get_contents('https://api.vimeo.com/me/videos?per_page=100&page=1', true, $context));
 
 	$videos = $response->data;
 
-	$date = Carbon::createFromFormat('Y-m-d H:i:s', '2018-10-10 00:00:00');
+	$date = Carbon::createFromFormat('Y-m-d H:i:s', '2018-10-17 00:00:00');
 
 	foreach ($videos as $video) {
 		if ($video->duration < 300)

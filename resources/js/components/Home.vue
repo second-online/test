@@ -1,44 +1,64 @@
 <template>
-	<div class="container-fluid p-0 bg-light-grey">
-<!-- 		Homepage
-		<router-link v-bind:to="{ name: 'broadcast', params: { broadcast_id: 3} }">Broadcast</router-link>
-		<router-link v-bind:to="{ name: 'sermons' }">Sermons</router-link>
-		<router-link v-bind:to="{ name: 'host' }">Host</router-link> -->
-		<div class="latest-sermon d-flex flex-grow-1">
-			<div class="row no-gutters">
-				<div class="col-6 d-flex mb-60 flex-column move-up">
+	<div class="container-fluid p-0">
+		<div class="latest-sermon d-flex mb-60 flex-grow-1">
+			<div
+				v-if="hasBroadcastSermonLoaded"
+				class="row no-gutters"
+			>
+				<div class="col-10 col-lg-6 d-flex mb-60 flex-column move-up">
 					<div class="d-flex ml-30 ml-md-60 flex-column justify-content-center flex-grow-1">
-						<h1
-							v-if="hasBroadcastSermonLoaded"
-							class="huge text-white"
-						>{{ broadcast.sermon.title }}</h1>
+						<h1 class="huge text-white">{{ broadcast.sermon.title }}</h1>
 						<span class="text-muted">Today at 3:00 pm<br>is our next broadcast</span>
 					</div>
-					<span class="d-inline-block ml-30 ml-md-60 pb-4 align-self-start text-white font-weight-bold text-uppercase border-bottom-heavy">View Schedule</span>
+					<router-link
+						v-if="broadcastOpen"
+						:to="{ name: 'broadcast', params: { broadcast_id: broadcast.id } }"
+						class="d-inline-block ml-30 ml-md-60 pb-10 align-self-start text-white font-weight-bold text-uppercase border-bottom-heavy"
+					>
+						Join In Progress Broadcast
+					</router-link>
+					<router-link
+						v-else
+						:to="{ name: 'schedule' }"
+						class="d-inline-block ml-30 ml-md-60 pb-10 align-self-start text-white font-weight-bold text-uppercase border-bottom-heavy"
+					>View Broadcast Schedule</router-link>
 				</div>
 				<div class="col-7 offset-5 col-lg-4 offset-lg-4 sermon-image-container mb-lg-60">
-					<img
-						v-if="hasBroadcastSermonLoaded"
-						:src="broadcast.sermon.image"
-					>
+					<img :src="broadcast.sermon.image">
 				</div>
-	 			<div class="col-3 offset-3 d-none d-lg-flex flex-column py-60 pr-30 pr-md-60 move-up">
-	 				<div class="flex-grow-1">
+	 			<div class="col-3 offset-3 d-none d-lg-flex align-items-end py-60 pr-30 pr-md-60 move-up">
+<!-- 	 				<div class="flex-grow-1">
 	 					<span class="d-block text-white font-weight-bold">Speaker</span>
 	 					<span class="d-block mb-48 text-muted">Pontius Pilate</span>
-	 					<span class="d-block text-white font-weight-bold">Series</span>
-	 					<span class="d-block mb-48 text-muted">Beatitudes</span>
 	 					<span class="d-block text-white font-weight-bold">Broadcasts</span>
-	 					<span
-	 						v-if="hasBroadcastSermonLoaded"
-	 						class="d-block text-muted">{{ broadcastDates }}
-	 					</span>
-	 				</div>
-					<p
-						v-if="hasBroadcastSermonLoaded"
-						class="mb-0 text-muted"
-					>{{ broadcast.sermon.description }}</p>
+	 					<span class="d-block text-muted">{{ broadcastDates }}</span>
+	 				</div> -->
+					<p class="mb-0 text-muted">{{ broadcast.sermon.description }}</p>
 				</div>				
+			</div>
+		</div>
+		<div class="">
+			<div class="row no-gutters">
+				<div class="col col-xl-10 offset-xl-1">
+					<h2 class="px-30 px-md-60">Recent Sermons</h2>
+					<div class="row px-md-45 no-gutters">
+						<div
+							v-for="sermon in sermons"
+							:key="sermon.id"
+							class="col-12 col-md-6 px-md-15"
+						>
+							<div class="mb-60 clickable">
+								<router-link :to="{ name: 'sermon', params: { sermon_id: sermon.id }}">
+									<img v-bind:src="sermon.image" class="w-100">
+									<div class="ml-30 ml-md-0">
+										<span class="d-block pt-20 xlarge font-weight-bold">{{ sermon.title }}</span>
+										<span class="small text-muted">September 14, 2018</span>
+									</div>
+								</router-link>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -48,7 +68,8 @@
 	export default {
 		data: function() {
 			return {
-				broadcast: {}
+				broadcast: {},
+				sermons: []
 			}
 		},
 		computed: {
@@ -78,13 +99,17 @@
 				const ends = moment.add(1, 'weeks').format('MMM D');
 
 				return starts + ' - ' + ends;
+			},
+			broadcastOpen: function() {
+				return this.broadcast.status == 'broadcast_open' || this.broadcast.status == 'broadcast_in_progress';
 			}
 		},
 		created: function() {
 			axios
-				.get(process.env.MIX_APP_URL + '/w/api/broadcasts/next')
+				.get('/w/api/home')
 				.then(response => {
-					this.broadcast = response.data;
+					this.broadcast = response.data.broadcast;
+					this.sermons = response.data.sermons;
 				})
 				.catch(error => {
 

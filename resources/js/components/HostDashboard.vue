@@ -1,8 +1,12 @@
 <template>
 	<div class="d-flex no-gutters flex-grow-1">
-		<div class="d-flex col-4 flex-column flex-grow-1">
+		<div class="d-flex col-4 flex-column flex-grow-1 bg-black">
 			<div class="bar px-30 px-md-40 d-flex align-items-center flex-shrink-0">
-				<span class="menu-toggle"></span>
+				<router-link
+					v-bind:to="{ name: 'home' }"
+					class="text-white"
+				>Back</router-link>
+				<!-- <span class="menu-toggle"></span> -->
 			</div>
 			<vimeo-player 
 				v-if="videoId !== null"

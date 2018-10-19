@@ -35,8 +35,7 @@ $spacers: map-merge(
 
 
 // Typography
-$font-family-sans-serif: "Larsseit", sans-serif;
-// $font-family-sans-serif: "Helvetica", sans-serif;
+$font-family-sans-serif: Helvetica,Arial,sans-serif; 
 $font-size-xx-sm: 0.625rem; 
 $font-size-x-sm: 0.75rem;  
 $font-size-sm:   0.8125rem;
@@ -55,12 +54,13 @@ $headings-line-height: 1.5;
 $headings-font-weight: $font-weight-bold;
 
 $h1-font-size: 1.875rem;
+$h2-font-size: 1.5rem;
 
 
 // Colors
 $white: #fff;
 $black: #080808;
-$light-grey: #f2f2f2;
+$light-grey: #f6f6f6;
 $red: #ef5858;
 
 $theme-colors: (

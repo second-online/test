@@ -1,13 +1,23 @@
 <template>
-	<header class="d-flex px-30 px-md-60 flex-shrink-0 align-items-center">
-		<div class="flex-grow-1">
+	<header class="d-flex px-30 px-lg-60 flex-shrink-0 align-items-center">
+<!-- 		<div class="d-flex flex-grow-1 align-items-center">
+			<router-link
+				v-bind:to="{ name: 'sermons' }"
+				class="d-inline-block mr-60"
+			>Sermons</router-link>
+			<router-link
+				v-bind:to="{ name: 'schedule' }"
+				class="d-inline-block mr-60"
+			>Schedule</router-link>
+		</div> -->
+		<div class="d-flex flex-grow-1">
 			<router-link
 				v-bind:to="{ name: 'home' }"
-				class="logo"
+				class="logo line-height-1"
 			>Second Online Campus</router-link>
 		</div>
-		<!-- justify-content-lg-center -->
-		<div class="d-flex flex-md-grow-1 justify-content-end">
+		<!--  -->
+		<div class="d-flex flex-grow-1 justify-content-end justify-content-md-center">
 			<span
 				@click="toggleMenu"
 				v-bind:class="{ activated: showMenu }"
@@ -18,12 +28,12 @@
 				class="menu overflow-hidden"
 			>	
 				<div class="h-100 overflow-y">
-					<ul>
+					<ul class="px-30">
 						<li @click="toggleMenu"><router-link v-bind:to="{ name: 'home' }">Home</router-link></li>
-						<li @click="toggleMenu"><router-link v-bind:to="{ name: 'sermons' }">Sermons</router-link></li>
 						<li @click="toggleMenu"><router-link v-bind:to="{ name: 'schedule' }">Schedule</router-link></li>
-						<li><a href="https://pushpay.com/g/secondhouston?src=hpp" target="_blank">Give</a></li>
+						<li @click="toggleMenu"><router-link v-bind:to="{ name: 'sermons' }">Sermons</router-link></li>
 						<li @click="toggleMenu"><router-link v-bind:to="{ name: 'contact' }">Contact</router-link></li>
+						<li><a href="https://pushpay.com/g/secondhouston?src=hpp" target="_blank">Give</a></li>
 						<li
 							v-if="isUserAuthenticated"
 							@click="toggleMenu"
@@ -31,21 +41,23 @@
 							@click="logOut"
 							class="clickable"
 						>Logout</span></li>
-						<li @click="toggleMenu"><router-link v-bind:to="{ name: 'host' }">Host</router-link></li>
+						<li
+							v-if="isUserHost"
+							@click="toggleMenu"
+						><router-link v-bind:to="{ name: 'host' }">Host</router-link></li>
 					</ul>
 				</div>
 			</div>
 		</div>
-		<!-- dg-lg-none -->
-		<div class="d-none flex-grow-1 text-right">
+		<div class="d-none d-md-flex flex-grow-1 justify-content-end">
 			<span
 				v-if="isUserAuthenticated"
-				class="user xlarge font-weight-bold"
+				class="user large font-weight-bold"
 			>{{ user.name }}</span>
 			<router-link
 				v-else
 				v-bind:to="{ name: 'login', query: { redirect: $route.path } }"
-				class="xlarge font-weight-bold"
+				class="large font-weight-bold"
 			>Login</router-link>
 		</div>
 	</header>
@@ -67,7 +79,8 @@
 				'user',
 			]),
 			...mapGetters([
-				'isUserAuthenticated'
+				'isUserAuthenticated',
+				'isUserHost'
 			])
 		},
 		methods: {

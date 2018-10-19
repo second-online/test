@@ -4,16 +4,16 @@
 			:id="scrollContainerId"
 			class="d-flex flex-column flex-grow-1 border-bottom overflow-y"
 		>	
-			<div class="pt-40">
+			<div class="pt-36">
 				<div
 					v-for="(comment, index) in comments"
 					:key="comment.id"
 					:id="'comment-' + comment.id"
-					class="d-flex px-30 px-md-40 pb-40 flex-shrink-0"
+					class="d-flex px-30 px-md-40 pb-36 flex-shrink-0"
 				>	
 					<img
 						:src="fakeUser(index).profile_picture"
-						class="profile-picture mt-5 mr-24 flex-shrink-0"
+						class="profile-picture mt-2 mr-24 flex-shrink-0"
 					>
 					<div class="flex-grow-1">
 						<div class="d-flex align-items-center justify-content-between">

@@ -1,7 +1,7 @@
 <template>
 	<div class="d-flex flex-column flex-md-row flex-grow-1">	 	 
 		<div class="position-relative d-flex flex-column flex-shrink-0 flex-md-shrink-1 flex-md-grow-1 bg-black justify-content-center video-content">
-			<div class="d-flex mx-30 mx-md-60 align-items-center header video-header">
+			<div class="d-flex mx-30 mx-md-60 flex-shrink-0 align-items-center bar video-header">
 				<span
 					@click="goBack"
 					class="close"
@@ -60,7 +60,7 @@
 		},
 		created: function() {
 			axios
-				.get(process.env.MIX_APP_URL + '/w/api/sermons/' + this.$route.params.sermon_id)
+				.get('/w/api/sermons/' + this.$route.params.sermon_id)
 				.then(response => {
 					this.sermon = response.data;
 					this.videoLoaded = true;
