@@ -12,12 +12,12 @@
 					class="d-flex px-30 px-md-40 pb-36 flex-shrink-0"
 				>	
 					<img
-						:src="fakeUser(index).profile_picture"
+						:src="comment.user.profile_picture"
 						class="profile-picture mt-2 mr-24 flex-shrink-0"
 					>
 					<div class="flex-grow-1">
 						<div class="d-flex align-items-center justify-content-between">
-							<span class="mb-4 font-weight-bold">{{ fakeUser(index).name }}</span>
+							<span class="mb-4 font-weight-bold">{{ comment.user.name }}</span>
 							<!-- <span class="small" style="color: #bbb">{{ timeAgo(comment.created_at) }}</span> -->
 						</div>
 						<div>
@@ -62,37 +62,6 @@
 				showLoadMore: true,
 				isLoading: false,
 				hosts: [],
-				users: [
-					{
-						id: 10,
-						name: 'Zheyna Rynzhuk',
-						profile_picture: 'https://cdn.dribbble.com/users/501822/avatars/normal/7ce826e27de30a8399175a9eb0284f5a.jpg?1453326105'
-					},
-					{
-						id: 11,
-						name: 'Giga Tamarashvili',
-						profile_picture: 'https://cdn.dribbble.com/users/952958/avatars/normal/0101aa0aecfb782643de2075265cf6ac.png?1484162300'
-					},
-					{
-						id: 12,
-						name: 'Eric Hoffman',
-						profile_picture: 'https://cdn.dribbble.com/users/1061799/avatars/normal/f170b323a5dfbd05cd1cafe6bcebcd03.jpg?1487686545'
-					},
-					{
-						id: 13,
-						name: 'Parham Marandi',
-						profile_picture: 'https://cdn.dribbble.com/users/1061799/avatars/normal/f170b323a5dfbd05cd1cafe6bcebcd03.jpg?1487686545'
-					}, {
-						id: 14,
-						name: 'Martin Ranelli',
-						profile_picture: 'https://cdn.dribbble.com/users/2407/avatars/normal/92459ee3572492f7e2d7f3923a5432ac.jpg?1417755918'
-					},
-					{
-						id: 15,
-						name: 'Christopher Reath',
-						profile_picture: 'https://cdn.dribbble.com/users/237483/avatars/normal/28f588cf80349d9c9c54c02d473060a4.png?1528765233'
-					}
-				]
 			}
 		},
 		computed: {
@@ -115,16 +84,13 @@
 			}
 		},
 		methods: {
-			fakeUser: function(index) {
-				return this.users[Math.floor((Math.random() * this.users.length))];
-			},
 			submitComment: function(e) {
 				if (this.isLoading) { return; }
 
 				if (this.newComment.length < 1) { return; }
 
 				axios
-					.post(process.env.MIX_APP_URL + '/w/api/host/comments', {
+					.post('/w/api/host/comments', {
 						commentId: this.newCommentId,
 						text: this.newComment
 					})
@@ -159,7 +125,7 @@
 			},
 			loadMore: function() {
 				axios
-					.get(process.env.MIX_APP_URL + '/w/api/host/comments?maxid=' + this.maxId)
+					.get('/w/api/host/comments?maxid=' + this.maxId)
 					.then(response => {
 						if (response.data.comments.length < response.data.limit) {
 							this.showLoadMore = false;
@@ -180,8 +146,6 @@
 			}
 		},
 		created: function() {
-			
-			console.log(this.$_helperMixin_getCookie('the-cookie'));
 
 			Echo.connector.pusher.config.auth.headers['X-XSRF-TOKEN'] = this.$_helperMixin_getXSRFCookie();
 
