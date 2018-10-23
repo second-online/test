@@ -43160,7 +43160,11 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 	},
 	data: function data() {
 		return {
+<<<<<<< HEAD
 			showBroadcastPopup: false,
+=======
+			showBroadcastPopup: true,
+>>>>>>> host-chat-fix
 			broadcast: null
 		};
 	},
@@ -49303,6 +49307,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 			cachedComment: '',
 			showLoadMore: true,
 			isLoading: false,
+<<<<<<< HEAD
 			hosts: [],
 			users: [{
 				id: 10,
@@ -49329,6 +49334,9 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 				name: 'Christopher Reath',
 				profile_picture: 'https://cdn.dribbble.com/users/237483/avatars/normal/28f588cf80349d9c9c54c02d473060a4.png?1528765233'
 			}]
+=======
+			hosts: []
+>>>>>>> host-chat-fix
 		};
 	},
 	computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_3_vuex__["e" /* mapState */])(['user']), {
@@ -49348,9 +49356,12 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 		}
 	},
 	methods: {
+<<<<<<< HEAD
 		fakeUser: function fakeUser(index) {
 			return this.users[Math.floor(Math.random() * this.users.length)];
 		},
+=======
+>>>>>>> host-chat-fix
 		submitComment: function submitComment(e) {
 			var _this = this;
 
@@ -49362,7 +49373,11 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 				return;
 			}
 
+<<<<<<< HEAD
 			axios.post("http://second.test" + '/w/api/host/comments', {
+=======
+			axios.post('/w/api/host/comments', {
+>>>>>>> host-chat-fix
 				commentId: this.newCommentId,
 				text: this.newComment
 			}).then(function (response) {
@@ -49395,7 +49410,11 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 		loadMore: function loadMore() {
 			var _this2 = this;
 
+<<<<<<< HEAD
 			axios.get("http://second.test" + '/w/api/host/comments?maxid=' + this.maxId).then(function (response) {
+=======
+			axios.get('/w/api/host/comments?maxid=' + this.maxId).then(function (response) {
+>>>>>>> host-chat-fix
 				var _comments;
 
 				if (response.data.comments.length < response.data.limit) {
@@ -49412,8 +49431,11 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 	created: function created() {
 		var _this3 = this;
 
+<<<<<<< HEAD
 		console.log(this.$_helperMixin_getCookie('the-cookie'));
 
+=======
+>>>>>>> host-chat-fix
 		Echo.connector.pusher.config.auth.headers['X-XSRF-TOKEN'] = this.$_helperMixin_getXSRFCookie();
 
 		Echo.join('host.chat').here(function (users) {
@@ -49491,7 +49513,11 @@ var render = function() {
                 [
                   _c("img", {
                     staticClass: "profile-picture mt-2 mr-24 flex-shrink-0",
+<<<<<<< HEAD
                     attrs: { src: _vm.fakeUser(index).profile_picture }
+=======
+                    attrs: { src: comment.user.profile_picture }
+>>>>>>> host-chat-fix
                   }),
                   _vm._v(" "),
                   _c("div", { staticClass: "flex-grow-1" }, [
@@ -49503,7 +49529,11 @@ var render = function() {
                       },
                       [
                         _c("span", { staticClass: "mb-4 font-weight-bold" }, [
+<<<<<<< HEAD
                           _vm._v(_vm._s(_vm.fakeUser(index).name))
+=======
+                          _vm._v(_vm._s(comment.user.name))
+>>>>>>> host-chat-fix
                         ])
                       ]
                     ),
@@ -49583,7 +49613,11 @@ var render = function() {
         _vm._v(" "),
         _vm.showNotes
           ? _c("div", {
+<<<<<<< HEAD
               staticClass: "p-30 p-md-40 overflow-y",
+=======
+              staticClass: "p-30 p-md-40 text-white overflow-y",
+>>>>>>> host-chat-fix
               domProps: { innerHTML: _vm._s(_vm.broadcast.sermon.notes) }
             })
           : _vm._e()

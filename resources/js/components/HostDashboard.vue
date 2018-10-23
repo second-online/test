@@ -19,7 +19,7 @@
 			<div
 				v-if="showNotes"
 				v-html="broadcast.sermon.notes"
-				class="p-30 p-md-40 overflow-y"
+				class="p-30 p-md-40 text-white overflow-y"
 			></div>
 		</div>
 		<div class="d-flex flex-column col-4 border-left border-right bg-light-grey">
