@@ -27,7 +27,7 @@
 		},
 		data: function() {
 			return {
-				showBroadcastPopup: true,
+				showBroadcastPopup: false,
 				broadcast: null
 			}
 		},
