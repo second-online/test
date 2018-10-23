@@ -74,7 +74,7 @@
 		},
 		beforeRouteEnter (to, from, next) {
 			axios
-				.get(process.env.MIX_APP_URL + '/w/api/host/dashboard')
+				.get('/w/api/host/dashboard')
 				.then(response => {
 					next(vm => vm.setData(response.data));
 				})

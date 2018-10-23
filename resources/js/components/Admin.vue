@@ -31,7 +31,7 @@
 				console.log(this.content);
 
 				axios
-					.post(process.env.MIX_APP_URL + '/w/api/admin/sermons/1/edit', {
+					.post('/w/api/admin/sermons/1/edit', {
 						_method: 'PUT',
 						description: this.content
 					})
