@@ -56,7 +56,7 @@ window.Echo = new Echo({
     key: process.env.MIX_PUSHER_APP_KEY,
     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
     encrypted: true,
-    authEndpoint: process.env.MIX_APP_URL + '/w/api/broadcasting/auth'
+    authEndpoint: '/w/api/broadcasting/auth'
 });
 
 window.Vimeo = Vimeo;
