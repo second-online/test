@@ -191,7 +191,9 @@ class Broadcast extends Model
             return;
         }
 
-        $this->loadSermon();
+        if (!$this->live) {
+            $this->loadSermon();
+        }
 
         if ($startsAt->isFuture()) {
             $this->loadTrailer();
@@ -201,7 +203,7 @@ class Broadcast extends Model
         }
 
         $durationInSeconds = $this->live ? self::LIVE_BROADCAST_DURATION : $this->sermon->duration;
-
+        
         $endsAt = $this->endsAt($durationInSeconds);
 
         if ($endsAt->isFuture()) {
@@ -211,6 +213,7 @@ class Broadcast extends Model
             return;
         }
 
+        $this->time_elapsed = $durationInSeconds;
         $this->status = self::BROADCAST_ENDED;
     }
 }

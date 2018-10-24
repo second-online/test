@@ -6,10 +6,7 @@
 		>
 			<slot/>
 
-			<div
-				v-if="showChat"
-				class="px-30 px-md-40 pt-36"
-			>
+			<div class="px-30 px-md-40 pt-36">
 				<div
 					v-for="comment in comments"
 					:key="comment.id"
@@ -34,16 +31,8 @@
 					</div>
 				</div>
 			</div>
-			<div
-				v-else
-				class="d-flex flex-grow-1 align-items-center justify-content-center"
-			>
-				<span class="text-muted">The chat is closed.</span>
-			</div>
 		</div>
-		<div 
-			v-if="showChat"
-		>
+		<div> <!-- Need to make this stick to bottom of browser in Firefox -->
 			<comment-form
 				v-if="isUserAuthenticated"
 				:value="newComment"
@@ -55,7 +44,7 @@
 				v-else
 				@click="login"
 				class="d-block p-30 font-weight-bold text-center bg-white"
-			>Sign in to chat</span>
+			>Login to chat</span>
 		</div>
 	</div>
 </template>
@@ -69,7 +58,6 @@
 	export default {
 		props: {
 			scrollContainerId: String,
-			showChat: Boolean,
 			broadcastId: Number
 		},
 		components: {
@@ -93,15 +81,6 @@
 				'isUserAuthenticated',
 				'isUserHost'
 			])
-		},
-		watch: {
-			showChat: function(value) {
-				if (value) {
-					this.enableChat();
-				} else {
-					this.disableChat();
-				}
-			}
 		},
 		methods: {
 			submitComment: function() {
@@ -144,28 +123,20 @@
 				this.newCommentId++;
 				this.isLoading = true;
 			},
-
 			login: function() {
 				this.$router.push({ name: 'login', query: { redirect: this.$route.path } });
-			},
-			enableChat: function() {
-				Echo.channel('broadcast.chat.' + this.broadcastId)
-					.listen('BroadcastCommentCreated', comment => {
-						this.$_chatMixin_publishComment(comment);
-				});			
-			},
-			disableChat: function() {
-				Echo.leave('broadcast.chat.' + this.broadcastId);
 			}
 		},
 		mounted: function() {
-			if (this.showChat) {
-				this.enableChat();
-			}
+			console.log('mounted-' + this.broadcastId);
+			Echo.channel('broadcast.chat.' + this.broadcastId)
+				.listen('BroadcastCommentCreated', comment => {
+					console.log('created');
+					this.$_chatMixin_publishComment(comment);
+			});	
 		},
 		beforeDestroy: function() {
-			this.disableChat();
-			// this.comments = null;
+			Echo.leave('broadcast.chat.' + this.broadcastId);
 		}
 	}
 </script>

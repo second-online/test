@@ -7,7 +7,7 @@
 					class="close"
 				></span>
 			</div>
-			<vimeo-player
+			<video-player-vimeo
 				v-if="videoLoaded"
 				:video-id="sermon.vimeo_id"
 				:autoplay="false"
@@ -30,11 +30,11 @@
 </template>
 
 <script>
-	import VimeoPlayer from '../components/VimeoPlayer'
+	import VideoPlayerVimeo from '../components/VideoPlayerVimeo'
 
 	export default {
 		components: {
-			VimeoPlayer
+			VideoPlayerVimeo
 		},
 		data: function() {
 			return {

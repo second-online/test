@@ -3,21 +3,29 @@
 		<div class="d-flex col-4 flex-column flex-grow-1 bg-black">
 			<div class="bar px-30 px-md-40 d-flex align-items-center flex-shrink-0">
 				<router-link
-					v-bind:to="{ name: 'home' }"
+					:to="{ name: 'home' }"
 					class="text-white"
 				>Back</router-link>
 				<!-- <span class="menu-toggle"></span> -->
 			</div>
-			<vimeo-player 
-				v-if="videoId !== null"
+
+			<video-player-vimeo 
+				v-if="isBroadcastLoaded && !broadcast.live"
 				:video-id="videoId"
 				:time-elapsed="timeElapsed"
-				:autoplay="autoplay"
-				@broadcast-ended="broadcastEnded"
 				class="video-container bg-black"
 			/>
+			<video-player-living-as-one
+				v-else-if="isBroadcastLoaded && broadcast.live"
+			>
+				<div
+					v-html="broadcast.embed_code"
+					class="video-container"
+				></div>
+			</video-player-living-as-one>
+
 			<div
-				v-if="showNotes"
+				v-if="isBroadcastLoaded && hasNotes"
 				v-html="broadcast.sermon.notes"
 				class="p-30 p-md-40 text-white overflow-y"
 			></div>
@@ -44,7 +52,7 @@
 				<span class="xlarge font-weight-bold">Broadcast chat</span>
 			</div>
 			<broadcast-chat
-				:show-chat="showChat"
+				v-if="isBroadcastLoaded && isBroadcastOpen"
 				:broadcast-id="broadcast.id"
 				scroll-container-id="broadcast-comments"
 				ref="broadcastChat"
@@ -54,22 +62,23 @@
 </template>
 
 <script>
-	import VimeoPlayer from '../components/VimeoPlayer'
+	import VideoPlayerVimeo from '../components/VideoPlayerVimeo'
+	import VideoPlayerLivingAsOne from '../components/VideoPlayerLivingAsOne'
 	import HostChat from '../components/HostChat'
 	import BroadcastChat from '../components/BroadcastChat'
 
 	export default {
 		components: {
-			VimeoPlayer,
+			VideoPlayerVimeo,
+			VideoPlayerLivingAsOne,
 			HostChat,
 			BroadcastChat
 		},
 		data: function() {
 			return {
-				broadcast: {},
+				broadcast: null,
 				hosts: [],
-				hostComments: [],
-				autoplay: true
+				hostComments: []
 			}
 		},
 		beforeRouteEnter (to, from, next) {
@@ -88,35 +97,31 @@
 		},
 		computed: {
 			videoId: function() {
-				if (typeof this.broadcast.status !== 'undefined') {
-					if (this.broadcast.status == 'broadcast_in_progress') {
-						this.autoplay = true;
-
-						return this.broadcast.sermon.vimeo_id;
-					} else {
-						this.autoplay = false;
-
-						return this.broadcast.trailer.link;
-					}
+				if (this.broadcast.status == 'broadcast_in_progress'
+					|| this.broadcast.status == 'broadcast_ended') {
+					return this.broadcast.sermon.vimeo_id;
+				} else {
+					return this.broadcast.trailer.link;
 				}
-
-				return null;				
 			},
 			timeElapsed: function() {
 				return this.broadcast.time_elapsed !== undefined ? this.broadcast.time_elapsed : 0;
 			},
-			showNotes: function() {
+			isBroadcastLoaded: function() {
+				if (this.hasOwnProperty('broadcast') 
+					&& this.broadcast !== null) {
+					return true;
+				}
+
+				return false;
+			},
+			hasNotes: function() {
 				return this.broadcast.sermon
 					? this.broadcast.sermon.notes ? true : false
 					: false;
 			},
-			showChat: function() {
-				if (typeof this.broadcast.status === 'undefined'
-					|| this.broadcast.status == 'broadcast_closed') { 
-					return false;
-				}
-
-				return true;
+			isBroadcastOpen: function() {
+				return this.broadcast.status != 'broadcast_closed' ? true : false;
 			}
 		},
 		methods: {
@@ -124,20 +129,20 @@
 				this.broadcast = data.broadcast;
 				this.hostComments = data.host_comments;
 
-				switch (this.broadcast.status) {
-					case 'broadcast_closed':
-						this.broadcastClosed();
-						break;
-					case 'broadcast_open':
-						this.broadcastOpen();
-						break;
-					case 'broadcast_in_progress':
-						this.broadcastInProgress();
-						break;
-					case 'broadcast_ended':
-						this.broadcastEnded();
-						break;
-				}
+				// switch (this.broadcast.status) {
+				// 	case 'broadcast_closed':
+				// 		this.broadcastClosed();
+				// 		break;
+				// 	case 'broadcast_open':
+				// 		this.broadcastOpen();
+				// 		break;
+				// 	case 'broadcast_in_progress':
+				// 		this.broadcastInProgress();
+				// 		break;
+				// 	case 'broadcast_ended':
+				// 		this.broadcastEnded();
+				// 		break;
+				// }
 			},
 	        broadcastClosed: function() {
 	        
@@ -148,9 +153,6 @@
 			broadcastInProgress: function() {
 			
 			},
-	        broadcastEnded: function() {
-	        
-	        },
 		},
 		beforeDestroy: function() {
 			// this.now= null,

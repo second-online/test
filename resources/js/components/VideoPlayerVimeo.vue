@@ -38,15 +38,8 @@
 					this.player.setCurrentTime(this.timeElapsed);
 			    }
 
-			    if (this.autoplay == true) {
-			    	this.player.setVolume(0);
-			    } else {
-			    	this.player.setVolume(1);
-			    }
-
-				// this.player.ready().then(() => {
-				// 	this.play();
-				// });
+			    // Change to 1
+			    this.player.setVolume(0);
 			},
 			loadNewVideo: function() {
 				this.player.destroy().then(() => {
