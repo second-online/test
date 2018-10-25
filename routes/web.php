@@ -174,7 +174,7 @@ Route::get('vimeo/{id}', function($id) {
 
 	$videos = $response->data;
 
-	$date = Carbon::createFromFormat('Y-m-d H:i:s', '2018-10-17 00:00:00');
+	$date = Carbon::createFromFormat('Y-m-d H:i:s', '2018-10-23 00:00:00');
 
 	foreach ($videos as $video) {
 		if ($video->duration < 300)

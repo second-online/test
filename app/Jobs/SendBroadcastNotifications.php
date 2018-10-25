@@ -59,7 +59,7 @@ class SendBroadcastNotifications
                 if (! $broadcast->live) { 
                     $broadcast->sermon = $sermon;
                 }
-                
+
                 $broadcast->loadTrailer();
                 $broadcast->status = Broadcast::BROADCAST_OPEN;
 

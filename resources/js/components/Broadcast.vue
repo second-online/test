@@ -1,6 +1,6 @@
 <template>
 	<div class="d-flex flex-column flex-md-row flex-grow-1">
-		<template v-if="isBroadcastOpen">
+		<template v-if="$_broadcastMixin_isBroadcastLoaded && $_broadcastMixin_isBroadcastOpen">
 			<div class="position-relative d-flex flex-column flex-shrink-0 flex-md-shrink-1 flex-md-grow-1 justify-content-center bg-black">
 				<div class="d-flex mx-30 mx-md-60 align-items-center flex-shrink-0 justify-content-between bar video-header">
 					<span
@@ -8,11 +8,20 @@
 						class="close"
 					></span>
 				</div>
+				<video-player-living-as-one
+					v-if="$_broadcastMixin_isBroadcastLive && $_broadcastMixin_isBroadcastInProgress"
+				>
+					<div
+						v-html="broadcast.embed_code"
+						class="px-0 px-lg-60"
+					></div>
+				</video-player-living-as-one>
 				<video-player-vimeo
-					:video-id="videoId"
-					:time-elapsed="timeElapsed"
+					v-else
+					:video-id="$_broadcastMixin_videoId"
+					:time-elapsed="$_broadcastMixin_timeElapsed"
 					class="px-0 px-lg-60"
-				/> 
+				/>
 			</div>
 			<broadcast-chat
 				:broadcast-id="broadcast.id"
@@ -21,29 +30,30 @@
 				class="video-sidebar bg-light-grey"
 			>		 
 				<div class="px-30 px-md-40 py-40 bg-white">
-					<template v-if="broadcast.live">
+					<template v-if="$_broadcastMixin_isBroadcastLive">
 						<h1>{{ broadcast.name }}</h1>
-						<p>Join us this morning as we're live from Woodway campus</p>
+						<p>{{ broadcast.description }}</p>
 					</template>
 					<template v-else>
 						<h1>{{ broadcast.sermon.title }}</h1>
 						<p>{{ broadcast.sermon.description }}</p>
-						<p
-							v-if="broadcast.sermon.notes"
-							@click="toggleNotes"
-							class="font-weight-bold clickable"
-						>
-							{{ showNotes ? 'Hide notes' : 'See notes' }}
-						</p>
-						<div
-							v-show="showNotes"
-							v-html="broadcast.sermon.notes"
-						></div>
+						<template v-if="$_broadcastMixin_hasNotes">
+							<p
+								@click="toggleNotes"
+								class="font-weight-bold clickable"
+							>
+								{{ showNotes ? 'Hide notes' : 'See notes' }}
+							</p>
+							<div
+								v-show="showNotes"
+								v-html="broadcast.sermon.notes"
+							></div>
+						</template>
 					</template>
 				</div>				 
 			</broadcast-chat>
 		</template>
-		<template v-if="isBroadcastClosed">
+		<template v-if="$_broadcastMixin_isBroadcastLoaded && $_broadcastMixin_isBroadcastClosed">
 			<span>{{ nextBroadcastTime }}</span>
 		</template>
 	</div>
@@ -51,17 +61,21 @@
 
 <script>
 	import VideoPlayerVimeo from '../components/VideoPlayerVimeo'
+	import VideoPlayerLivingAsOne from '../components/VideoPlayerLivingAsOne'
 	import BroadcastChat from '../components/BroadcastChat'
+	import broadcastMixin from '../mixins/broadcastMixin'
 
 	export default {
 		components: {
 			VideoPlayerVimeo,
+			VideoPlayerLivingAsOne,
 			BroadcastChat
 		},
+		mixins: [broadcastMixin],
 		data: function() {
 			return {
 				notes: null,
-				broadcast: {},
+				broadcast: null,
 				showNotes: false,
 				previousPage: null
 			}
@@ -70,35 +84,10 @@
 			next(vm => vm.setData(from));		
 		},
 		computed: {
-			videoId: function() {
-				if (this.broadcast.status == 'broadcast_in_progress'
-					|| this.broadcast.status == 'broadcast_ended') {
-					return this.broadcast.sermon.vimeo_id;
-				} else {
-					return this.broadcast.trailer.link;
-				}
-			},
-			timeElapsed: function() {
-				return this.broadcast.time_elapsed !== undefined ? this.broadcast.time_elapsed : 0;
-			},
 			nextBroadcastTime: function() {
 				return Moment.utc(this.broadcast.starts_at)
 					.local()
 					.format('dddd [at] h:mm a');
-			},
-			isBroadcastOpen: function() {
-				if (this.broadcast.status !== undefined &&
-					this.broadcast.status !== 'broadcast_closed') {
-					return true;
-				}
-				return false;
-			},
-			isBroadcastClosed: function() {
-				if (this.broadcast.status !== undefined &&
-					this.broadcast.status === 'broadcast_closed') {
-					return true;
-				}
-				return false;
 			}
 		},
 		methods: {
@@ -129,22 +118,7 @@
 			axios
 				.get('/w/api/broadcasts/' + this.$route.params.broadcast_id)
 				.then(response => {
-					const broadcast = response.data;
-
-					switch (broadcast.status) {
-						case 'broadcast_closed':
-							this.broadcastClosed(broadcast);
-							break;
-						case 'broadcast_open':
-							this.broadcastOpen(broadcast);
-							break;
-						case 'broadcast_in_progress':
-							this.broadcastInProgress(broadcast);
-							break;
-						case 'broadcast_ended':
-							this.broadcastOpen(broadcast);
-							break;
-					}					
+					this.broadcast = response.data;					
 				})
 				.catch(error => {
 					console.log(error);

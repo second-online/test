@@ -40,49 +40,25 @@
 			}
 		},
 		methods: {
-		    broadcastOpen: function(broadcast) {
+		    broadcastStatusChanged: function(broadcast) {
 		    	if ((this.$router.currentRoute.name == 'broadcast' 
 		    		&& this.$refs.router.broadcast.id == broadcast.id)
 		    		|| this.$router.currentRoute.name == 'host') {
 
-		    		this.$refs.router.broadcastOpen(broadcast);
-		    	} else {
-		    		// this.broadcast = broadcast;
-		    		// this.showBroadcastPopup = true;
+		    		this.$refs.router.$_broadcastMixin_broadcastStatusChanged(broadcast);
 		    	}
-		    },
-		    broadcastStarting: function(broadcast) {
-		    	if ((this.$router.currentRoute.name == 'broadcast'
-		    		&& this.$refs.router.broadcast.id == broadcast.id)
-		    		|| this.$router.currentRoute.name == 'host') {
-
-		    		this.$refs.router.broadcastInProgress(broadcast);
-		    	} else {
-		    		// this.broadcast = broadcast;
-		    		// this.showBroadcastPopup = true;
-		    	}
-		    },
-		    broadcastClosed: function(broadcast) {
-		    	if ((this.$router.currentRoute.name == 'broadcast'
-		    		&& this.$refs.router.broadcast.id == broadcast.id)
-		    		|| this.$router.currentRoute.name == 'host') {
-
-		    		this.$refs.router.broadcastClosed(broadcast);
-		    	}
-		    	// this.showBroadcastPopup = false;
-		    	// this.broadcast = null;
 		    }
 		},
 	    created: function() {
 			Echo.channel('main')
 				.listen('BroadcastOpen', data => {
-					this.broadcastOpen(data);
+					this.broadcastStatusChanged(data);
 				})
 				.listen('BroadcastStarting', data => {
-					this.broadcastStarting(data)
+					this.broadcastStatusChanged(data)
 				})
 				.listen('BroadcastClosed', data => {
-					this.broadcastClosed(data);
+					this.broadcastStatusChanged(data);
 				});
 	    }
 	}

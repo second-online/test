@@ -38,8 +38,7 @@
 					this.player.setCurrentTime(this.timeElapsed);
 			    }
 
-			    // Change to 1
-			    this.player.setVolume(0);
+			    this.player.setVolume(1);
 			},
 			loadNewVideo: function() {
 				this.player.destroy().then(() => {
@@ -48,19 +47,17 @@
 				    alert('Something went wrong. Reload the page.');
 				});
 
-			},
-			play: function() {
-				this.player.play().then(() => {
-					console.log('video played'); 
-
-					this.player.setCurrentTime(this.timeElapsed);
-				}).catch(function(error) {
-					alert('Something went wrong. Reload the page.');
-				});
 			}
 		},
 		mounted: function() {
 			this.loadVideo();
+		},
+		beforeDestroy: function() {
+			this.player.destroy().then(function() {
+			    // the player was destroyed
+			}).catch(function(error) {
+			    // an error occurred
+			});
 		}
 	}
 </script>

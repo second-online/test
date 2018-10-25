@@ -43124,42 +43124,22 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 		}
 	}),
 	methods: {
-		broadcastOpen: function broadcastOpen(broadcast) {
+		broadcastStatusChanged: function broadcastStatusChanged(broadcast) {
 			if (this.$router.currentRoute.name == 'broadcast' && this.$refs.router.broadcast.id == broadcast.id || this.$router.currentRoute.name == 'host') {
 
-				this.$refs.router.broadcastOpen(broadcast);
-			} else {
-				// this.broadcast = broadcast;
-				// this.showBroadcastPopup = true;
+				this.$refs.router.$_broadcastMixin_broadcastStatusChanged(broadcast);
 			}
-		},
-		broadcastStarting: function broadcastStarting(broadcast) {
-			if (this.$router.currentRoute.name == 'broadcast' && this.$refs.router.broadcast.id == broadcast.id || this.$router.currentRoute.name == 'host') {
-
-				this.$refs.router.broadcastInProgress(broadcast);
-			} else {
-				// this.broadcast = broadcast;
-				// this.showBroadcastPopup = true;
-			}
-		},
-		broadcastClosed: function broadcastClosed(broadcast) {
-			if (this.$router.currentRoute.name == 'broadcast' && this.$refs.router.broadcast.id == broadcast.id || this.$router.currentRoute.name == 'host') {
-
-				this.$refs.router.broadcastClosed(broadcast);
-			}
-			// this.showBroadcastPopup = false;
-			// this.broadcast = null;
 		}
 	},
 	created: function created() {
 		var _this = this;
 
 		Echo.channel('main').listen('BroadcastOpen', function (data) {
-			_this.broadcastOpen(data);
+			_this.broadcastStatusChanged(data);
 		}).listen('BroadcastStarting', function (data) {
-			_this.broadcastStarting(data);
+			_this.broadcastStatusChanged(data);
 		}).listen('BroadcastClosed', function (data) {
-			_this.broadcastClosed(data);
+			_this.broadcastStatusChanged(data);
 		});
 	}
 });
@@ -47355,8 +47335,11 @@ module.exports = Component.exports
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_VideoPlayerVimeo__ = __webpack_require__(251);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_VideoPlayerVimeo___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_VideoPlayerVimeo__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_BroadcastChat__ = __webpack_require__(138);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_BroadcastChat___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__components_BroadcastChat__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_VideoPlayerLivingAsOne__ = __webpack_require__(254);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_VideoPlayerLivingAsOne___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__components_VideoPlayerLivingAsOne__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_BroadcastChat__ = __webpack_require__(138);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_BroadcastChat___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__components_BroadcastChat__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__mixins_broadcastMixin__ = __webpack_require__(257);
 //
 //
 //
@@ -47408,6 +47391,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
 
 
 
@@ -47415,12 +47410,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({
 	components: {
 		VideoPlayerVimeo: __WEBPACK_IMPORTED_MODULE_0__components_VideoPlayerVimeo___default.a,
-		BroadcastChat: __WEBPACK_IMPORTED_MODULE_1__components_BroadcastChat___default.a
+		VideoPlayerLivingAsOne: __WEBPACK_IMPORTED_MODULE_1__components_VideoPlayerLivingAsOne___default.a,
+		BroadcastChat: __WEBPACK_IMPORTED_MODULE_2__components_BroadcastChat___default.a
 	},
+	mixins: [__WEBPACK_IMPORTED_MODULE_3__mixins_broadcastMixin__["a" /* default */]],
 	data: function data() {
 		return {
 			notes: null,
-			broadcast: {},
+			broadcast: null,
 			showNotes: false,
 			previousPage: null
 		};
@@ -47432,30 +47429,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 	},
 
 	computed: {
-		videoId: function videoId() {
-			if (this.broadcast.status == 'broadcast_in_progress' || this.broadcast.status == 'broadcast_ended') {
-				return this.broadcast.sermon.vimeo_id;
-			} else {
-				return this.broadcast.trailer.link;
-			}
-		},
-		timeElapsed: function timeElapsed() {
-			return this.broadcast.time_elapsed !== undefined ? this.broadcast.time_elapsed : 0;
-		},
 		nextBroadcastTime: function nextBroadcastTime() {
 			return Moment.utc(this.broadcast.starts_at).local().format('dddd [at] h:mm a');
-		},
-		isBroadcastOpen: function isBroadcastOpen() {
-			if (this.broadcast.status !== undefined && this.broadcast.status !== 'broadcast_closed') {
-				return true;
-			}
-			return false;
-		},
-		isBroadcastClosed: function isBroadcastClosed() {
-			if (this.broadcast.status !== undefined && this.broadcast.status === 'broadcast_closed') {
-				return true;
-			}
-			return false;
 		}
 	},
 	methods: {
@@ -47486,22 +47461,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 		var _this = this;
 
 		axios.get('/w/api/broadcasts/' + this.$route.params.broadcast_id).then(function (response) {
-			var broadcast = response.data;
-
-			switch (broadcast.status) {
-				case 'broadcast_closed':
-					_this.broadcastClosed(broadcast);
-					break;
-				case 'broadcast_open':
-					_this.broadcastOpen(broadcast);
-					break;
-				case 'broadcast_in_progress':
-					_this.broadcastInProgress(broadcast);
-					break;
-				case 'broadcast_ended':
-					_this.broadcastOpen(broadcast);
-					break;
-			}
+			_this.broadcast = response.data;
 		}).catch(function (error) {
 			console.log(error);
 		});
@@ -47648,7 +47608,6 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 	mounted: function mounted() {
 		var _this2 = this;
 
-		console.log('mounted-' + this.broadcastId);
 		Echo.channel('broadcast.chat.' + this.broadcastId).listen('BroadcastCommentCreated', function (comment) {
 			console.log('created');
 			_this2.$_chatMixin_publishComment(comment);
@@ -47874,7 +47833,8 @@ var render = function() {
     "div",
     { staticClass: "d-flex flex-column flex-md-row flex-grow-1" },
     [
-      _vm.isBroadcastOpen
+      _vm.$_broadcastMixin_isBroadcastLoaded &&
+      _vm.$_broadcastMixin_isBroadcastOpen
         ? [
             _c(
               "div",
@@ -47897,13 +47857,23 @@ var render = function() {
                   ]
                 ),
                 _vm._v(" "),
-                _c("video-player-vimeo", {
-                  staticClass: "px-0 px-lg-60",
-                  attrs: {
-                    "video-id": _vm.videoId,
-                    "time-elapsed": _vm.timeElapsed
-                  }
-                })
+                _vm.$_broadcastMixin_isBroadcastLive &&
+                _vm.$_broadcastMixin_isBroadcastInProgress
+                  ? _c("video-player-living-as-one", [
+                      _c("div", {
+                        staticClass: "px-0 px-lg-60",
+                        domProps: {
+                          innerHTML: _vm._s(_vm.broadcast.embed_code)
+                        }
+                      })
+                    ])
+                  : _c("video-player-vimeo", {
+                      staticClass: "px-0 px-lg-60",
+                      attrs: {
+                        "video-id": _vm.$_broadcastMixin_videoId,
+                        "time-elapsed": _vm.$_broadcastMixin_timeElapsed
+                      }
+                    })
               ],
               1
             ),
@@ -47923,15 +47893,11 @@ var render = function() {
                   "div",
                   { staticClass: "px-30 px-md-40 py-40 bg-white" },
                   [
-                    _vm.broadcast.live
+                    _vm.$_broadcastMixin_isBroadcastLive
                       ? [
                           _c("h1", [_vm._v(_vm._s(_vm.broadcast.name))]),
                           _vm._v(" "),
-                          _c("p", [
-                            _vm._v(
-                              "Join us this morning as we're live from Woodway campus"
-                            )
-                          ])
+                          _c("p", [_vm._v(_vm._s(_vm.broadcast.description))])
                         ]
                       : [
                           _c("h1", [
@@ -47942,40 +47908,44 @@ var render = function() {
                             _vm._v(_vm._s(_vm.broadcast.sermon.description))
                           ]),
                           _vm._v(" "),
-                          _vm.broadcast.sermon.notes
-                            ? _c(
-                                "p",
-                                {
-                                  staticClass: "font-weight-bold clickable",
-                                  on: { click: _vm.toggleNotes }
-                                },
-                                [
-                                  _vm._v(
-                                    "\n\t\t\t\t\t\t" +
-                                      _vm._s(
-                                        _vm.showNotes
-                                          ? "Hide notes"
-                                          : "See notes"
-                                      ) +
-                                      "\n\t\t\t\t\t"
-                                  )
-                                ]
-                              )
-                            : _vm._e(),
-                          _vm._v(" "),
-                          _c("div", {
-                            directives: [
-                              {
-                                name: "show",
-                                rawName: "v-show",
-                                value: _vm.showNotes,
-                                expression: "showNotes"
-                              }
-                            ],
-                            domProps: {
-                              innerHTML: _vm._s(_vm.broadcast.sermon.notes)
-                            }
-                          })
+                          _vm.$_broadcastMixin_hasNotes
+                            ? [
+                                _c(
+                                  "p",
+                                  {
+                                    staticClass: "font-weight-bold clickable",
+                                    on: { click: _vm.toggleNotes }
+                                  },
+                                  [
+                                    _vm._v(
+                                      "\n\t\t\t\t\t\t\t" +
+                                        _vm._s(
+                                          _vm.showNotes
+                                            ? "Hide notes"
+                                            : "See notes"
+                                        ) +
+                                        "\n\t\t\t\t\t\t"
+                                    )
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c("div", {
+                                  directives: [
+                                    {
+                                      name: "show",
+                                      rawName: "v-show",
+                                      value: _vm.showNotes,
+                                      expression: "showNotes"
+                                    }
+                                  ],
+                                  domProps: {
+                                    innerHTML: _vm._s(
+                                      _vm.broadcast.sermon.notes
+                                    )
+                                  }
+                                })
+                              ]
+                            : _vm._e()
                         ]
                   ],
                   2
@@ -47985,7 +47955,8 @@ var render = function() {
           ]
         : _vm._e(),
       _vm._v(" "),
-      _vm.isBroadcastClosed
+      _vm.$_broadcastMixin_isBroadcastLoaded &&
+      _vm.$_broadcastMixin_isBroadcastClosed
         ? [_c("span", [_vm._v(_vm._s(_vm.nextBroadcastTime))])]
         : _vm._e()
     ],
@@ -48772,6 +48743,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_HostChat___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__components_HostChat__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_BroadcastChat__ = __webpack_require__(138);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_BroadcastChat___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__components_BroadcastChat__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__mixins_broadcastMixin__ = __webpack_require__(257);
 //
 //
 //
@@ -48835,6 +48807,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+
 
 
 
@@ -48848,6 +48827,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 		HostChat: __WEBPACK_IMPORTED_MODULE_2__components_HostChat___default.a,
 		BroadcastChat: __WEBPACK_IMPORTED_MODULE_3__components_BroadcastChat___default.a
 	},
+	mixins: [__WEBPACK_IMPORTED_MODULE_4__mixins_broadcastMixin__["a" /* default */]],
 	data: function data() {
 		return {
 			broadcast: null,
@@ -48870,61 +48850,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 	},
 
 	computed: {
-		videoId: function videoId() {
-			if (this.broadcast.status == 'broadcast_in_progress' || this.broadcast.status == 'broadcast_ended') {
-				return this.broadcast.sermon.vimeo_id;
-			} else {
-				return this.broadcast.trailer.link;
-			}
-		},
-		timeElapsed: function timeElapsed() {
-			return this.broadcast.time_elapsed !== undefined ? this.broadcast.time_elapsed : 0;
-		},
-		isBroadcastLoaded: function isBroadcastLoaded() {
-			if (this.hasOwnProperty('broadcast') && this.broadcast !== null) {
-				return true;
-			}
-
-			return false;
-		},
-		hasNotes: function hasNotes() {
-			return this.broadcast.sermon ? this.broadcast.sermon.notes ? true : false : false;
-		},
-		isBroadcastOpen: function isBroadcastOpen() {
-			return this.broadcast.status != 'broadcast_closed' ? true : false;
+		autoplay: function autoplay() {
+			return this.$_broadcastMixin_isBroadcastInProgress;
 		}
 	},
 	methods: {
 		setData: function setData(data) {
 			this.broadcast = data.broadcast;
 			this.hostComments = data.host_comments;
-
-			// switch (this.broadcast.status) {
-			// 	case 'broadcast_closed':
-			// 		this.broadcastClosed();
-			// 		break;
-			// 	case 'broadcast_open':
-			// 		this.broadcastOpen();
-			// 		break;
-			// 	case 'broadcast_in_progress':
-			// 		this.broadcastInProgress();
-			// 		break;
-			// 	case 'broadcast_ended':
-			// 		this.broadcastEnded();
-			// 		break;
-			// }
-		},
-		broadcastClosed: function broadcastClosed() {},
-		broadcastOpen: function broadcastOpen() {},
-		broadcastInProgress: function broadcastInProgress() {}
-	},
-	beforeDestroy: function beforeDestroy() {
-		// this.now= null,
-		// this.broadcasts= null,
-		// this.broadcastInProgress= null,
-		// this.hostComments= null,
-		// this.showHostChat= null,
-		// this.showBroadcastChat= null
+		}
 	}
 });
 
@@ -49286,31 +49220,47 @@ var render = function() {
           1
         ),
         _vm._v(" "),
-        _vm.isBroadcastLoaded && !_vm.broadcast.live
-          ? _c("video-player-vimeo", {
-              staticClass: "video-container bg-black",
-              attrs: {
-                "video-id": _vm.videoId,
-                "time-elapsed": _vm.timeElapsed
-              }
-            })
-          : _vm.isBroadcastLoaded && _vm.broadcast.live
-            ? _c("video-player-living-as-one", [
-                _c("div", {
-                  staticClass: "video-container",
-                  domProps: { innerHTML: _vm._s(_vm.broadcast.embed_code) }
-                })
-              ])
-            : _vm._e(),
-        _vm._v(" "),
-        _vm.isBroadcastLoaded && _vm.hasNotes
-          ? _c("div", {
-              staticClass: "p-30 p-md-40 text-white overflow-y",
-              domProps: { innerHTML: _vm._s(_vm.broadcast.sermon.notes) }
-            })
+        _vm.$_broadcastMixin_isBroadcastLoaded
+          ? [
+              _vm.$_broadcastMixin_isBroadcastLive &&
+              _vm.$_broadcastMixin_isBroadcastInProgress
+                ? _c("video-player-living-as-one", [
+                    _c("div", {
+                      staticClass: "video-container",
+                      domProps: { innerHTML: _vm._s(_vm.broadcast.embed_code) }
+                    })
+                  ])
+                : _c("video-player-vimeo", {
+                    staticClass: "video-container bg-black",
+                    attrs: {
+                      "video-id": _vm.$_broadcastMixin_videoId,
+                      "time-elapsed": _vm.$_broadcastMixin_timeElapsed,
+                      autoplay: _vm.autoplay
+                    }
+                  }),
+              _vm._v(" "),
+              _vm.$_broadcastMixin_isBroadcastLive
+                ? _c(
+                    "div",
+                    { staticClass: "p-30 p-md-40 text-white overflow-y" },
+                    [
+                      _c("h1", [_vm._v(_vm._s(_vm.broadcast.name))]),
+                      _vm._v(" "),
+                      _c("p", [_vm._v(_vm._s(_vm.broadcast.description))])
+                    ]
+                  )
+                : _vm.$_broadcastMixin_hasNotes
+                  ? _c("div", {
+                      staticClass: "p-30 p-md-40 text-white overflow-y",
+                      domProps: {
+                        innerHTML: _vm._s(_vm.broadcast.sermon.notes)
+                      }
+                    })
+                  : _vm._e()
+            ]
           : _vm._e()
       ],
-      1
+      2
     ),
     _vm._v(" "),
     _c(
@@ -49369,9 +49319,9 @@ var render = function() {
       [
         _vm._m(0),
         _vm._v(" "),
-        _vm.isBroadcastLoaded && _vm.isBroadcastOpen
+        _vm.$_broadcastMixin_isBroadcastLoaded &&
+        _vm.$_broadcastMixin_isBroadcastOpen
           ? _c("broadcast-chat", {
-              ref: "broadcastChat",
               attrs: {
                 "broadcast-id": _vm.broadcast.id,
                 "scroll-container-id": "broadcast-comments"
@@ -51357,8 +51307,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 				this.player.setCurrentTime(this.timeElapsed);
 			}
 
-			// Change to 1
-			this.player.setVolume(0);
+			this.player.setVolume(1);
 		},
 		loadNewVideo: function loadNewVideo() {
 			var _this = this;
@@ -51368,21 +51317,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 			}).catch(function (error) {
 				alert('Something went wrong. Reload the page.');
 			});
-		},
-		play: function play() {
-			var _this2 = this;
-
-			this.player.play().then(function () {
-				console.log('video played');
-
-				_this2.player.setCurrentTime(_this2.timeElapsed);
-			}).catch(function (error) {
-				alert('Something went wrong. Reload the page.');
-			});
 		}
 	},
 	mounted: function mounted() {
 		this.loadVideo();
+	},
+	beforeDestroy: function beforeDestroy() {
+		this.player.destroy().then(function () {
+			// the player was destroyed
+		}).catch(function (error) {
+			// an error occurred
+		});
 	}
 });
 
@@ -51470,13 +51415,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+	data: function data() {
+		return {
+			scriptId: 'livingAsOneScript'
+		};
+	},
 	mounted: function mounted() {
-		var script = document.createElement('script');
+		if (document.getElementById(this.scriptId) === null) {
+			var script = document.createElement('script');
 
-		script.src = '//control.livingasone.com/webplayer/require.js';
-		script.setAttribute('data-main', '//control.livingasone.com/webplayer/loader.js');
+			script.id = this.scriptId;
+			script.src = '//control.livingasone.com/webplayer/require.js';
+			script.setAttribute('data-main', '//control.livingasone.com/webplayer/loader.js');
 
-		document.body.appendChild(script);
+			document.body.appendChild(script);
+		} else {
+			window.la1InitWebPlayer();
+		}
 	}
 });
 
@@ -51499,6 +51454,45 @@ if (false) {
     require("vue-hot-reload-api")      .rerender("data-v-2a97137a", module.exports)
   }
 }
+
+/***/ }),
+/* 257 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony default export */ __webpack_exports__["a"] = ({
+	computed: {
+		$_broadcastMixin_isBroadcastLoaded: function $_broadcastMixin_isBroadcastLoaded() {
+			return this.broadcast !== null;
+		},
+		$_broadcastMixin_isBroadcastClosed: function $_broadcastMixin_isBroadcastClosed() {
+			return this.broadcast.status == 'broadcast_closed';
+		},
+		$_broadcastMixin_isBroadcastOpen: function $_broadcastMixin_isBroadcastOpen() {
+			return this.broadcast.status != 'broadcast_closed';
+		},
+		$_broadcastMixin_isBroadcastInProgress: function $_broadcastMixin_isBroadcastInProgress() {
+			return this.broadcast.status == 'broadcast_in_progress';
+		},
+		$_broadcastMixin_isBroadcastLive: function $_broadcastMixin_isBroadcastLive() {
+			return this.broadcast.live;
+		},
+		$_broadcastMixin_hasNotes: function $_broadcastMixin_hasNotes() {
+			return this.broadcast.sermon.notes !== null;
+		},
+		$_broadcastMixin_videoId: function $_broadcastMixin_videoId() {
+			return this.$_broadcastMixin_isBroadcastInProgress ? this.broadcast.sermon.vimeo_id : this.broadcast.trailer.link;
+		},
+		$_broadcastMixin_timeElapsed: function $_broadcastMixin_timeElapsed() {
+			return this.broadcast.time_elapsed !== undefined ? this.broadcast.time_elapsed : 0;
+		}
+	},
+	methods: {
+		$_broadcastMixin_broadcastStatusChanged: function $_broadcastMixin_broadcastStatusChanged(broadcast) {
+			this.broadcast = broadcast;
+		}
+	}
+});
 
 /***/ })
 /******/ ]);

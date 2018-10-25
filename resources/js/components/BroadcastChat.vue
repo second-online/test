@@ -128,7 +128,6 @@
 			}
 		},
 		mounted: function() {
-			console.log('mounted-' + this.broadcastId);
 			Echo.channel('broadcast.chat.' + this.broadcastId)
 				.listen('BroadcastCommentCreated', comment => {
 					console.log('created');

@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use App\Events\BroadcastSaving;
 use Carbon\Carbon;
+use Log;
 
 class Broadcast extends Model
 {
@@ -27,7 +28,7 @@ class Broadcast extends Model
      *
      * @var int
      */
-    const LIVE_BROADCAST_DURATION = 90 * 60;
+    const LIVE_BROADCAST_DURATION = 80 * 60;
 
     /**
      * The broadcast chat is open.
@@ -195,15 +196,15 @@ class Broadcast extends Model
             $this->loadSermon();
         }
 
+        $this->loadTrailer();
+
         if ($startsAt->isFuture()) {
-            $this->loadTrailer();
             $this->status = self::BROADCAST_OPEN;
 
             return;
         }
 
         $durationInSeconds = $this->live ? self::LIVE_BROADCAST_DURATION : $this->sermon->duration;
-        
         $endsAt = $this->endsAt($durationInSeconds);
 
         if ($endsAt->isFuture()) {
@@ -213,7 +214,6 @@ class Broadcast extends Model
             return;
         }
 
-        $this->time_elapsed = $durationInSeconds;
         $this->status = self::BROADCAST_ENDED;
     }
 }

@@ -18,10 +18,12 @@ class CreateBroadcastsTable extends Migration
             $table->string('name');
             $table->string('day');
             $table->time('time');
+            $table->text('description')->nullable();
             $table->boolean('live')->default(false);
             $table->boolean('enabled')->default(true);
-            $table->timestamp('starts_at')->nullable();
             $table->text('embed_code')->nullable();
+            $table->string('image')->nullable();
+            $table->timestamp('starts_at')->nullable();
             $table->timestamps();
         });
     }
