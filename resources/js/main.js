@@ -14,22 +14,32 @@ import { store } from './store'
 import { router } from './routes'
 
 router.beforeEach((to, from, next) => {
+
+	let allowNext = true;
 	const layoutRecord = to.matched.find(record => record.meta.layout);
 
+	// If layout meta exist set it.
 	if (layoutRecord !== undefined) {
 		store.commit('setLayout', layoutRecord.meta.layout);
 	} else {
 		store.commit('setLayout');
 	}
 
-	if (to.matched.some(record => record.meta.guest)) {
+	// Check if page requires guest or authenticated user.
+	if (to.matched.some(record => record.meta.requireGuest)) {
 		if (store.getters.isUserAuthenticated) {
-			next('/');
-		} else {
-			next();
+			allowNext = false;
 		}
-	} else {
+	} else if (to.matched.some(record => record.meta.requireAuth)) {
+		if (!store.getters.isUserAuthenticated) {
+			allowNext = false;
+		}
+	}
+
+	if (allowNext) {
 		next();
+	} else {
+		next('/');
 	}
 })
 

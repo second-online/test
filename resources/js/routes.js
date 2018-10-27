@@ -8,10 +8,11 @@ import Sermon from './components/Sermon'
 import Schedule from './components/Schedule'
 import ContactUs from './components/ContactUs'
 import HostDashboard from './components/HostDashboard'
-import Login from './components/Login'
-import Register from './components/Register'
-import PasswordReset from './components/PasswordReset'
-import PasswordResetChange from './components/PasswordResetChange'
+import AccountLogin from './components/AccountLogin'
+import AccountRegister from './components/AccountRegister'
+import AccountPasswordReset from './components/AccountPasswordReset'
+import AccountPasswordChange from './components/AccountPasswordChange'
+import AccountEdit from './components/AccountEdit'
 import Admin from './components/Admin'
 import NotFound from './components/404'
 
@@ -61,37 +62,45 @@ export const router = new VueRouter({
 		{
 			path: '/login',
 			name: 'login',
-			component: Login,
+			component: AccountLogin,
 			meta: {
-				guest: true,
+				requireGuest: true,
 				layout: 'no-header-layout'
 			}
 		},
 		{
 			path: '/register',
 			name: 'register',
-			component: Register,
+			component: AccountRegister,
 			meta: {
-				guest: true,
+				requireGuest: true,
 				layout: 'no-header-layout'
 			}
 		},
 		{
 			path: '/password/reset',
 			name: 'password.reset',
-			component: PasswordReset,
+			component: AccountPasswordReset,
 			meta: {
-				guest: true,
+				requireGuest: true,
 				layout: 'no-header-layout'
 			}
 		},
 		{
 			path: '/password/reset/:token',
 			name: 'password.reset.change',
-			component: PasswordResetChange,
+			component: AccountPasswordChange,
 			meta: {
-				guest: true,
+				requireGuest: true,
 				layout: 'no-header-layout'
+			}
+		},
+		{
+			path: '/user/edit',
+			name: 'user.edit',
+			component: AccountEdit,
+			meta: {
+				requireAuth: true
 			}
 		},
 		{

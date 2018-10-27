@@ -79,6 +79,8 @@ Route::group(['prefix' => 'w/api'], function() {
 
 	Route::post('password/reset', 'Auth\ResetPasswordController@reset');
 
+	Route::post('user/edit', 'UserProfilePictureController@uploadProfilePicture');
+
 });
 
 
@@ -104,7 +106,12 @@ Route::fallback('SPAController@index');
 Route::get('password/reset/{token}', 'SPAController@index')->name('password.reset');
 
 
+use Illuminate\Support\Facades\Storage;
+
 Route::get('test', function() {
+
+	
+	echo $url = asset('storage/HqgBC2zz1UGPKVRGPlpiv5QzYRBMAP4t1rKUUp4k.png');
 
 	// $date = Carbon::now();
 
@@ -174,7 +181,7 @@ Route::get('vimeo/{id}', function($id) {
 
 	$videos = $response->data;
 
-	$date = Carbon::createFromFormat('Y-m-d H:i:s', '2018-10-23 00:00:00');
+	$date = Carbon::createFromFormat('Y-m-d H:i:s', '2018-10-24 00:00:00');
 
 	foreach ($videos as $video) {
 		if ($video->duration < 300)
@@ -219,86 +226,3 @@ Route::get('vimeo/{id}', function($id) {
 
 	//return response()->json($videos);
 });
-
-
-Route::get('/scheduled', function () {
-
-	// $format = 'Y-m-d H:i';
-	// $now = new Carbon();
-	// $sermon = Sermon::orderBy('id', 'desc')->first();
-
-	// $broadcasts = Broadcast::where('enabled', 1)->get();
-
-	// foreach ($broadcasts as $broadcast) {
-	// 	// if time is opens_at == starts_at - 10 min
-	// 	// if time is = starts_at
-	// 	// if closes_at is in the past
-
-	// 	$startsAt = Carbon::createFromFormat('Y-m-d H:i:s', $broadcast->starts_at);
-	// 	$opensAt = clone $startsAt;
-	// 	$opensAt->subMinutes(10);
-	// 	$closesAt = clone $startsAt;
- //        $closesAt->addSeconds($sermon->duration);
- //        $closesAt->addMinutes(10);
- //        $closesAt->second = 0;
-		
-	// 	echo $opensAt . '<br>' . $startsAt . '<br>' . $closesAt;
-
-	// 	die;
-
-	// 	if ($opensAt->format($format) == $now->format($format)) {
-	// 		// fire open event
-	// 		//echo "open at right now" . '<br>';
-	// 	} else if ($startsAt->format($format) == $now->format($format)) {
-	// 		// fire broadcast starting event
-	// 		//echo "broadcast starts now" . '<br>';
-	// 	} else if ($closesAt->isPast()) {
-	// 		// save broadcast so our listener can update the new timestamp
-	// 		$broadcast->save();
-
-	// 		// fire broadcast updated event?
-	// 	}
-	// }
-
-	die;
-
-		$broadcasts = Broadcast::all();
-		$schedule = collect();
-
-		foreach ($broadcasts as $broadcast) {
-
-			$format = 'l H:i:s';
-			$time = $broadcast->day . ' ' . $broadcast->time;
-			$timezone = 'America/Chicago';
-			$date = Carbon::createFromFormat($format, $time, $timezone);
-
-			if ($date->isPast()) {
-				$date->addWeek();
-			}
-			
-			$newDate = clone $date;
-			echo $newDate->addHour()->toDateTimeString();
-			echo "<br>";
-			echo $date->toDateTimeString();
-	die;
-			// $date->timezone('utc');
-
-			$schedule->push([
-				'name' => $broadcast->name,
-				'time' => $date->toDateTimeString(),
-				'time utc' => $date->timezone('UTC')->toDateTimeString()
-			]);
-		}
-
-		// var_dump($schedule);
-		$sorted = $schedule->sortBy('time');
-		var_dump($sorted);
-		
-
-	return;
-
-});
-
-
-
- 

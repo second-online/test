@@ -55,4 +55,18 @@ class User extends Authenticatable
     {
         return $this->hasRole('host');
     }
+
+    /**
+     * Get the profile picture.
+     *
+     * @param  string  $value
+     * @return string
+     */
+    public function getProfilePictureAttribute($value)
+    {
+        // if value == null ? return default image
+        $path = '/storage/users/' . $this->id . '/profile_pictures/small/' . $value;
+
+        return asset($path);
+    }
 }
