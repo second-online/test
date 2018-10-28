@@ -51592,6 +51592,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
 	data: function data() {
@@ -51607,9 +51608,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 			var formData = new FormData();
 
+			formData.append('_method', 'PATCH');
 			formData.append('picture', this.picture);
 
-			axios.post('/w/api/user/edit', formData, {
+			axios.post('/w/api/user/picture', formData, {
 				headers: {
 					'Content-Type': 'multipart/form-data'
 				}
@@ -51618,6 +51620,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 			}).catch(function (error) {});
 
 			e.preventDefault();
+		},
+		deletePicture: function deletePicture() {
+			axios.post('/w/api/user/picture', {
+				_method: 'DELETE'
+			}).then(function (response) {
+				console.log(response);
+			}).catch(function (error) {});
 		}
 	}
 });
@@ -51644,6 +51653,10 @@ var render = function() {
         attrs: { type: "submit", value: "Upload picture", name: "submit" },
         on: { click: _vm.submit }
       })
+    ]),
+    _vm._v(" "),
+    _c("button", { on: { click: _vm.deletePicture } }, [
+      _vm._v("Delete picture")
     ])
   ])
 }

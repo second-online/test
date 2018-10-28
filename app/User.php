@@ -64,8 +64,9 @@ class User extends Authenticatable
      */
     public function getProfilePictureAttribute($value)
     {
-        // if value == null ? return default image
-        $path = '/storage/users/' . $this->id . '/profile_pictures/small/' . $value;
+        $path = $value == null
+            ? '/images/profile_picture.png'
+            : '/storage/users/' . $this->id . '/profile_pictures/small/' . $value;
 
         return asset($path);
     }

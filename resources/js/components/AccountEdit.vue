@@ -6,6 +6,7 @@
 		    <input type="file" name="fileToUpload" id="fileToUpload" @change="fileChange">
 		    <input @click="submit" type="submit" value="Upload picture" name="submit">
 		</form>
+		<button @click="deletePicture">Delete picture</button>
 	</div>
 </template>
 
@@ -24,10 +25,11 @@
 
 				const formData = new FormData();
 
+				formData.append('_method', 'PATCH');
 				formData.append('picture', this.picture);
 
 				axios
-					.post('/w/api/user/edit', formData, {
+					.post('/w/api/user/picture', formData, {
 					    headers: {
 					      'Content-Type': 'multipart/form-data'
 					    }
@@ -40,6 +42,18 @@
 					});
 
 				e.preventDefault();
+			},
+			deletePicture: function() {
+				axios
+					.post('/w/api/user/picture', {
+						_method: 'DELETE'
+					})
+					.then(response => {
+						console.log(response);
+					})
+					.catch(error => {
+ 
+					});
 			}
 		}
 	}

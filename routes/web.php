@@ -79,8 +79,9 @@ Route::group(['prefix' => 'w/api'], function() {
 
 	Route::post('password/reset', 'Auth\ResetPasswordController@reset');
 
-	Route::post('user/edit', 'UserProfilePictureController@uploadProfilePicture');
+	Route::patch('user/picture', 'UserController@updateProfilePicture');
 
+	Route::delete('user/picture', 'UserController@destroyProfilePicture');
 });
 
 
@@ -106,63 +107,10 @@ Route::fallback('SPAController@index');
 Route::get('password/reset/{token}', 'SPAController@index')->name('password.reset');
 
 
-use Illuminate\Support\Facades\Storage;
+
 
 Route::get('test', function() {
 
-	
-	echo $url = asset('storage/HqgBC2zz1UGPKVRGPlpiv5QzYRBMAP4t1rKUUp4k.png');
-
-	// $date = Carbon::now();
-
-	// $date = Carbon::createFromFormat('Y-m-d H:i:s', '2018-10-10 00:00:00');
-
-	// echo $date->dayOfWeekIso;
-
-    // $broadcasts = Broadcast::where('enabled', 1)
-    //     ->oldest('starts_at')
-    //     ->get();
-
-    // $firstDate = $broadcasts->first()->starts_at;
-    // // Subtract a week so that the sermon's publish_on date is in range.
-    // $firstDate->subWeek();
-
-    // $lastDate = $broadcasts->last()->starts_at;
-
-    // $sermons = Sermon::select('title', 'publish_on')
-    // 	->where('publish_on', '>', $firstDate)
-    // 	->where('publish_on', '<=', $lastDate)
-    // 	->oldest('publish_on')
-    // 	->get();
-
-    // $sermons = $sermons->reverse()->values();
-
-
-    // $broadcasts = $broadcasts->map(function($broadcast, $key) use ($sermons) {
-    // 	if ($broadcast->live) {
-    // 		return $broadcast;
-    // 	}
-
-    // 	//sermon publish_on <= broadcast start_at
-    // 	$sermon = $sermons->first(function($sermon, $key) use ($broadcast) {
-    // 		$broadcastStartsAt = $broadcast->starts_at;
-    // 		$sermonStartDate = $sermon->publish_on;
-    // 		$sermonEndDate = $sermonStartDate->copy()->addWeek();
-
-    // 		return $broadcastStartsAt >= $sermonStartDate
-    // 			&& $broadcastStartsAt < $sermonEndDate;
-    // 	});
-
-    // 	$broadcast->name = is_null($sermon) ? 'TBA' : $sermon->title;
-
-    // 	return $broadcast;
-    // });
-
-    // return response()->json($broadcasts);
-
-
-	// $date = Carbon::createFromFormat('Y-m-d H:i:s', '2018-10-10 00:00:00');
-	// $date->tz('America/Chicago');
 
 });
 
