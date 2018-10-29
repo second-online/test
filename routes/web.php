@@ -79,6 +79,8 @@ Route::group(['prefix' => 'w/api'], function() {
 
 	Route::post('password/reset', 'Auth\ResetPasswordController@reset');
 
+	Route::get('user/me', 'UserController@me');
+
 	Route::patch('user/picture', 'UserController@updateProfilePicture');
 
 	Route::delete('user/picture', 'UserController@destroyProfilePicture');
@@ -110,7 +112,6 @@ Route::get('password/reset/{token}', 'SPAController@index')->name('password.rese
 
 
 Route::get('test', function() {
-
 
 });
 

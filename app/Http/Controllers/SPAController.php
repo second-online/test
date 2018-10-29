@@ -3,24 +3,28 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Auth;
+use App\User;
 
 class SPAController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {	
-    	$user = Auth::user();
+    	$user = $request->user();
 
     	if (!is_null($user) && $user->isHost()) {
 	    	$user->is_host = true; 
     	}
 
-        // Attach next broadcasdt too...
+        $user->makeVisible('email');
+        $user->profilePictureSize = 'large';
+
+        // Attach next broadcasdt too...?
 
         return view('layouts.app')->with('user', $user);
     }

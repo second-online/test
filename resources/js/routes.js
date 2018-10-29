@@ -100,6 +100,7 @@ export const router = new VueRouter({
 			name: 'user.edit',
 			component: AccountEdit,
 			meta: {
+				layout: 'no-header-layout',
 				requireAuth: true
 			}
 		},

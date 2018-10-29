@@ -20,6 +20,9 @@ export const store = new Vuex.Store({
 		setUser (state, user) {
 			state.user = user;
 		},
+		setUserProfilePicture (state, picture) {
+			state.user.profile_picture = picture;
+		},
 		setLayout (state, layout = 'default-layout') {
 			state.layout = layout;
 		}

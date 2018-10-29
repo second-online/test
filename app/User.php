@@ -11,6 +11,19 @@ class User extends Authenticatable
     use Notifiable;
 
     /**
+     * The sizes of profile pictures to create on upload.
+     *
+     * @var array
+     */
+    const PROFILE_PICTURE_SIZES = [
+        'large' => 320,
+        'medium' => 120,
+        'small' => 80
+    ];
+
+    public $profilePictureSize = 'medium';
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array
@@ -66,7 +79,7 @@ class User extends Authenticatable
     {
         $path = $value == null
             ? '/images/profile_picture.png'
-            : '/storage/users/' . $this->id . '/profile_pictures/small/' . $value;
+            : '/storage/users/' . $this->id . '/profile_pictures/' . $this->profilePictureSize . '/' . $value;
 
         return asset($path);
     }

@@ -50,7 +50,7 @@ class BroadcastCommentController extends Controller
 
             return response()->json($broadcastComment);
         } else {
-            return response()->json(['message' => 'Something happed. Try again.'], 500);
+            return response()->json(['message' => 'Something happened. Try again.'], 500);
         }
     }
 }

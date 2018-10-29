@@ -6,19 +6,19 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\ImageManagerStatic as Image;
 use Illuminate\Support\Str;
+use App\User;
 
 class UserController extends Controller
 {
     /**
-     * Sizes of profile pictures to create.
+     * Return the currently logged in user.
      *
-     * @var array
+     * @return \Illuminate\Http\Response
      */
-    private $sizes = [
-        'large' => 600,
-        'small' => 88,
-        'tiny' => 66
-    ];
+    public function me(Request $request)
+    {   
+        return response()->json($request->user()->makeVisible('email')); 
+    }
 
     /**
      * Upload users profile picture.
@@ -28,27 +28,31 @@ class UserController extends Controller
      */
     public function updateProfilePicture(Request $request)
     {
+        if (!$request->hasFile('picture')) {
+            return response()->json(['message' => 'Nothing to upload.'], 422);
+        }
+        
         // Validation!
-        if ($request->hasFile('picture')) {
-            $user = $request->user();
-            $oldFilename = $user->getOriginal('profile_picture');
-            $random = Str::random(40);
-            $filename = $random . '.jpg';
-            $img = Image::make($request->picture);
+        $user = $request->user();
+        $oldFilename = $user->getOriginal('profile_picture');
+        $filename = Str::random(40) . '.jpg';
+        $img = Image::make($request->picture);
 
-            foreach ($this->sizes as $key => $size) {
-                $imgVariation = $img->fit($size)->save();
+        foreach (User::PROFILE_PICTURE_SIZES as $key => $size) {
+            $imgVariation = Image::make($request->picture)
+                ->fit($size)
+                ->save();
 
-                Storage::disk('public')->put(
-                    '/users/' . $user->id . '/profile_pictures/' . $key . '/' . $filename, $imgVariation
-                );
-            }
+            Storage::disk('public')->put(
+                '/users/' . $user->id . '/profile_pictures/' . $key . '/' . $filename, $imgVariation
+            );
+        }
 
-            $user->profile_picture = $filename;
-            
-            if ($user->save()) {
-                $this->removeProfilePictureFiles($user->id, $oldFilename);
-            }
+        $user->profile_picture = $filename;
+        $user->profilePictureSize = 'large';
+
+        if ($user->save()) {
+            $this->removeProfilePictureFiles($user->id, $oldFilename);
         }
 
         return response()->json($user);
@@ -64,14 +68,16 @@ class UserController extends Controller
     {
         $user = $request->user();
 
-        if (!is_null($user->profile_picture)) {
-            $user->profile_picture = null;
-
-            if ($user->save()) {
-                $this->removeProfilePictureDirectory($user->id);
-            }
+        if (is_null($user->getOriginal('profile_picture'))) {
+            return response()->json(['message' => 'Nothing to delete.'], 422);
         }
 
+        $user->profile_picture = null;
+
+        if ($user->save()) {
+            $this->removeProfilePictureDirectory($user->id);
+        }
+       
         return response()->json($user);
     }
 
@@ -86,7 +92,7 @@ class UserController extends Controller
     {
         $files = [];
         
-        foreach ($this->sizes as $key => $size) {
+        foreach (User::PROFILE_PICTURE_SIZES as $key => $size) {
             $files[] = '/users/' . $userId . '/profile_pictures/' . $key . '/' . $filename; 
         }
 

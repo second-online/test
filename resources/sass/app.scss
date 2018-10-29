@@ -176,6 +176,11 @@ small,
 	border-radius: 50%;
 }
 
+.profile-picture-large {
+	width: $spacer * 8;
+	height: $spacer * 8;
+}
+
 @include media-breakpoint-up(md) {
 	.video-header {
 		position: absolute;
@@ -427,4 +432,28 @@ header div {
 
 .border-bottom-heavy {
 	border-bottom: 2px solid #fff;
+}
+
+.picture-upload-wrapper {
+	position: relative;
+	overflow: hidden;
+	cursor: pointer;
+	border-radius: 50%;
+	background: $black;
+
+	span {
+		position: absolute;
+	}
+
+	img {
+		opacity: .6;
+	}
+
+	input[type=file] {
+		position: absolute;
+		left: 0;
+		top: 0;
+		font-size: 200px;
+		opacity: 0;
+	}
 }

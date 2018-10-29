@@ -10508,6 +10508,11 @@ small,
   border-radius: 50%;
 }
 
+.profile-picture-large {
+  width: 8rem;
+  height: 8rem;
+}
+
 @media (min-width: 768px) {
   .video-header {
     position: absolute;
@@ -10768,5 +10773,29 @@ header div {
 
 .border-bottom-heavy {
   border-bottom: 2px solid #fff;
+}
+
+.picture-upload-wrapper {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  border-radius: 50%;
+  background: #080808;
+}
+
+.picture-upload-wrapper span {
+  position: absolute;
+}
+
+.picture-upload-wrapper img {
+  opacity: .6;
+}
+
+.picture-upload-wrapper input[type=file] {
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-size: 200px;
+  opacity: 0;
 }
 
