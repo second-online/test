@@ -23,21 +23,24 @@
 						<li @click="toggleMenu"><router-link v-bind:to="{ name: 'sermons' }">Sermons</router-link></li>
 						<li @click="toggleMenu"><router-link v-bind:to="{ name: 'contact' }">Contact</router-link></li>
 						<li><a href="https://pushpay.com/g/secondhouston?src=hpp" target="_blank">Give</a></li>
-						<li>
-							<span
-								v-if="isUserAuthenticated"
-								@click="logOut"
-								class="clickable"
-							>Logout</span>
-							<router-link
-								v-else
-								:to="{ name: 'login', query: { redirect: $route.path } }"
-							>Login</router-link>
-						</li>
-						<li
-							v-if="isUserHost"
-							@click="toggleMenu"
-						><router-link v-bind:to="{ name: 'host' }">Host</router-link></li>
+						<template v-if="isUserAuthenticated">
+							<li
+								v-if="isUserHost"
+								@click="toggleMenu"
+							>
+								<router-link v-bind:to="{ name: 'host' }">Host</router-link>
+							</li>
+							<li @click="toggleMenu"><router-link v-bind:to="{ name: 'user.edit' }">My Account</router-link></li>
+							<li @click="toggleMenu">
+								<span
+									@click="logOut"
+									class="clickable"
+								>Logout</span>
+							</li>
+						</template>
+						<template v-else>
+							<li @click="toggleMenu"><router-link :to="{ name: 'login', query: { redirect: $route.path } }">Login</router-link></li>
+						</template>
 					</ul>
 				</div>
 			</div>

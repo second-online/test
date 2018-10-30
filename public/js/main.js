@@ -43488,6 +43488,9 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 //
 //
+//
+//
+//
 
 
 
@@ -43569,102 +43572,127 @@ var render = function() {
             },
             [
               _c("div", { staticClass: "h-100 overflow-y" }, [
-                _c("ul", { staticClass: "px-30" }, [
-                  _c(
-                    "li",
-                    { on: { click: _vm.toggleMenu } },
-                    [
-                      _c("router-link", { attrs: { to: { name: "home" } } }, [
-                        _vm._v("Home")
-                      ])
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "li",
-                    { on: { click: _vm.toggleMenu } },
-                    [
-                      _c(
-                        "router-link",
-                        { attrs: { to: { name: "schedule" } } },
-                        [_vm._v("Schedule")]
-                      )
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "li",
-                    { on: { click: _vm.toggleMenu } },
-                    [
-                      _c(
-                        "router-link",
-                        { attrs: { to: { name: "sermons" } } },
-                        [_vm._v("Sermons")]
-                      )
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "li",
-                    { on: { click: _vm.toggleMenu } },
-                    [
-                      _c(
-                        "router-link",
-                        { attrs: { to: { name: "contact" } } },
-                        [_vm._v("Contact")]
-                      )
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _vm._m(0),
-                  _vm._v(" "),
-                  _c(
-                    "li",
-                    [
-                      _vm.isUserAuthenticated
-                        ? _c(
-                            "span",
-                            {
-                              staticClass: "clickable",
-                              on: { click: _vm.logOut }
-                            },
-                            [_vm._v("Logout")]
-                          )
-                        : _c(
-                            "router-link",
-                            {
-                              attrs: {
-                                to: {
-                                  name: "login",
-                                  query: { redirect: _vm.$route.path }
-                                }
-                              }
-                            },
-                            [_vm._v("Login")]
-                          )
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _vm.isUserHost
-                    ? _c(
-                        "li",
-                        { on: { click: _vm.toggleMenu } },
-                        [
+                _c(
+                  "ul",
+                  { staticClass: "px-30" },
+                  [
+                    _c(
+                      "li",
+                      { on: { click: _vm.toggleMenu } },
+                      [
+                        _c("router-link", { attrs: { to: { name: "home" } } }, [
+                          _vm._v("Home")
+                        ])
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "li",
+                      { on: { click: _vm.toggleMenu } },
+                      [
+                        _c(
+                          "router-link",
+                          { attrs: { to: { name: "schedule" } } },
+                          [_vm._v("Schedule")]
+                        )
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "li",
+                      { on: { click: _vm.toggleMenu } },
+                      [
+                        _c(
+                          "router-link",
+                          { attrs: { to: { name: "sermons" } } },
+                          [_vm._v("Sermons")]
+                        )
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "li",
+                      { on: { click: _vm.toggleMenu } },
+                      [
+                        _c(
+                          "router-link",
+                          { attrs: { to: { name: "contact" } } },
+                          [_vm._v("Contact")]
+                        )
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _vm._m(0),
+                    _vm._v(" "),
+                    _vm.isUserAuthenticated
+                      ? [
+                          _vm.isUserHost
+                            ? _c(
+                                "li",
+                                { on: { click: _vm.toggleMenu } },
+                                [
+                                  _c(
+                                    "router-link",
+                                    { attrs: { to: { name: "host" } } },
+                                    [_vm._v("Host")]
+                                  )
+                                ],
+                                1
+                              )
+                            : _vm._e(),
+                          _vm._v(" "),
                           _c(
-                            "router-link",
-                            { attrs: { to: { name: "host" } } },
-                            [_vm._v("Host")]
+                            "li",
+                            { on: { click: _vm.toggleMenu } },
+                            [
+                              _c(
+                                "router-link",
+                                { attrs: { to: { name: "user.edit" } } },
+                                [_vm._v("My Account")]
+                              )
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c("li", { on: { click: _vm.toggleMenu } }, [
+                            _c(
+                              "span",
+                              {
+                                staticClass: "clickable",
+                                on: { click: _vm.logOut }
+                              },
+                              [_vm._v("Logout")]
+                            )
+                          ])
+                        ]
+                      : [
+                          _c(
+                            "li",
+                            { on: { click: _vm.toggleMenu } },
+                            [
+                              _c(
+                                "router-link",
+                                {
+                                  attrs: {
+                                    to: {
+                                      name: "login",
+                                      query: { redirect: _vm.$route.path }
+                                    }
+                                  }
+                                },
+                                [_vm._v("Login")]
+                              )
+                            ],
+                            1
                           )
-                        ],
-                        1
-                      )
-                    : _vm._e()
-                ])
+                        ]
+                  ],
+                  2
+                )
               ])
             ]
           )
@@ -51281,7 +51309,7 @@ var render = function() {
           "div",
           {
             staticClass:
-              "d-flex align-items-center justify-content-center picture-upload-wrapper"
+              "d-flex mb-32 align-items-center justify-content-center picture-upload-wrapper"
           },
           [
             _c("img", {
@@ -51289,9 +51317,7 @@ var render = function() {
               attrs: { src: _vm.user.profile_picture }
             }),
             _vm._v(" "),
-            _c("span", { staticClass: "font-weight-bold text-white" }, [
-              _vm._v("Change")
-            ]),
+            _c("div"),
             _vm._v(" "),
             _c("input", {
               ref: "fileInput",
@@ -51405,14 +51431,10 @@ var render = function() {
                 "mb-32 py-24 w-100 border-0 text-white bg-black font-weight-bold",
               attrs: { type: "submit" }
             },
-            [_vm._v("Update profile")]
+            [_vm._v("Save")]
           )
         ]
-      ),
-      _vm._v(" "),
-      _c("span", { on: { click: _vm.deleteProfilePicture } }, [
-        _vm._v("Delete picture")
-      ])
+      )
     ]
   )
 }

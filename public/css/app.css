@@ -10777,18 +10777,38 @@ header div {
 
 .picture-upload-wrapper {
   position: relative;
-  overflow: hidden;
   cursor: pointer;
-  border-radius: 50%;
-  background: #080808;
+  overflow: hidden;
 }
 
-.picture-upload-wrapper span {
+.picture-upload-wrapper div {
   position: absolute;
+  background: black;
+  right: 4px;
+  bottom: 4px;
+  height: 32px;
+  width: 32px;
+  border-radius: 50%;
+}
+
+.picture-upload-wrapper div::before,
+.picture-upload-wrapper div::after {
+  position: absolute;
+  top: 15px;
+  right: 10px;
+  width: 12px;
+  height: 2px;
+  background: white;
+  content: '';
+}
+
+.picture-upload-wrapper div::after {
+  -webkit-transform: rotate(90deg);
+          transform: rotate(90deg);
 }
 
 .picture-upload-wrapper img {
-  opacity: .6;
+  opacity: 1;
 }
 
 .picture-upload-wrapper input[type=file] {

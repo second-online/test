@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\User;
+use Auth;
 
 class SPAController extends Controller
 {
@@ -15,17 +15,18 @@ class SPAController extends Controller
      */
     public function index(Request $request)
     {	
-    	$user = $request->user();
+    	$user = Auth::user();
 
-    	if (!is_null($user) && $user->isHost()) {
-	    	$user->is_host = true; 
-    	}
+        if (Auth::check()) {
+            if ($user->isHost()) {
+                $user->is_host = true; 
+            }
 
-        $user->makeVisible('email');
-        $user->profilePictureSize = 'large';
+            $user->makeVisible('email');
+            $user->profilePictureSize = 'large';
+        }
 
         // Attach next broadcasdt too...?
-
         return view('layouts.app')->with('user', $user);
     }
 }

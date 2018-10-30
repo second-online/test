@@ -436,17 +436,36 @@ header div {
 
 .picture-upload-wrapper {
 	position: relative;
-	overflow: hidden;
 	cursor: pointer;
-	border-radius: 50%;
-	background: $black;
+	overflow: hidden;
 
-	span {
+	div {
 		position: absolute;
+		background: black;
+		right: 4px;
+		bottom: 4px;
+		height: 32px;
+		width: 32px;
+		border-radius: 50%;
+	}
+
+	div::before,
+	div::after {
+		position: absolute;
+		top: 15px;
+		right: 10px;
+		width: 12px;
+		height: 2px;
+		background: white;
+		content: '';
+	}
+
+	div::after {
+		transform: rotate(90deg);
 	}
 
 	img {
-		opacity: .6;
+		opacity: 1;
 	}
 
 	input[type=file] {

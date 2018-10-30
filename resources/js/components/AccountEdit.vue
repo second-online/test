@@ -3,9 +3,9 @@
 	 	<h1>Edit Profile</h1>
 	 	
 		<form enctype="multipart/form-data">
-			<div class="d-flex align-items-center justify-content-center picture-upload-wrapper">
+			<div class="d-flex mb-32 align-items-center justify-content-center picture-upload-wrapper">
 				<img :src="user.profile_picture" class="profile-picture profile-picture-large">
-				<span class="font-weight-bold text-white">Change</span>
+				<div></div>
 			    <input type="file" @change="uploadProfilePicture" ref="fileInput">
 		    </div>
 		</form>
@@ -48,9 +48,9 @@
 			<button
 				class="mb-32 py-24 w-100 border-0 text-white bg-black font-weight-bold" 
 				type="submit"
-			>Update profile</button>
+			>Save</button>
 		</form>
-				<span @click="deleteProfilePicture">Delete picture</span>
+		<!-- <span @click="deleteProfilePicture">Delete picture</span> -->
 	</div>
 </template>
 
