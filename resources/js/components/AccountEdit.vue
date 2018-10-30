@@ -11,7 +11,7 @@
 		</form>
 
 		<form
-			v-on:submit.prevent="register"
+			v-on:submit.prevent="updateUser"
 			class="form-narrow"
 		>
 			<ul
@@ -102,6 +102,21 @@
 					})
 					.then(response => {
 						this.setUserProfilePicture(response.data.profile_picture);
+					})
+					.catch(error => {
+ 
+					});
+			},
+			updateUser: function() {
+				axios
+					.post('/w/api/user/edit', {
+						_method: 'PATCH',
+						name: this.user.name,
+						email: this.user.email
+					})
+					.then(response => {
+						console.log(response.data);
+						//this.setUserProfilePicture(response.data.profile_picture);
 					})
 					.catch(error => {
  

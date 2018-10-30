@@ -10,6 +10,23 @@ use App\User;
 
 class UserController extends Controller
 {
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request)
+    {
+        $user = $request->user();
+        $data = $request->only('name', 'email');
+        $user->fill($data);
+        $user->profilePictureSize = 'large';
+        
+        return response()->json($user);
+    }
+
     /**
      * Return the currently logged in user.
      *

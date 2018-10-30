@@ -51283,6 +51283,16 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 			}).then(function (response) {
 				_this2.setUserProfilePicture(response.data.profile_picture);
 			}).catch(function (error) {});
+		},
+		updateUser: function updateUser() {
+			axios.post('/w/api/user/edit', {
+				_method: 'PATCH',
+				name: this.user.name,
+				email: this.user.email
+			}).then(function (response) {
+				console.log(response.data);
+				//this.setUserProfilePicture(response.data.profile_picture);
+			}).catch(function (error) {});
 		}
 	})
 });
@@ -51335,7 +51345,7 @@ var render = function() {
           on: {
             submit: function($event) {
               $event.preventDefault()
-              return _vm.register($event)
+              return _vm.updateUser($event)
             }
           }
         },

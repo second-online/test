@@ -81,6 +81,8 @@ Route::group(['prefix' => 'w/api'], function() {
 
 	Route::get('user/me', 'UserController@me');
 
+	Route::patch('user/edit', 'UserController@update');
+
 	Route::patch('user/picture', 'UserController@updateProfilePicture');
 
 	Route::delete('user/picture', 'UserController@destroyProfilePicture');
