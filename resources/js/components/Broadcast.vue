@@ -64,6 +64,7 @@
 	import VideoPlayerLivingAsOne from '../components/VideoPlayerLivingAsOne'
 	import BroadcastChat from '../components/BroadcastChat'
 	import broadcastMixin from '../mixins/broadcastMixin'
+	import { mapState } from 'vuex'
 
 	export default {
 		components: {
@@ -84,6 +85,9 @@
 			next(vm => vm.setData(from));		
 		},
 		computed: {
+			...mapState([
+				'nextBroadcast',
+			]),
 			nextBroadcastTime: function() {
 				return Moment.utc(this.broadcast.starts_at)
 					.local()
@@ -115,14 +119,22 @@
 		    }
 		},	
 		created: function() {
-			axios
-				.get('/w/api/broadcasts/' + this.$route.params.broadcast_id)
-				.then(response => {
-					this.broadcast = response.data;					
-				})
-				.catch(error => {
-					console.log(error);
-				});	
+			// if nextBroadcast == this broadcast
+			//		- show nextBroadcast data
+			// else fetch data
+
+			if (this.nextBroadcast.id == this.$route.params.broadcast_id) {
+				this.broadcast = this.nextBroadcast;
+			} else {
+				axios
+					.get('/w/api/broadcasts/' + this.$route.params.broadcast_id)
+					.then(response => {
+						this.broadcast = response.data;					
+					})
+					.catch(error => {
+						console.log(error);
+					});
+			}	
 		}
 	}
 </script>

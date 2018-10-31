@@ -14,7 +14,9 @@
     {{-- <link href="{{ asset('css/all.css') }}" rel="stylesheet"> --}}
     
     <script type="text/javascript">
-        window.AppUser = @if(isset($user)) @json($user); @else null; @endif
+        window.AppUser = @if(isset($user)) @json($user) @else null @endif;
+        window.AppIntroVideo = @json($intro_video);
+        window.AppNextBroadcast = @json($next_broadcast);
     </script>
 </head>
 <body>

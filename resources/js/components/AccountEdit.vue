@@ -115,8 +115,7 @@
 						email: this.user.email
 					})
 					.then(response => {
-						console.log(response.data);
-						//this.setUserProfilePicture(response.data.profile_picture);
+						this.setUser(response.data);
 					})
 					.catch(error => {
  

@@ -29632,8 +29632,13 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuex__ = __webpack_require__(3);
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+
+
 /* harmony default export */ __webpack_exports__["a"] = ({
-	computed: {
+	computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["e" /* mapState */])(['introVideo']), {
 		$_broadcastMixin_isBroadcastLoaded: function $_broadcastMixin_isBroadcastLoaded() {
 			return this.broadcast !== null;
 		},
@@ -29652,13 +29657,22 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 		$_broadcastMixin_hasNotes: function $_broadcastMixin_hasNotes() {
 			return this.broadcast.sermon.notes !== null;
 		},
+		$_broadcastMixin_title: function $_broadcastMixin_title() {
+			return this.broadcast.live ? this.broadcast.name : this.broadcast.sermon.title;
+		},
 		$_broadcastMixin_videoId: function $_broadcastMixin_videoId() {
-			return this.$_broadcastMixin_isBroadcastInProgress ? this.broadcast.sermon.vimeo_id : this.broadcast.trailer.link;
+			return this.$_broadcastMixin_isBroadcastInProgress ? this.broadcast.sermon.vimeo_id : this.introVideo.video_id;
 		},
 		$_broadcastMixin_timeElapsed: function $_broadcastMixin_timeElapsed() {
 			return this.broadcast.time_elapsed !== undefined ? this.broadcast.time_elapsed : 0;
+		},
+		$_broadcastMixin_image: function $_broadcastMixin_image() {
+			return this.broadcast.live ? this.broadcast.image : this.broadcast.sermon.image;
+		},
+		$_broadcastMixin_description: function $_broadcastMixin_description() {
+			return this.broadcast.live ? this.broadcast.description : this.broadcast.sermon.description;
 		}
-	},
+	}),
 	methods: {
 		$_broadcastMixin_broadcastStatusChanged: function $_broadcastMixin_broadcastStatusChanged(broadcast) {
 			this.broadcast = broadcast;
@@ -43224,15 +43238,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__layouts_NoheaderLayout___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__layouts_NoheaderLayout__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__layouts_HostLayout__ = __webpack_require__(184);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__layouts_HostLayout___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__layouts_HostLayout__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_BroadcastPopup__ = __webpack_require__(189);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_BroadcastPopup___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__components_BroadcastPopup__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_vuex__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vuex__ = __webpack_require__(3);
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-//
-//
-//
-//
 //
 //
 //
@@ -43253,28 +43261,26 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 	components: {
 		DefaultLayout: __WEBPACK_IMPORTED_MODULE_0__layouts_DefaultLayout___default.a,
 		NoHeaderLayout: __WEBPACK_IMPORTED_MODULE_1__layouts_NoheaderLayout___default.a,
-		HostLayout: __WEBPACK_IMPORTED_MODULE_2__layouts_HostLayout___default.a,
-		BroadcastPopup: __WEBPACK_IMPORTED_MODULE_3__components_BroadcastPopup___default.a
+		HostLayout: __WEBPACK_IMPORTED_MODULE_2__layouts_HostLayout___default.a
 	},
-	data: function data() {
-		return {
-			showBroadcastPopup: false,
-			broadcast: null
-		};
-	},
-	computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_4_vuex__["e" /* mapState */])(['layout']), {
+	computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_3_vuex__["e" /* mapState */])(['layout']), {
 		pageName: function pageName() {
 			return this.$route.name;
 		}
 	}),
-	methods: {
+	methods: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_3_vuex__["d" /* mapMutations */])(['setNextBroadcast']), {
 		broadcastStatusChanged: function broadcastStatusChanged(broadcast) {
-			if (this.$router.currentRoute.name == 'broadcast' && this.$refs.router.broadcast.id == broadcast.id || this.$router.currentRoute.name == 'host') {
+			console.log(broadcast);
 
-				this.$refs.router.$_broadcastMixin_broadcastStatusChanged(broadcast);
-			}
+			this.setNextBroadcast(broadcast);
+			// if ((this.$router.currentRoute.name == 'broadcast' 
+			// 	&& this.$refs.router.broadcast.id == broadcast.id)
+			// 	|| this.$router.currentRoute.name == 'host') {
+
+			// 	this.$refs.router.$_broadcastMixin_broadcastStatusChanged(broadcast);
+			// }
 		}
-	},
+	}),
 	created: function created() {
 		var _this = this;
 
@@ -44160,121 +44166,9 @@ if (false) {
 }
 
 /***/ }),
-/* 189 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(1)
-/* script */
-var __vue_script__ = __webpack_require__(190)
-/* template */
-var __vue_template__ = __webpack_require__(191)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/js/components/BroadcastPopup.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-74da2616", Component.options)
-  } else {
-    hotAPI.reload("data-v-74da2616", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 190 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-	props: {
-		broadcast: Object
-	},
-	computed: {
-		startsIn: function startsIn() {
-			return Moment.utc(this.broadcast.starts_at).fromNow();
-		}
-	}
-});
-
-/***/ }),
-/* 191 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "broadcast-popup m-30" }, [
-    _c("div", { staticClass: "d-flex flex-column bg-white" }, [
-      _c("img", {
-        staticClass: "w-100",
-        attrs: { src: _vm.broadcast.sermon.image }
-      }),
-      _vm._v(" "),
-      _c("div", { staticClass: "p-30" }, [
-        _c("span", { staticClass: "d-block mb-4 large font-weight-bold" }, [
-          _vm._v(_vm._s(_vm.broadcast.sermon.title))
-        ]),
-        _vm._v(" "),
-        _c("span", { staticClass: "d-block small text-muted" }, [
-          _vm._v("Broadcast starts " + _vm._s(_vm.startsIn))
-        ])
-      ])
-    ])
-  ])
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-74da2616", module.exports)
-  }
-}
-
-/***/ }),
+/* 189 */,
+/* 190 */,
+/* 191 */,
 /* 192 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -44285,13 +44179,7 @@ var render = function() {
   return _c(
     _vm.layout,
     { tag: "component", class: _vm.pageName },
-    [
-      _c("router-view", { ref: "router" }),
-      _vm._v(" "),
-      _vm.showBroadcastPopup
-        ? _c("broadcast-popup", { attrs: { broadcast: _vm.broadcast } })
-        : _vm._e()
-    ],
+    [_c("router-view", { ref: "router" })],
     1
   )
 }
@@ -44322,6 +44210,8 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vuex
 var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
 	state: {
 		user: window.AppUser,
+		introVideo: window.AppIntroVideo,
+		nextBroadcast: window.AppNextBroadcast,
 		layout: null
 	},
 	getters: {
@@ -44338,6 +44228,9 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
 		},
 		setUserProfilePicture: function setUserProfilePicture(state, picture) {
 			state.user.profile_picture = picture;
+		},
+		setNextBroadcast: function setNextBroadcast(state, broadcast) {
+			state.nextBroadcast = broadcast;
 		},
 		setLayout: function setLayout(state) {
 			var layout = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'default-layout';
@@ -47180,9 +47073,10 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_broadcastMixin__ = __webpack_require__(142);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuex__ = __webpack_require__(3);
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 //
 //
 //
@@ -47247,14 +47141,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 
+
+
+
 /* harmony default export */ __webpack_exports__["default"] = ({
+	mixins: [__WEBPACK_IMPORTED_MODULE_0__mixins_broadcastMixin__["a" /* default */]],
 	data: function data() {
 		return {
-			broadcast: {},
 			sermons: []
 		};
 	},
-	computed: {
+	computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_1_vuex__["e" /* mapState */])(['nextBroadcast']), {
+		broadcast: function broadcast() {
+			return this.nextBroadcast;
+		},
 		route: function route() {
 			return this.$route.params.username;
 		},
@@ -47268,25 +47168,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 				sameElse: 'DD/MM/YYYY'
 			});
 		},
-		hasBroadcastSermonLoaded: function hasBroadcastSermonLoaded() {
-			return typeof this.broadcast.sermon === 'undefined' ? false : true;
-		},
 		broadcastDates: function broadcastDates() {
 			var moment = Moment.utc(this.broadcast.sermon.publish_on).local();
 			var starts = moment.format('MMM D');
 			var ends = moment.add(1, 'weeks').format('MMM D');
 
 			return starts + ' - ' + ends;
-		},
-		broadcastOpen: function broadcastOpen() {
-			return this.broadcast.status == 'broadcast_open' || this.broadcast.status == 'broadcast_in_progress';
 		}
-	},
+	}),
 	created: function created() {
 		var _this = this;
 
 		axios.get('/w/api/home').then(function (response) {
-			_this.broadcast = response.data.broadcast;
 			_this.sermons = response.data.sermons;
 		}).catch(function (error) {});
 	}
@@ -47302,87 +47195,83 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container-fluid p-0" }, [
     _c("div", { staticClass: "latest-sermon d-flex mb-60 flex-grow-1" }, [
-      _vm.hasBroadcastSermonLoaded
-        ? _c("div", { staticClass: "row no-gutters" }, [
+      _c("div", { staticClass: "row no-gutters" }, [
+        _c(
+          "div",
+          { staticClass: "col-10 col-lg-6 d-flex mb-60 flex-column move-up" },
+          [
             _c(
               "div",
               {
-                staticClass: "col-10 col-lg-6 d-flex mb-60 flex-column move-up"
+                staticClass:
+                  "d-flex ml-30 ml-md-60 flex-column justify-content-center flex-grow-1"
               },
               [
-                _c(
-                  "div",
+                _c("h1", { staticClass: "huge text-white" }, [
+                  _vm._v(_vm._s(_vm.$_broadcastMixin_title))
+                ]),
+                _vm._v(" "),
+                _vm._m(0)
+              ]
+            ),
+            _vm._v(" "),
+            _vm.$_broadcastMixin_isBroadcastOpen
+              ? _c(
+                  "router-link",
                   {
                     staticClass:
-                      "d-flex ml-30 ml-md-60 flex-column justify-content-center flex-grow-1"
+                      "d-inline-block ml-30 ml-md-60 pb-10 align-self-start text-white font-weight-bold text-uppercase border-bottom-heavy",
+                    attrs: {
+                      to: {
+                        name: "broadcast",
+                        params: { broadcast_id: _vm.broadcast.id }
+                      }
+                    }
                   },
                   [
-                    _c("h1", { staticClass: "huge text-white" }, [
-                      _vm._v(_vm._s(_vm.broadcast.sermon.title))
-                    ]),
-                    _vm._v(" "),
-                    _vm._m(0)
+                    _vm._v(
+                      "\n\t\t\t\t\t\tJoin In Progress Broadcast\n\t\t\t\t\t"
+                    )
                   ]
-                ),
-                _vm._v(" "),
-                _vm.broadcastOpen
-                  ? _c(
-                      "router-link",
-                      {
-                        staticClass:
-                          "d-inline-block ml-30 ml-md-60 pb-10 align-self-start text-white font-weight-bold text-uppercase border-bottom-heavy",
-                        attrs: {
-                          to: {
-                            name: "broadcast",
-                            params: { broadcast_id: _vm.broadcast.id }
-                          }
-                        }
-                      },
-                      [
-                        _vm._v(
-                          "\n\t\t\t\t\t\tJoin In Progress Broadcast\n\t\t\t\t\t"
-                        )
-                      ]
-                    )
-                  : _c(
-                      "router-link",
-                      {
-                        staticClass:
-                          "d-inline-block ml-30 ml-md-60 pb-10 align-self-start text-white font-weight-bold text-uppercase border-bottom-heavy",
-                        attrs: { to: { name: "schedule" } }
-                      },
-                      [_vm._v("View Broadcast Schedule")]
-                    )
-              ],
-              1
-            ),
-            _vm._v(" "),
-            _c(
-              "div",
-              {
-                staticClass:
-                  "col-7 offset-5 col-lg-4 offset-lg-4 sermon-image-container mb-lg-60"
-              },
-              [_c("img", { attrs: { src: _vm.broadcast.sermon.image } })]
-            ),
-            _vm._v(" "),
-            _c(
-              "div",
-              {
-                staticClass:
-                  "col-3 offset-3 d-none d-lg-flex align-items-end py-60 pr-30 pr-md-60 move-up"
-              },
-              [
-                _c("p", { staticClass: "mb-0 text-muted" }, [
-                  _vm._v(_vm._s(_vm.broadcast.sermon.description))
-                ])
-              ]
-            )
-          ])
-        : _vm._e()
+                )
+              : _c(
+                  "router-link",
+                  {
+                    staticClass:
+                      "d-inline-block ml-30 ml-md-60 pb-10 align-self-start text-white font-weight-bold text-uppercase border-bottom-heavy",
+                    attrs: { to: { name: "schedule" } }
+                  },
+                  [_vm._v("View Broadcast Schedule")]
+                )
+          ],
+          1
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass:
+              "col-7 offset-5 col-lg-4 offset-lg-4 sermon-image-container mb-lg-60"
+          },
+          [_c("img", { attrs: { src: _vm.$_broadcastMixin_image } })]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass:
+              "col-3 offset-3 d-none d-lg-flex align-items-end py-60 pr-30 pr-md-60 move-up"
+          },
+          [
+            _c("p", { staticClass: "mb-0 text-muted" }, [
+              _vm._v(_vm._s(_vm.$_broadcastMixin_description))
+            ])
+          ]
+        )
+      ])
     ]),
     _vm._v(" "),
-    _c("div", {}, [
+    _c("div", [
       _c("div", { staticClass: "row no-gutters" }, [
         _c("div", { staticClass: "col col-xl-10 offset-xl-1" }, [
           _c("h2", { staticClass: "px-30 px-md-60" }, [
@@ -47526,6 +47415,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_BroadcastChat__ = __webpack_require__(139);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_BroadcastChat___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__components_BroadcastChat__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__mixins_broadcastMixin__ = __webpack_require__(142);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_vuex__ = __webpack_require__(3);
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 //
 //
 //
@@ -47587,6 +47479,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+
 
 
 
@@ -47614,11 +47507,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 		});
 	},
 
-	computed: {
+	computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_4_vuex__["e" /* mapState */])(['nextBroadcast']), {
 		nextBroadcastTime: function nextBroadcastTime() {
 			return Moment.utc(this.broadcast.starts_at).local().format('dddd [at] h:mm a');
 		}
-	},
+	}),
 	methods: {
 		setData: function setData(from) {
 			this.previousPage = from;
@@ -47646,11 +47539,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 	created: function created() {
 		var _this = this;
 
-		axios.get('/w/api/broadcasts/' + this.$route.params.broadcast_id).then(function (response) {
-			_this.broadcast = response.data;
-		}).catch(function (error) {
-			console.log(error);
-		});
+		// if nextBroadcast == this broadcast
+		//		- show nextBroadcast data
+		// else fetch data
+
+		if (this.nextBroadcast.id == this.$route.params.broadcast_id) {
+			this.broadcast = this.nextBroadcast;
+		} else {
+			axios.get('/w/api/broadcasts/' + this.$route.params.broadcast_id).then(function (response) {
+				_this.broadcast = response.data;
+			}).catch(function (error) {
+				console.log(error);
+			});
+		}
 	}
 });
 
@@ -51285,13 +51186,14 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 			}).catch(function (error) {});
 		},
 		updateUser: function updateUser() {
+			var _this3 = this;
+
 			axios.post('/w/api/user/edit', {
 				_method: 'PATCH',
 				name: this.user.name,
 				email: this.user.email
 			}).then(function (response) {
-				console.log(response.data);
-				//this.setUserProfilePicture(response.data.profile_picture);
+				_this3.setUser(response.data);
 			}).catch(function (error) {});
 		}
 	})

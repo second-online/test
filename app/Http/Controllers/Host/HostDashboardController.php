@@ -32,12 +32,8 @@ class HostDashboardController extends Controller
 
         $broadcast->configure();
 
-        if (! isset($broadcast->sermon)) {
+        if (!isset($broadcast->sermon)) {
             $broadcast->loadSermon();
-        }
-
-        if (! isset($broadcast->trailer)) {
-            $broadcast->loadTrailer();
         }
 
         $hostComments = HostComment::with('user')

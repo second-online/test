@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\IntroVideo;
+use App\Broadcast;
 use Auth;
 
 class SPAController extends Controller
@@ -26,7 +28,20 @@ class SPAController extends Controller
             $user->profilePictureSize = 'large';
         }
 
-        // Attach next broadcasdt too...?
-        return view('layouts.app')->with('user', $user);
+        $nextBroadcast = Broadcast::where('enabled', 1)
+            ->oldest('starts_at')
+            ->first();
+            
+        $nextBroadcast->configure();
+
+        $introVideo = IntroVideo::where('enabled', 1)
+            ->orderByDesc('id')
+            ->first();
+
+        return view('layouts.app')->with([
+            'user' => $user,
+            'intro_video' => $introVideo,
+            'next_broadcast' => $nextBroadcast
+        ]);
     }
 }

@@ -1,17 +1,14 @@
 <template>
 	<div class="container-fluid p-0">
 		<div class="latest-sermon d-flex mb-60 flex-grow-1">
-			<div
-				v-if="hasBroadcastSermonLoaded"
-				class="row no-gutters"
-			>
+			<div class="row no-gutters">
 				<div class="col-10 col-lg-6 d-flex mb-60 flex-column move-up">
 					<div class="d-flex ml-30 ml-md-60 flex-column justify-content-center flex-grow-1">
-						<h1 class="huge text-white">{{ broadcast.sermon.title }}</h1>
+						<h1 class="huge text-white">{{ $_broadcastMixin_title }}</h1>
 						<span class="text-muted">Today at 3:00 pm<br>is our next broadcast</span>
 					</div>
 					<router-link
-						v-if="broadcastOpen"
+						v-if="$_broadcastMixin_isBroadcastOpen"
 						:to="{ name: 'broadcast', params: { broadcast_id: broadcast.id } }"
 						class="d-inline-block ml-30 ml-md-60 pb-10 align-self-start text-white font-weight-bold text-uppercase border-bottom-heavy"
 					>
@@ -24,7 +21,7 @@
 					>View Broadcast Schedule</router-link>
 				</div>
 				<div class="col-7 offset-5 col-lg-4 offset-lg-4 sermon-image-container mb-lg-60">
-					<img :src="broadcast.sermon.image">
+					<img :src="$_broadcastMixin_image">
 				</div>
 	 			<div class="col-3 offset-3 d-none d-lg-flex align-items-end py-60 pr-30 pr-md-60 move-up">
 <!-- 	 				<div class="flex-grow-1">
@@ -33,11 +30,11 @@
 	 					<span class="d-block text-white font-weight-bold">Broadcasts</span>
 	 					<span class="d-block text-muted">{{ broadcastDates }}</span>
 	 				</div> -->
-					<p class="mb-0 text-muted">{{ broadcast.sermon.description }}</p>
+					<p class="mb-0 text-muted">{{ $_broadcastMixin_description }}</p>
 				</div>				
 			</div>
 		</div>
-		<div class="">
+		<div>
 			<div class="row no-gutters">
 				<div class="col col-xl-10 offset-xl-1">
 					<h2 class="px-30 px-md-60">Recent Sermons</h2>
@@ -65,14 +62,23 @@
 </template>
 
 <script>
+	import broadcastMixin from '../mixins/broadcastMixin'
+	import { mapState } from 'vuex'
+
 	export default {
+		mixins: [broadcastMixin],
 		data: function() {
 			return {
-				broadcast: {},
 				sermons: []
 			}
 		},
 		computed: {
+			...mapState([
+				'nextBroadcast',
+			]),
+			broadcast: function() {
+				return this.nextBroadcast;
+			},
 			route: function() {
 				return this.$route.params.username
 			},
@@ -88,27 +94,18 @@
 					    sameElse: 'DD/MM/YYYY'
 					});
 			},
-			hasBroadcastSermonLoaded: function() {
-				return (typeof this.broadcast.sermon === 'undefined')
-					? false
-					: true;
-			},
 			broadcastDates: function() {
 				const moment = Moment.utc(this.broadcast.sermon.publish_on).local()
 				const starts = moment.format('MMM D');
 				const ends = moment.add(1, 'weeks').format('MMM D');
 
 				return starts + ' - ' + ends;
-			},
-			broadcastOpen: function() {
-				return this.broadcast.status == 'broadcast_open' || this.broadcast.status == 'broadcast_in_progress';
 			}
 		},
 		created: function() {
 			axios
 				.get('/w/api/home')
 				.then(response => {
-					this.broadcast = response.data.broadcast;
 					this.sermons = response.data.sermons;
 				})
 				.catch(error => {

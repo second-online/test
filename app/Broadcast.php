@@ -155,16 +155,6 @@ class Broadcast extends Model
     }
 
     /**
-     * Load the latest trailer.
-     * 
-     * @return array
-     */
-    public function loadTrailer()
-    {
-        $this->trailer = ['link' => 'https://vimeo.com/218845426/1d582e7485'];
-    }
-
-    /**
      * Get the sermon for the broadcast.
      * 
      * @return Sermon  \App\Sermon
@@ -177,7 +167,7 @@ class Broadcast extends Model
     }
 
     /**
-     * Configure the broadcast by adding trailer, sermon & status.
+     * Configure the broadcast by sermon & status.
      * 
      * @return void
      */
@@ -186,17 +176,15 @@ class Broadcast extends Model
         $opensAt = $this->opensAt();
         $startsAt = $this->starts_at;
 
+        if (!$this->live) {
+            $this->loadSermon();
+        }
+        
         if ($opensAt->isFuture()) {
             $this->status = self::BROADCAST_CLOSED;
 
             return;
         }
-
-        if (!$this->live) {
-            $this->loadSermon();
-        }
-
-        $this->loadTrailer();
 
         if ($startsAt->isFuture()) {
             $this->status = self::BROADCAST_OPEN;

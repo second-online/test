@@ -1,5 +1,10 @@
+import { mapState } from 'vuex'
+
 export default {
 	computed: {
+		...mapState([
+			'introVideo',
+		]),
 		$_broadcastMixin_isBroadcastLoaded: function() {
 			return this.broadcast !== null;
 		},
@@ -18,13 +23,28 @@ export default {
 		$_broadcastMixin_hasNotes: function() {
 			return this.broadcast.sermon.notes !== null;
 		},
+		$_broadcastMixin_title: function() {
+			return this.broadcast.live
+				? this.broadcast.name
+				: this.broadcast.sermon.title;
+		},
 		$_broadcastMixin_videoId: function() {
 			return this.$_broadcastMixin_isBroadcastInProgress
 				? this.broadcast.sermon.vimeo_id
-				: this.broadcast.trailer.link;
+				: this.introVideo.video_id;
 		},
 		$_broadcastMixin_timeElapsed: function() {
 			return this.broadcast.time_elapsed !== undefined ? this.broadcast.time_elapsed : 0;
+		},
+		$_broadcastMixin_image: function() {
+			return this.broadcast.live
+				? this.broadcast.image
+				: this.broadcast.sermon.image;
+		},
+		$_broadcastMixin_description: function() {
+			return this.broadcast.live
+				? this.broadcast.description
+				: this.broadcast.sermon.description;
 		}
 	},
 	methods: {

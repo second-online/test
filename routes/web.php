@@ -132,12 +132,14 @@ Route::get('vimeo/{id}', function($id) {
 
 	$videos = $response->data;
 
-	$date = Carbon::createFromFormat('Y-m-d H:i:s', '2018-10-24 00:00:00');
+	$date = Carbon::createFromFormat('Y-m-d H:i:s', '2018-10-31 00:00:00');
 
-	foreach ($videos as $video) {
+	foreach ($videos as $key => $video) {
 		if ($video->duration < 300)
 			continue;
 
+		if ($key === 0)
+			continue;
 
 		// echo $video->name . '<br>';
 		// echo str_replace('/videos/', '', $video->uri) . '<br>';

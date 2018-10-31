@@ -6,6 +6,8 @@ Vue.use(Vuex);
 export const store = new Vuex.Store({
 	state: {
 		user: window.AppUser,
+		introVideo: window.AppIntroVideo,
+		nextBroadcast: window.AppNextBroadcast,
 		layout: null
 	},
 	getters: {
@@ -22,6 +24,9 @@ export const store = new Vuex.Store({
 		},
 		setUserProfilePicture (state, picture) {
 			state.user.profile_picture = picture;
+		},
+		setNextBroadcast (state, broadcast) {
+			state.nextBroadcast = broadcast;
 		},
 		setLayout (state, layout = 'default-layout') {
 			state.layout = layout;

@@ -52,6 +52,8 @@ class LoginController extends Controller
             $user->is_host = true;
         }
 
+        $user->makeVisible('email');
+
         return response()->json($user);
     }
 

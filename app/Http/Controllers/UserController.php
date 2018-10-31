@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\ImageManagerStatic as Image;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 use App\User;
 
 class UserController extends Controller
@@ -19,6 +20,18 @@ class UserController extends Controller
      */
     public function update(Request $request)
     {
+
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => [
+                'required',
+                'string',
+                'email',
+                'max:255',
+                Rule::unique('users')->ignore($request->user()->id),
+            ]
+        ]);
+
         $user = $request->user();
         $data = $request->only('name', 'email');
         $user->fill($data);
