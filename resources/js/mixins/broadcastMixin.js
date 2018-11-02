@@ -21,7 +21,7 @@ export default {
 			return this.broadcast.live;
 		},
 		$_broadcastMixin_hasNotes: function() {
-			return this.broadcast.sermon.notes !== null;
+			return this.broadcast.sermon && this.broadcast.sermon.notes !== null;
 		},
 		$_broadcastMixin_title: function() {
 			return this.broadcast.live
@@ -45,6 +45,11 @@ export default {
 			return this.broadcast.live
 				? this.broadcast.description
 				: this.broadcast.sermon.description;
+		},
+		$_broadcastMixin_nextBroadcastTime: function() {
+			return Moment.utc(this.broadcast.starts_at)
+				.local()
+				.format('dddd [at] h:mm a');
 		}
 	},
 	methods: {

@@ -61,8 +61,6 @@ Route::group(['prefix' => 'w/api'], function() {
 
 	Route::get('schedule', 'BroadcastController@index');
 
-	Route::get('broadcasts/next', 'BroadcastController@upNext');
-
 	Route::get('broadcasts/{broadcast}', 'BroadcastController@show');
 
 	Route::get('broadcasts/{broadcast}/comments', 'BroadcastCommentController@index');
@@ -86,6 +84,8 @@ Route::group(['prefix' => 'w/api'], function() {
 	Route::patch('user/picture', 'UserController@updateProfilePicture');
 
 	Route::delete('user/picture', 'UserController@destroyProfilePicture');
+
+	Route::post('contact', 'ContactController@index');
 });
 
 

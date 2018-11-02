@@ -20,8 +20,7 @@ class UserController extends Controller
      */
     public function update(Request $request)
     {
-
-        $validatedData = $request->validate([
+        $request->validate([
             'name' => 'required|string|max:255',
             'email' => [
                 'required',

@@ -10371,8 +10371,6 @@ textarea {
   outline: none;
   -webkit-font-feature-settings: inherit;
   font-feature-settings: inherit;
-  border: 1px solid red;
-  background: green;
 }
 
 a:hover {
@@ -10746,7 +10744,7 @@ header div {
 
 .latest-sermon {
   position: relative;
-  height: calc(100vh - 7.5rem);
+  min-height: calc(100vh - 7.5rem);
   background: #080808;
   overflow: hidden;
 }

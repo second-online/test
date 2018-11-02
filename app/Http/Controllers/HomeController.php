@@ -17,26 +17,13 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {        
-        // $broadcast = Broadcast::where('enabled', 1)
-        //     ->where('live', 0)
-        //     ->oldest('starts_at')
-        //     ->first();
-
-        // // remove notes
-            
-        // $broadcast->configure();
-
-        // if (! isset($broadcast->sermon)) {
-        //     $broadcast->loadSermon();
-        // }
-        $timeThreshold = Carbon::now()->subDays(7);
+        $timeThreshold = Carbon::now()->subWeek();
 
         $sermons = Sermon::where('publish_on', '<=', $timeThreshold)
         	->take(6)
         	->get();
 
         return response()->json([
-        	// 'broadcast' => $broadcast,
         	'sermons' => $sermons
         ]);
     }

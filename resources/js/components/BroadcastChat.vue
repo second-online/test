@@ -1,5 +1,5 @@
 <template>
-	<div class="d-flex flex-column flex-grow-1">
+	<div class="d-flex flex-column flex-grow-1 mh-0">
 		<div
 			:id="scrollContainerId"
 			class="d-flex flex-column flex-grow-1 border-bottom overflow-y"
@@ -32,20 +32,18 @@
 				</div>
 			</div>
 		</div>
-		<div> <!-- Need to make this stick to bottom of browser in Firefox -->
-			<comment-form
-				v-if="isUserAuthenticated"
-				:value="newComment"
-				@input="newComment = $event"
-				@submit="submitComment"
-				class="bg-white"
-			/>
-			<span
-				v-else
-				@click="login"
-				class="d-block p-30 font-weight-bold text-center bg-white"
-			>Login to chat</span>
-		</div>
+		<comment-form
+			v-if="isUserAuthenticated"
+			:value="newComment"
+			@input="newComment = $event"
+			@submit="submitComment"
+			class="bg-white"
+		/>
+		<span
+			v-else
+			@click="login"
+			class="d-block p-30 flex-shrink-0 font-weight-bold text-center bg-white"
+		>Login to chat</span>
 	</div>
 </template>
 
@@ -58,7 +56,11 @@
 	export default {
 		props: {
 			scrollContainerId: String,
-			broadcastId: Number
+			broadcastId: Number,
+			scollToBottomOnLoad: {
+				type: Boolean,
+				default: true
+			}
 		},
 		components: {
 			CommentForm,
@@ -86,7 +88,7 @@
 			submitComment: function() {
 				if (this.isLoading) { return; }
 
-				if (! this.isUserAuthenticated) { return; }
+				if (!this.isUserAuthenticated) { return; }
 
 				axios
 					.post('/w/api/broadcasts/' + this.broadcastId + '/comments', {
@@ -127,10 +129,19 @@
 				this.$router.push({ name: 'login', query: { redirect: this.$route.path } });
 			}
 		},
+		created: function() {
+			axios
+				.get('/w/api/broadcasts/' + this.broadcastId + '/comments')
+				.then(response => {
+					this.$_chatMixin_publishComments(response.data, this.scollToBottomOnLoad);
+				})
+				.catch(error => {
+					console.log(error);
+				});
+		},
 		mounted: function() {
 			Echo.channel('broadcast.chat.' + this.broadcastId)
 				.listen('BroadcastCommentCreated', comment => {
-					console.log('created');
 					this.$_chatMixin_publishComment(comment);
 			});	
 		},

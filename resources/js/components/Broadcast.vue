@@ -25,36 +25,30 @@
 			</div>
 			<broadcast-chat
 				:broadcast-id="broadcast.id"
+				:scoll-to-bottom-on-load="false"
 				scroll-container-id="broadcast-comments"
-				ref="broadcastChat"
 				class="video-sidebar bg-light-grey"
 			>		 
 				<div class="px-30 px-md-40 py-40 bg-white">
-					<template v-if="$_broadcastMixin_isBroadcastLive">
-						<h1>{{ broadcast.name }}</h1>
-						<p>{{ broadcast.description }}</p>
-					</template>
-					<template v-else>
-						<h1>{{ broadcast.sermon.title }}</h1>
-						<p>{{ broadcast.sermon.description }}</p>
-						<template v-if="$_broadcastMixin_hasNotes">
-							<p
-								@click="toggleNotes"
-								class="font-weight-bold clickable"
-							>
-								{{ showNotes ? 'Hide notes' : 'See notes' }}
-							</p>
-							<div
-								v-show="showNotes"
-								v-html="broadcast.sermon.notes"
-							></div>
-						</template>
+					<h1>{{ $_broadcastMixin_title }}</h1>
+					<p>{{ $_broadcastMixin_description }}</p>
+					<template v-if="$_broadcastMixin_hasNotes">
+						<p
+							@click="toggleNotes"
+							class="font-weight-bold clickable"
+						>
+							{{ showNotes ? 'Hide notes' : 'See notes' }}
+						</p>
+						<div
+							v-show="showNotes"
+							v-html="broadcast.sermon.notes"
+						></div>
 					</template>
 				</div>				 
 			</broadcast-chat>
 		</template>
 		<template v-if="$_broadcastMixin_isBroadcastLoaded && $_broadcastMixin_isBroadcastClosed">
-			<span>{{ nextBroadcastTime }}</span>
+			<span>{{ $_broadcastMixin_nextBroadcastTime }}</span>
 		</template>
 	</div>
 </template>
@@ -75,38 +69,27 @@
 		mixins: [broadcastMixin],
 		data: function() {
 			return {
-				notes: null,
 				broadcast: null,
 				showNotes: false,
 				previousPage: null
 			}
 		},
 		beforeRouteEnter (to, from, next) {
-			next(vm => vm.setData(from));		
+			next(vm => vm.previousPage = from);		
 		},
 		computed: {
 			...mapState([
 				'nextBroadcast',
-			]),
-			nextBroadcastTime: function() {
-				return Moment.utc(this.broadcast.starts_at)
-					.local()
-					.format('dddd [at] h:mm a');
+			])
+		},
+		watch: {
+			nextBroadcast: function(broadcast) {
+				if (broadcast.id == this.$route.params.broadcast_id) {
+					this.broadcast = broadcast;
+				}
 			}
 		},
 		methods: {
-			setData: function(from) {
-				this.previousPage = from;
-			},
-	        broadcastClosed: function(broadcast) {
-	        	this.broadcast = broadcast;
-	        }, 
-			broadcastOpen: function(broadcast) {
-				this.broadcast = broadcast;
-			},
-			broadcastInProgress: function(broadcast) {
-				this.broadcast = broadcast;
-			},
 	        toggleNotes: function() {
 	        	this.showNotes = !this.showNotes;
 	        },
@@ -119,10 +102,6 @@
 		    }
 		},	
 		created: function() {
-			// if nextBroadcast == this broadcast
-			//		- show nextBroadcast data
-			// else fetch data
-
 			if (this.nextBroadcast.id == this.$route.params.broadcast_id) {
 				this.broadcast = this.nextBroadcast;
 			} else {

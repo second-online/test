@@ -29613,13 +29613,15 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 		$_chatMixin_publishComments: function $_chatMixin_publishComments(comments) {
 			var _comments;
 
+			var scrollToBottom = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+
 			var el = document.getElementById(this.scrollContainerId);
 			var distanceFromBottom = el.scrollHeight - el.clientHeight - el.scrollTop;
 
 			(_comments = this.comments).push.apply(_comments, _toConsumableArray(comments));
 
 			this.$nextTick(function () {
-				if (distanceFromBottom < 150) {
+				if (scrollToBottom && distanceFromBottom < 150) {
 					el.scrollTop = el.scrollHeight - el.clientHeight;
 				}
 			});
@@ -29655,7 +29657,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 			return this.broadcast.live;
 		},
 		$_broadcastMixin_hasNotes: function $_broadcastMixin_hasNotes() {
-			return this.broadcast.sermon.notes !== null;
+			return this.broadcast.sermon && this.broadcast.sermon.notes !== null;
 		},
 		$_broadcastMixin_title: function $_broadcastMixin_title() {
 			return this.broadcast.live ? this.broadcast.name : this.broadcast.sermon.title;
@@ -29671,6 +29673,9 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 		},
 		$_broadcastMixin_description: function $_broadcastMixin_description() {
 			return this.broadcast.live ? this.broadcast.description : this.broadcast.sermon.description;
+		},
+		$_broadcastMixin_nextBroadcastTime: function $_broadcastMixin_nextBroadcastTime() {
+			return Moment.utc(this.broadcast.starts_at).local().format('dddd [at] h:mm a');
 		}
 	}),
 	methods: {
@@ -47176,6 +47181,11 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 			return starts + ' - ' + ends;
 		}
 	}),
+	methods: {
+		publishedOn: function publishedOn(timestamp) {
+			return Moment.utc(timestamp).local().format('MMMM D, Y').toString();
+		}
+	},
 	created: function created() {
 		var _this = this;
 
@@ -47317,7 +47327,7 @@ var render = function() {
                             ),
                             _vm._v(" "),
                             _c("span", { staticClass: "small text-muted" }, [
-                              _vm._v("September 14, 2018")
+                              _vm._v(_vm._s(_vm.publishedOn(sermon.publish_on)))
                             ])
                           ])
                         ]
@@ -47473,12 +47483,6 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 //
 //
-//
-//
-//
-//
-//
-//
 
 
 
@@ -47495,7 +47499,6 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 	mixins: [__WEBPACK_IMPORTED_MODULE_3__mixins_broadcastMixin__["a" /* default */]],
 	data: function data() {
 		return {
-			notes: null,
 			broadcast: null,
 			showNotes: false,
 			previousPage: null
@@ -47503,28 +47506,19 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 	},
 	beforeRouteEnter: function beforeRouteEnter(to, from, next) {
 		next(function (vm) {
-			return vm.setData(from);
+			return vm.previousPage = from;
 		});
 	},
 
-	computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_4_vuex__["e" /* mapState */])(['nextBroadcast']), {
-		nextBroadcastTime: function nextBroadcastTime() {
-			return Moment.utc(this.broadcast.starts_at).local().format('dddd [at] h:mm a');
+	computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_4_vuex__["e" /* mapState */])(['nextBroadcast'])),
+	watch: {
+		nextBroadcast: function nextBroadcast(broadcast) {
+			if (broadcast.id == this.$route.params.broadcast_id) {
+				this.broadcast = broadcast;
+			}
 		}
-	}),
+	},
 	methods: {
-		setData: function setData(from) {
-			this.previousPage = from;
-		},
-		broadcastClosed: function broadcastClosed(broadcast) {
-			this.broadcast = broadcast;
-		},
-		broadcastOpen: function broadcastOpen(broadcast) {
-			this.broadcast = broadcast;
-		},
-		broadcastInProgress: function broadcastInProgress(broadcast) {
-			this.broadcast = broadcast;
-		},
 		toggleNotes: function toggleNotes() {
 			this.showNotes = !this.showNotes;
 		},
@@ -47538,10 +47532,6 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 	},
 	created: function created() {
 		var _this = this;
-
-		// if nextBroadcast == this broadcast
-		//		- show nextBroadcast data
-		// else fetch data
 
 		if (this.nextBroadcast.id == this.$route.params.broadcast_id) {
 			this.broadcast = this.nextBroadcast;
@@ -47763,8 +47753,6 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 //
 //
-//
-//
 
 
 
@@ -47774,7 +47762,11 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 /* harmony default export */ __webpack_exports__["default"] = ({
 	props: {
 		scrollContainerId: String,
-		broadcastId: Number
+		broadcastId: Number,
+		scollToBottomOnLoad: {
+			type: Boolean,
+			default: true
+		}
 	},
 	components: {
 		CommentForm: __WEBPACK_IMPORTED_MODULE_0__components_CommentForm___default.a
@@ -47837,12 +47829,20 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 			this.$router.push({ name: 'login', query: { redirect: this.$route.path } });
 		}
 	},
-	mounted: function mounted() {
+	created: function created() {
 		var _this2 = this;
 
+		axios.get('/w/api/broadcasts/' + this.broadcastId + '/comments').then(function (response) {
+			_this2.$_chatMixin_publishComments(response.data, _this2.scollToBottomOnLoad);
+		}).catch(function (error) {
+			console.log(error);
+		});
+	},
+	mounted: function mounted() {
+		var _this3 = this;
+
 		Echo.channel('broadcast.chat.' + this.broadcastId).listen('BroadcastCommentCreated', function (comment) {
-			console.log('created');
-			_this2.$_chatMixin_publishComment(comment);
+			_this3.$_chatMixin_publishComment(comment);
 		});
 	},
 	beforeDestroy: function beforeDestroy() {
@@ -47965,83 +47965,83 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "d-flex flex-column flex-grow-1" }, [
-    _c(
-      "div",
-      {
-        staticClass: "d-flex flex-column flex-grow-1 border-bottom overflow-y",
-        attrs: { id: _vm.scrollContainerId }
-      },
-      [
-        _vm._t("default"),
-        _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "px-30 px-md-40 pt-36" },
-          _vm._l(_vm.comments, function(comment) {
-            return _c(
-              "div",
-              {
-                key: comment.id,
-                staticClass: "d-flex mb-36 flex-shrink-0",
-                attrs: { id: "comment-" + comment.id }
-              },
-              [
-                _c("img", {
-                  staticClass: "profile-picture mt-2 mr-24 flex-shrink-0",
-                  attrs: { src: comment.user.profile_picture }
-                }),
-                _vm._v(" "),
-                _c("div", { staticClass: "flex-grow-1" }, [
-                  _c("div", { staticClass: "mb-4" }, [
-                    _c("span", { staticClass: "font-weight-bold" }, [
-                      _vm._v(_vm._s(comment.user.name))
+  return _c(
+    "div",
+    { staticClass: "d-flex flex-column flex-grow-1 mh-0" },
+    [
+      _c(
+        "div",
+        {
+          staticClass:
+            "d-flex flex-column flex-grow-1 border-bottom overflow-y",
+          attrs: { id: _vm.scrollContainerId }
+        },
+        [
+          _vm._t("default"),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "px-30 px-md-40 pt-36" },
+            _vm._l(_vm.comments, function(comment) {
+              return _c(
+                "div",
+                {
+                  key: comment.id,
+                  staticClass: "d-flex mb-36 flex-shrink-0",
+                  attrs: { id: "comment-" + comment.id }
+                },
+                [
+                  _c("img", {
+                    staticClass: "profile-picture mt-2 mr-24 flex-shrink-0",
+                    attrs: { src: comment.user.profile_picture }
+                  }),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "flex-grow-1" }, [
+                    _c("div", { staticClass: "mb-4" }, [
+                      _c("span", { staticClass: "font-weight-bold" }, [
+                        _vm._v(_vm._s(comment.user.name))
+                      ]),
+                      _vm._v(" "),
+                      comment.user.is_host
+                        ? _c("span", { staticClass: "ml-4 text-muted" }, [
+                            _vm._v("Host")
+                          ])
+                        : _vm._e()
                     ]),
                     _vm._v(" "),
-                    comment.user.is_host
-                      ? _c("span", { staticClass: "ml-4 text-muted" }, [
-                          _vm._v("Host")
-                        ])
-                      : _vm._e()
-                  ]),
-                  _vm._v(" "),
-                  _c("div", [_c("span", [_vm._v(_vm._s(comment.text))])])
-                ])
-              ]
-            )
-          })
-        )
-      ],
-      2
-    ),
-    _vm._v(" "),
-    _c(
-      "div",
-      [
-        _vm.isUserAuthenticated
-          ? _c("comment-form", {
-              staticClass: "bg-white",
-              attrs: { value: _vm.newComment },
-              on: {
-                input: function($event) {
-                  _vm.newComment = $event
-                },
-                submit: _vm.submitComment
-              }
+                    _c("div", [_c("span", [_vm._v(_vm._s(comment.text))])])
+                  ])
+                ]
+              )
             })
-          : _c(
-              "span",
-              {
-                staticClass:
-                  "d-block p-30 font-weight-bold text-center bg-white",
-                on: { click: _vm.login }
+          )
+        ],
+        2
+      ),
+      _vm._v(" "),
+      _vm.isUserAuthenticated
+        ? _c("comment-form", {
+            staticClass: "bg-white",
+            attrs: { value: _vm.newComment },
+            on: {
+              input: function($event) {
+                _vm.newComment = $event
               },
-              [_vm._v("Login to chat")]
-            )
-      ],
-      1
-    )
-  ])
+              submit: _vm.submitComment
+            }
+          })
+        : _c(
+            "span",
+            {
+              staticClass:
+                "d-block p-30 flex-shrink-0 font-weight-bold text-center bg-white",
+              on: { click: _vm.login }
+            },
+            [_vm._v("Login to chat")]
+          )
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -48113,10 +48113,10 @@ var render = function() {
             _c(
               "broadcast-chat",
               {
-                ref: "broadcastChat",
                 staticClass: "video-sidebar bg-light-grey",
                 attrs: {
                   "broadcast-id": _vm.broadcast.id,
+                  "scoll-to-bottom-on-load": false,
                   "scroll-container-id": "broadcast-comments"
                 }
               },
@@ -48125,60 +48125,44 @@ var render = function() {
                   "div",
                   { staticClass: "px-30 px-md-40 py-40 bg-white" },
                   [
-                    _vm.$_broadcastMixin_isBroadcastLive
+                    _c("h1", [_vm._v(_vm._s(_vm.$_broadcastMixin_title))]),
+                    _vm._v(" "),
+                    _c("p", [_vm._v(_vm._s(_vm.$_broadcastMixin_description))]),
+                    _vm._v(" "),
+                    _vm.$_broadcastMixin_hasNotes
                       ? [
-                          _c("h1", [_vm._v(_vm._s(_vm.broadcast.name))]),
+                          _c(
+                            "p",
+                            {
+                              staticClass: "font-weight-bold clickable",
+                              on: { click: _vm.toggleNotes }
+                            },
+                            [
+                              _vm._v(
+                                "\n\t\t\t\t\t\t" +
+                                  _vm._s(
+                                    _vm.showNotes ? "Hide notes" : "See notes"
+                                  ) +
+                                  "\n\t\t\t\t\t"
+                              )
+                            ]
+                          ),
                           _vm._v(" "),
-                          _c("p", [_vm._v(_vm._s(_vm.broadcast.description))])
+                          _c("div", {
+                            directives: [
+                              {
+                                name: "show",
+                                rawName: "v-show",
+                                value: _vm.showNotes,
+                                expression: "showNotes"
+                              }
+                            ],
+                            domProps: {
+                              innerHTML: _vm._s(_vm.broadcast.sermon.notes)
+                            }
+                          })
                         ]
-                      : [
-                          _c("h1", [
-                            _vm._v(_vm._s(_vm.broadcast.sermon.title))
-                          ]),
-                          _vm._v(" "),
-                          _c("p", [
-                            _vm._v(_vm._s(_vm.broadcast.sermon.description))
-                          ]),
-                          _vm._v(" "),
-                          _vm.$_broadcastMixin_hasNotes
-                            ? [
-                                _c(
-                                  "p",
-                                  {
-                                    staticClass: "font-weight-bold clickable",
-                                    on: { click: _vm.toggleNotes }
-                                  },
-                                  [
-                                    _vm._v(
-                                      "\n\t\t\t\t\t\t\t" +
-                                        _vm._s(
-                                          _vm.showNotes
-                                            ? "Hide notes"
-                                            : "See notes"
-                                        ) +
-                                        "\n\t\t\t\t\t\t"
-                                    )
-                                  ]
-                                ),
-                                _vm._v(" "),
-                                _c("div", {
-                                  directives: [
-                                    {
-                                      name: "show",
-                                      rawName: "v-show",
-                                      value: _vm.showNotes,
-                                      expression: "showNotes"
-                                    }
-                                  ],
-                                  domProps: {
-                                    innerHTML: _vm._s(
-                                      _vm.broadcast.sermon.notes
-                                    )
-                                  }
-                                })
-                              ]
-                            : _vm._e()
-                        ]
+                      : _vm._e()
                   ],
                   2
                 )
@@ -48189,7 +48173,7 @@ var render = function() {
       _vm._v(" "),
       _vm.$_broadcastMixin_isBroadcastLoaded &&
       _vm.$_broadcastMixin_isBroadcastClosed
-        ? [_c("span", [_vm._v(_vm._s(_vm.nextBroadcastTime))])]
+        ? [_c("span", [_vm._v(_vm._s(_vm.$_broadcastMixin_nextBroadcastTime))])]
         : _vm._e()
     ],
     2
@@ -48339,6 +48323,9 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 				name: 'sermon',
 				params: { sermon_id: sermonId }
 			});
+		},
+		publishedOn: function publishedOn(timestamp) {
+			return Moment.utc(timestamp).local().format('MMMM D, Y').toString();
 		}
 	},
 	created: function created() {
@@ -48389,7 +48376,7 @@ var render = function() {
                     ),
                     _vm._v(" "),
                     _c("span", { staticClass: "small text-muted" }, [
-                      _vm._v("September 14, 2018")
+                      _vm._v(_vm._s(_vm.publishedOn(sermon.publish_on)))
                     ])
                   ])
                 ])
@@ -48854,7 +48841,7 @@ if (false) {
 var disposed = false
 var normalizeComponent = __webpack_require__(1)
 /* script */
-var __vue_script__ = null
+var __vue_script__ = __webpack_require__(258)
 /* template */
 var __vue_template__ = __webpack_require__(220)
 /* template functional */
@@ -48902,7 +48889,86 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [_vm._v("\n\tContact page.. working on this..\n")])
+  return _c("div", [
+    _vm._v("\n\tContact page.. working on this..\n\t"),
+    _c(
+      "form",
+      {
+        on: {
+          submit: function($event) {
+            $event.preventDefault()
+            return _vm.submit($event)
+          }
+        }
+      },
+      [
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.email,
+              expression: "email"
+            }
+          ],
+          attrs: { type: "email", name: "email", placeholder: "Email" },
+          domProps: { value: _vm.email },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.email = $event.target.value
+            }
+          }
+        }),
+        _vm._v(" "),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.name,
+              expression: "name"
+            }
+          ],
+          attrs: { type: "text", name: "name", placeholder: "Name" },
+          domProps: { value: _vm.name },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.name = $event.target.value
+            }
+          }
+        }),
+        _vm._v(" "),
+        _c("textarea", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.message,
+              expression: "message"
+            }
+          ],
+          attrs: { placeholder: "Message" },
+          domProps: { value: _vm.message },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.message = $event.target.value
+            }
+          }
+        }),
+        _vm._v(" "),
+        _c("input", { attrs: { type: "submit", name: "" } })
+      ]
+    )
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -51768,6 +51834,50 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 254 */,
+/* 255 */,
+/* 256 */,
+/* 257 */,
+/* 258 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+	data: function data() {
+		return {
+			email: null,
+			name: null,
+			message: null
+		};
+	},
+	methods: {
+		submit: function submit() {
+			axios.post('/w/api/contact', {
+				email: this.email,
+				name: this.name,
+				message: this.message
+			}).then(function (response) {
+				console.log(response.data);
+			}).catch(function (error) {}).then(function () {});
+		}
+	}
+});
 
 /***/ })
 /******/ ]);

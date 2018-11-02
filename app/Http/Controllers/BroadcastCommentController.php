@@ -16,28 +16,43 @@ class BroadcastCommentController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth')->except('index');
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Broadcast  $broadcast
+     * @return \Illuminate\Http\Response
+     */
+    public function index(Broadcast $broadcast)
+    {
+        $broadcast->load(['comments' => function($query) use ($broadcast) {
+            $query->with('user')
+                ->where('created_at', '>=', $broadcast->opensAt());
+        }]);
+
+        return $broadcast->comments; 
     }
 
     /**
      * Store a newly created broadcast comment.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $broadcast_id
+     * @param  int  $broadcastId
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, $broadcast_id)
+    public function store(Request $request, $broadcastId)
     {      
         // Need to add validation for text
 
         $broadcastComment = new BroadcastComment;
         $broadcastComment->text = $request->input('text');
         $broadcastComment->user()->associate($request->user());
-        $broadcastComment->broadcast_id = $broadcast_id;
+        $broadcastComment->broadcast_id = $broadcastId;
 
-        // change to try catch /// return something
+        // change to try catch? // return something
         if ($broadcastComment->save()) {
-            
             if ($request->input('isHost') === true) {
                 $broadcastComment->user->is_host = $request->user()->isHost();
             } else {

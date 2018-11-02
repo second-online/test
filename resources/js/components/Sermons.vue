@@ -25,7 +25,7 @@
 							<img v-bind:src="sermon.image" class="w-100">
 							<div class="ml-30 ml-md-0">
 								<span class="d-block pt-20 xlarge font-weight-bold">{{ sermon.title }}</span>
-								<span class="small text-muted">September 14, 2018</span>
+								<span class="small text-muted">{{ publishedOn(sermon.publish_on) }}</span>
 							</div>
 						</div>
 					</div>
@@ -36,7 +36,7 @@
 			<div class="col-12 my-30 text-center">
 				<span
 					v-if="showLoadMoreButton"
-					v-on:click="loadSermons"
+					@click="loadSermons"
 					class="d-inline-block px-48 py-20 font-weight-bold text-white bg-black clickable"
 				>Load more</span>
 				<span v-else>That's all the sermons.</span>
@@ -61,7 +61,7 @@
 			}
 		},
 		methods: {
-			loadSermons() {
+			loadSermons: function() {
 				axios
 					.get(this.endpoint)
 					.then(response => {
@@ -70,11 +70,17 @@
 						this.showLoadMoreButton = this.nextPage === null ? false : true;
 					});
 			},
-			openSermon(sermonId) {
+			openSermon: function(sermonId) {
 				this.$router.push({
 					name: 'sermon',
 					params: { sermon_id: sermonId }
 				});
+			},
+			publishedOn: function(timestamp) {
+				return Moment.utc(timestamp)
+					.local()
+					.format('MMMM D, Y')
+					.toString();
 			}
 		},
 		created: function() {

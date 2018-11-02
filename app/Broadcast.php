@@ -157,7 +157,7 @@ class Broadcast extends Model
     /**
      * Get the sermon for the broadcast.
      * 
-     * @return Sermon  \App\Sermon
+     * @return Sermon \App\Sermon
      */
     public function loadSermon() 
     {
@@ -167,7 +167,7 @@ class Broadcast extends Model
     }
 
     /**
-     * Configure the broadcast by sermon & status.
+     * Configure the broadcast by adding sermon & status.
      * 
      * @return void
      */

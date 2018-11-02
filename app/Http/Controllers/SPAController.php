@@ -38,7 +38,7 @@ class SPAController extends Controller
             ->orderByDesc('id')
             ->first();
 
-        return view('layouts.app')->with([
+        return view('app')->with([
             'user' => $user,
             'intro_video' => $introVideo,
             'next_broadcast' => $nextBroadcast

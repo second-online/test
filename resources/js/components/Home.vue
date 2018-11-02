@@ -49,7 +49,7 @@
 									<img v-bind:src="sermon.image" class="w-100">
 									<div class="ml-30 ml-md-0">
 										<span class="d-block pt-20 xlarge font-weight-bold">{{ sermon.title }}</span>
-										<span class="small text-muted">September 14, 2018</span>
+										<span class="small text-muted">{{ publishedOn(sermon.publish_on) }}</span>
 									</div>
 								</router-link>
 							</div>
@@ -100,6 +100,14 @@
 				const ends = moment.add(1, 'weeks').format('MMM D');
 
 				return starts + ' - ' + ends;
+			}
+		},
+		methods: {
+			publishedOn: function(timestamp) {
+				return Moment.utc(timestamp)
+					.local()
+					.format('MMMM D, Y')
+					.toString();
 			}
 		},
 		created: function() {
