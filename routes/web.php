@@ -111,7 +111,13 @@ Route::fallback('SPAController@index');
 Route::get('password/reset/{token}', 'SPAController@index')->name('password.reset');
 
 
+Route::get('/mailable', function () {
+    $email = 'alex@alexlacayo.com';
+    $name = 'Alex Lacayo';
+    $body = 'Hey can you help me?';
 
+    return new App\Mail\ContactUs($email, $name, $body);
+});
 
 Route::get('test', function() {
 

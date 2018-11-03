@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\ContactUs;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class ContactController extends Controller
 {
@@ -23,6 +25,8 @@ class ContactController extends Controller
         $email = $request->email;
         $name = $request->name;
         $message = $request->message;
+
+        Mail::to('alex@alexlacayo.com')->send(new ContactUs($email, $name, $message));
 
         return $message;
     }
