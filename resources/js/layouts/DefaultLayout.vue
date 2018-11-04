@@ -1,13 +1,13 @@
 <template>
 	<div
-		v-bind:class="{ 'overflow-hidden' : isMenuActive }"
+		:class="{ 'overflow-hidden' : isMenuActive }"
 		class="d-flex flex-column"
 	>
 		<the-header @menu-toggled="isMenuActive = $event"/>
 		<main class="d-flex flex-grow-1 mh-0" role="main">
 			<slot/>
 		</main>
-		<the-footer></the-footer>
+		<!-- <the-footer></the-footer> -->
 	</div>
 </template>
 

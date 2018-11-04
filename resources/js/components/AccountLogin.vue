@@ -17,10 +17,10 @@
 			<div class="form-group mb-10">
 				<label for="email" class="sr-only font-weight-bold">Email</label>
 				<input
+					v-model="email"
+					:class="[ alerts.email ? 'border border-1 border-danger' : 'border-0' ]"
 					id="email"
 					class="form-control p-24 w-100 bg-light-grey"
-					v-bind:class="[ alerts.email ? 'border border-1 border-danger' : 'border-0' ]"
-					v-model="email"
 					type="email"
 					placeholder="Email"
 				>
@@ -28,19 +28,19 @@
 			<div class="form-group mb-10"> 
 				<label for="password" class="sr-only font-weight-bold">Password</label>
 				<div
-					v-bind:class="[ alerts.password ? 'border border-1 border-danger' : 'border-0' ]"
+					:class="[ alerts.password ? 'border border-1 border-danger' : 'border-0' ]"
 					class="d-flex align-items-center bg-light-grey"
 				>
 					<input
+						v-model="password"
 						id="password"
 						class="form-control p-24 flex-grow-1 bg-light-grey border-0"
-						v-model="password"
 						type="password"
 						placeholder="Password"
 					>
 					<router-link
 						class="mx-24 font-weight-bold"
-						v-bind:to="passwordResetURL">
+						:to="passwordResetURL">
 							Reset
 					</router-link>
 				</div>
@@ -50,7 +50,7 @@
 				type="submit"
 			>Login</button>
 		</form>
-		<router-link v-bind:to="registerURL">
+		<router-link :to="registerURL">
 			Dont have an account?
 			<span class="ml-4 font-weight-bold">Sign up</span>
 		</router-link>

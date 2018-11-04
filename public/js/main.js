@@ -43556,7 +43556,7 @@ var render = function() {
               staticClass: "logo line-height-1",
               attrs: { to: { name: "home" } }
             },
-            [_vm._v("Second Online Campus")]
+            [_vm._v("Second Online")]
           )
         ],
         1
@@ -43895,9 +43895,7 @@ var render = function() {
         { staticClass: "d-flex flex-grow-1 mh-0", attrs: { role: "main" } },
         [_vm._t("default")],
         2
-      ),
-      _vm._v(" "),
-      _c("the-footer")
+      )
     ],
     1
   )
@@ -48889,85 +48887,117 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _vm._v("\n\tContact page.. working on this..\n\t"),
-    _c(
-      "form",
-      {
-        on: {
-          submit: function($event) {
-            $event.preventDefault()
-            return _vm.submit($event)
-          }
-        }
-      },
-      [
-        _c("input", {
-          directives: [
+  return _c("div", { staticClass: "container-fluid px-30 px-lg-60 pt-45" }, [
+    _c("div", { staticClass: "row" }, [
+      _c(
+        "div",
+        {
+          staticClass:
+            "col col-md-8 offset-md-2 col-lg-6 offset-lg-3 text-center"
+        },
+        [
+          _c("h1", [_vm._v("How can we help you?")]),
+          _vm._v(" "),
+          _c("p", { staticClass: "px-0 px-lg-60" }, [
+            _vm._v(
+              "Send us a message and we'll get back to you as soon as possible. "
+            )
+          ]),
+          _vm._v(" "),
+          _c(
+            "form",
             {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.email,
-              expression: "email"
-            }
-          ],
-          attrs: { type: "email", name: "email", placeholder: "Email" },
-          domProps: { value: _vm.email },
-          on: {
-            input: function($event) {
-              if ($event.target.composing) {
-                return
+              on: {
+                submit: function($event) {
+                  $event.preventDefault()
+                  return _vm.submit($event)
+                }
               }
-              _vm.email = $event.target.value
-            }
-          }
-        }),
-        _vm._v(" "),
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.name,
-              expression: "name"
-            }
-          ],
-          attrs: { type: "text", name: "name", placeholder: "Name" },
-          domProps: { value: _vm.name },
-          on: {
-            input: function($event) {
-              if ($event.target.composing) {
-                return
-              }
-              _vm.name = $event.target.value
-            }
-          }
-        }),
-        _vm._v(" "),
-        _c("textarea", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.message,
-              expression: "message"
-            }
-          ],
-          attrs: { placeholder: "Message" },
-          domProps: { value: _vm.message },
-          on: {
-            input: function($event) {
-              if ($event.target.composing) {
-                return
-              }
-              _vm.message = $event.target.value
-            }
-          }
-        }),
-        _vm._v(" "),
-        _c("input", { attrs: { type: "submit", name: "" } })
-      ]
-    )
+            },
+            [
+              _c("div", { staticClass: "form-group mb-10" }, [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.email,
+                      expression: "email"
+                    }
+                  ],
+                  staticClass: "form-control p-24 w-100 bg-light-grey border-0",
+                  attrs: { type: "email", placeholder: "Email" },
+                  domProps: { value: _vm.email },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.email = $event.target.value
+                    }
+                  }
+                })
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "form-group mb-10" }, [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.name,
+                      expression: "name"
+                    }
+                  ],
+                  staticClass: "form-control p-24 w-100 bg-light-grey border-0",
+                  attrs: { type: "text", placeholder: "Name" },
+                  domProps: { value: _vm.name },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.name = $event.target.value
+                    }
+                  }
+                })
+              ]),
+              _vm._v(" "),
+              _c("textarea", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.message,
+                    expression: "message"
+                  }
+                ],
+                staticClass: "d-block mb-10 p-24 w-100 bg-light-grey border-0",
+                attrs: { placeholder: "Message", rows: "6" },
+                domProps: { value: _vm.message },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.message = $event.target.value
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "py-24 w-100 border-0 text-white bg-black",
+                  attrs: { type: "submit" }
+                },
+                [_vm._v("Send message")]
+              )
+            ]
+          )
+        ]
+      )
+    ])
   ])
 }
 var staticRenderFns = []
@@ -51845,6 +51875,34 @@ if (false) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //

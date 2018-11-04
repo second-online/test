@@ -4,7 +4,7 @@
 			<router-link
 				v-bind:to="{ name: 'home' }"
 				class="logo line-height-1"
-			>Second Online Campus</router-link>
+			>Second Online</router-link>
 		</div>
 		<div class="d-flex flex-grow-1 justify-content-end justify-content-md-center">
 			<span
